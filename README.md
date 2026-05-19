@@ -1,0 +1,439 @@
+# Suno AI API SDK for RunAPI
+
+The suno ai api SDK packages JavaScript, Ruby, and Go clients for Suno music generation on RunAPI. Use this suno ai api SDK for text-to-music, cover audio, music extension, stem separation, and related audio workflows.
+
+## Installation
+
+```bash
+npm install @runapi.ai/suno
+# or
+pnpm add @runapi.ai/suno
+# or
+yarn add @runapi.ai/suno
+```
+
+## Quick Start
+
+```typescript
+import { SunoClient } from '@runapi.ai/suno';
+
+const client = new SunoClient({
+  apiKey: 'your-api-key',
+  baseUrl: 'https://runapi.ai', // optional
+});
+
+const result = await client.textToMusic.run({
+  custom_mode: false,
+  instrumental: false,
+  prompt: 'A chill lo-fi beat with soft vocals',
+  model: 'V4_5PLUS',
+});
+
+console.log('Music URL:', result.audios?.[0]?.audio_url);
+```
+
+## Features
+
+- **Music Generation**: Create music from text prompts with multiple models
+- **Cover Audio**: Transform uploaded audio into new styles
+- **Extend Music**: Extend generated music with additional content
+- **Upload and Extend Music**: Extend uploaded audio files
+- **AddInstrumental**: Add instrumental backing to vocal tracks
+- **Separate Audio Stems**: Separate vocals from instrumentals
+- **MIDI Export**: Extract MIDI data from audio
+- **Convert Audio**: Convert generated music to WAV format
+- **Visualize Music**: Generate videos for your music
+- **Generate Lyrics**: Generate and retrieve timestamped lyrics
+- **Replace Section**: Replace specific sections of music
+- **Generate Persona & Boost Style**: Manage custom voice personas and music styles
+- **Full TypeScript Support**: Complete type definitions for all API endpoints
+- **Automatic Polling**: Built-in polling for async music generation
+- **Error Handling**: Comprehensive error types from @runapi.ai/core
+
+## API Reference
+
+### Client Initialization
+
+```typescript
+const client = new SunoClient({
+  apiKey: string;      // Required: Your RunAPI.ai API key
+  baseUrl?: string;    // Optional: API base URL (defaults to production)
+});
+```
+
+### Music Generation
+
+#### Simple Mode (Recommended for Beginners)
+
+```typescript
+const result = await client.textToMusic.run({
+  custom_mode: false,
+  instrumental: false,
+  prompt: 'A relaxing piano melody with soft ambient sounds',
+  model: 'V4_5PLUS', // or 'V5', 'V4_5ALL', 'V4_5', 'V4', 'V3_5'
+});
+```
+
+#### Custom Mode (Advanced)
+
+```typescript
+const result = await client.textToMusic.run({
+  custom_mode: true,
+  instrumental: false,
+  prompt: 'Soft piano melodies flowing gently',
+  style: 'Classical, Ambient',
+  title: 'Peaceful Piano Meditation',
+  model: 'V5',
+  persona_id: 'persona_123', // optional
+  persona_model: 'voice_persona', // optional, V5 only
+});
+```
+
+#### Manual Control (Create + Poll)
+
+```typescript
+const task = await client.textToMusic.create({
+  custom_mode: false,
+  instrumental: true,
+  prompt: 'Upbeat electronic dance music',
+  model: 'V4_5PLUS',
+});
+
+const status = await client.textToMusic.get(task.id);
+console.log('Status:', status.status);
+```
+
+### Cover Audio
+
+Transform uploaded audio into new styles:
+
+```typescript
+const result = await client.coverAudio.run({
+  upload_url: 'https://example.com/audio.mp3',
+  custom_mode: false,
+  instrumental: false,
+  prompt: 'Transform into a jazz version',
+  model: 'V4_5PLUS',
+});
+```
+
+### Generate Artwork
+
+Generate cover images for existing generations:
+
+```typescript
+const result = await client.generateArtwork.run({
+  task_id: 'original-task-id',
+});
+```
+
+### Music Extension
+
+Extend existing Suno generations:
+
+```typescript
+const original = await client.textToMusic.run({
+  custom_mode: false,
+  instrumental: false,
+  prompt: 'A short intro melody',
+  model: 'V4_5PLUS',
+});
+
+const extended = await client.extendMusic.run({
+  audio_id: original.audios?.[0]?.id,
+  default_param_flag: false,
+  model: 'V4_5PLUS',
+  prompt: 'Continue with an uplifting chorus',
+});
+```
+
+### Upload and Extend Music
+
+Extend uploaded audio files:
+
+```typescript
+const result = await client.extendMusic.run({
+  upload_url: 'https://example.com/audio.mp3',
+  default_param_flag: false,
+  model: 'V4_5PLUS',
+  prompt: 'Continue with an uplifting chorus',
+});
+```
+
+### Add Instrumental
+
+```typescript
+const result = await client.addInstrumental.run({
+  upload_url: 'https://example.com/addVocals.mp3',
+  title: 'My Song',
+  tags: 'Pop, Energetic, Upbeat',
+  negative_tags: 'Heavy Metal, Aggressive',
+  model: 'V4_5PLUS',
+});
+```
+
+### Add AddVocals
+
+Add AI-generated vocals to instrumental audio (V4_5PLUS/V5 only):
+
+```typescript
+const result = await client.addVocals.run({
+  upload_url: 'https://example.com/instrumental.mp3',
+  prompt: 'Soft romantic lyrics about summer love',
+  title: 'Summer Love',
+  style: 'Pop, Romantic',
+  negative_tags: 'Screaming, Heavy Metal',
+  model: 'V4_5PLUS',
+});
+```
+
+### Separate Audio Stems
+
+```typescript
+const generation = await client.textToMusic.run({
+  custom_mode: false,
+  instrumental: false,
+  prompt: 'A song with vocals',
+  model: 'V4_5PLUS',
+});
+
+const separation = await client.separateAudioStems.run({
+  task_id: generation.id,
+  audio_id: generation.audios?.[0]?.id,
+});
+
+console.log('Instrumental:', separation.separated_audios?.instrumental_url);
+console.log('AddVocals:', separation.separated_audios?.vocal_url);
+```
+
+### MIDI Export
+
+```typescript
+// Requires a completed vocal-removal task with type: 'split_stem'
+const midi = await client.generateMidi.run({
+  task_id: 'split-stem-vocal-removal-task-id',
+});
+
+console.log('Detected instruments:', generateMidi.instruments?.map(i => i.name).join(', '));
+```
+
+### Convert Audio
+
+```typescript
+const wav = await client.convertAudio.run({
+  task_id: 'generation-task-id',
+  audio_id: 'audio-id',
+});
+
+console.log('WAV URL:', wav.wav_url);
+```
+
+### Visualize Music
+
+```typescript
+const video = await client.visualizeMusic.run({
+  task_id: 'music-generation-id',
+  audio_id: 'audio-id',
+  prompt: 'A serene landscape with flowing water and mountains',
+});
+
+console.log('Video URL:', video.video_url);
+```
+
+### Generate Lyrics
+
+```typescript
+// Generate lyrics
+const lyrics = await client.generateLyrics.run({
+  prompt: 'A love song about summer nights',
+});
+
+console.log('Lyrics:', lyrics.lyrics);
+
+// Get timestamped lyrics
+const timestamped = await client.getTimestampedLyrics.run({
+  task_id: 'generation-task-id',
+  audio_id: 'audio-id',
+});
+
+timestamped.aligned_words?.forEach(word => {
+  console.log(`[${word.start_time}s - ${word.end_time}s] ${word.word}`);
+});
+```
+
+### Replace Section
+
+```typescript
+const result = await client.replaceSection.run({
+  task_id: 'original-task-id',
+  audio_id: 'audio-id',
+  prompt: 'A powerful guitar solo',
+  tags: 'Rock, Energetic',
+  title: 'Epic Guitar Solo',
+  infill_start_time: 30.0,
+  infill_end_time: 45.0,
+});
+
+console.log('Replaced track:', result.track?.audio_url);
+```
+
+### Generate Persona & Boost Style
+
+```typescript
+// First generate some music with vocals
+const generation = await client.textToMusic.run({
+  custom_mode: false,
+  instrumental: false,
+  prompt: 'A song with distinctive vocals',
+  model: 'V4_5PLUS',
+});
+
+// Generate a persona from the audio's voice
+const { persona } = await client.generatePersona.run({
+  task_id: generation.id,
+  audio_id: generation.audios?.[0]?.id,
+  name: 'Warm Male Voice',
+  description: 'A warm, friendly male voice',
+});
+
+console.log('Persona ID:', persona.id);
+
+// Generate a style description from a prompt
+const { style } = await client.boostStyle.run({
+  name: 'Cinematic Epic',
+  description: 'Epic orchestral music with powerful crescendos',
+});
+
+console.log('Generated Style:', style);
+```
+
+## Models
+
+| Model | Description | Use Case |
+|-------|-------------|----------|
+| `V5` | Latest model | Highest quality, latest features |
+| `V4_5PLUS` | Enhanced V4.5 | Great quality, cost-efficient |
+| `V4_5ALL` | V4.5 with all features | Smarter prompts, audio upload max 1 min |
+| `V4_5` | Mid-tier quality | Balanced quality and speed |
+| `V4` | Previous generation | Stable, proven quality |
+| `V3_5` | Legacy model | Fast generation, lower cost |
+
+## Generation Modes
+
+### Simple Mode vs Custom Mode
+
+**Simple Mode** (`custom_mode: false`):
+- Just provide a prompt
+- Easiest to use
+- Suno handles all style decisions
+- Prompt limit: 500 characters
+
+**Custom Mode** (`custom_mode: true`):
+- Fine-grained control
+- Specify style, title, persona
+- Larger prompt limits (up to 5000 chars for V5)
+- Best for specific creative visions
+
+### Character Limits
+
+**Prompt Limits**:
+- Simple Mode: 500 characters
+- Custom Mode (V5, V4_5PLUS, V4_5ALL, V4_5): 5000 characters
+- Custom Mode (V4, V3_5): 3000 characters
+
+**Style Limits**:
+- V4, V3_5: 200 characters
+- V5, V4_5PLUS, V4_5ALL, V4_5: 1000 characters
+
+**Title Limits**:
+- V4, V3_5: 80 characters
+- V5, V4_5PLUS, V4_5ALL, V4_5: 100 characters
+
+## Error Handling
+
+```typescript
+import {
+  SunoClient,
+  AuthenticationError,
+  InsufficientCreditsError,
+  ValidationError,
+  TaskFailedError,
+} from '@runapi.ai/suno';
+
+try {
+  const result = await client.textToMusic.run({
+    custom_mode: false,
+    instrumental: false,
+    prompt: 'A beautiful melody',
+    model: 'V4_5PLUS',
+  });
+} catch (error) {
+  if (error instanceof AuthenticationError) {
+    console.error('Invalid API key');
+  } else if (error instanceof InsufficientCreditsError) {
+    console.error('Not enough credits');
+  } else if (error instanceof ValidationError) {
+    console.error('Invalid parameters');
+  } else if (error instanceof TaskFailedError) {
+    console.error('Music generation failed');
+  }
+}
+```
+
+## Advanced Usage
+
+### Callbacks
+
+```typescript
+const result = await client.textToMusic.create({
+  custom_mode: false,
+  instrumental: false,
+  prompt: 'Test music',
+  model: 'V4_5PLUS',
+  callback_url: 'https://your-domain.com/webhook',
+});
+```
+
+Webhook payload on completion:
+```typescript
+{
+  id: string;
+  status: 'completed' | 'failed';
+  generation_stage: 'text_generated' | 'first_audio_ready' | 'all_audios_ready' | 'failed';
+  audios?: Audio[];
+  error?: string;
+}
+```
+
+### Generation Stages
+
+The webhook will be called at multiple stages:
+1. **text_generated**: Text content ready (title, lyrics, etc.)
+2. **first_audio_ready**: First audio completed
+3. **all_audios_ready**: All audios completed
+4. **failed**: Generation failed
+
+### Fine-Tuning Parameters
+
+```typescript
+const result = await client.textToMusic.run({
+  custom_mode: false,
+  instrumental: false,
+  prompt: 'Energetic rock music',
+  model: 'V5',
+  vocal_gender: 'm',           // Male vocals
+  style_weight: 0.75,          // 0-1, higher = more style adherence
+  weirdness_constraint: 0.50,  // 0-1, higher = more creative/experimental
+  audio_weight: 0.65,          // 0-1, audio consistency weight
+});
+```
+
+For full suno ai api documentation including all parameters and response formats, visit https://runapi.ai/docs#suno.
+
+## License
+
+MIT
+
+## Support
+
+For issues and questions, please visit [https://github.com/runapi-ai/runapi.ai](https://github.com/runapi-ai/runapi.ai)
