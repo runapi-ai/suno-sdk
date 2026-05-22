@@ -20,7 +20,7 @@ describe('TextToSound', () => {
       const textToSound = new TextToSound(mockHttp);
       const result = await textToSound.create({
         prompt: 'Rain on a tin roof',
-        model: 'V5',
+        model: 'suno-v5',
         sound_loop: true,
         sound_tempo: 90,
         sound_key: 'Cm',
@@ -33,7 +33,7 @@ describe('TextToSound', () => {
         {
           body: {
             prompt: 'Rain on a tin roof',
-            model: 'V5',
+            model: 'suno-v5',
             sound_loop: true,
             sound_tempo: 90,
             sound_key: 'Cm',
@@ -44,14 +44,14 @@ describe('TextToSound', () => {
       expect(result).toEqual(mockResponse);
     });
 
-    it('should support V5_5 model', async () => {
+    it('should support suno-v5.5 model', async () => {
       const mockResponse: TaskCreateResponse = { id: 'sound-456', status: 'processing' };
       vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
 
       const textToSound = new TextToSound(mockHttp);
       await textToSound.create({
         prompt: 'Ambient pad',
-        model: 'V5_5',
+        model: 'suno-v5.5',
       });
 
       expect(mockHttp.request).toHaveBeenCalledWith(
@@ -60,7 +60,7 @@ describe('TextToSound', () => {
         {
           body: {
             prompt: 'Ambient pad',
-            model: 'V5_5',
+            model: 'suno-v5.5',
           },
         }
       );

@@ -23,7 +23,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'A warm acoustic song with male vocals',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Music generated!');
@@ -60,7 +60,7 @@ async function main() {
       prompt: 'A heartfelt acoustic song about coming home',
       style: 'Acoustic, Folk, Emotional',
       title: 'Coming Home',
-      model: 'V5',
+      model: 'suno-v5',
       persona_id: persona.id,
     });
     
@@ -89,7 +89,7 @@ async function main() {
       prompt: 'A dramatic orchestral piece for an epic movie scene',
       style: generatedStyle,
       title: 'Epic Battle',
-      model: 'V5',
+      model: 'suno-v5',
     });
     
     console.log('✅ Music generated with custom style!');

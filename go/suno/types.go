@@ -13,13 +13,13 @@ type TaskStatus string
 type SoundKey string
 
 const (
-	ModelV55     SunoModel    = "V5_5"
-	ModelV5      SunoModel    = "V5"
-	ModelV45Plus SunoModel    = "V4_5PLUS"
-	ModelV45All  SunoModel    = "V4_5ALL"
-	ModelV45     SunoModel    = "V4_5"
-	ModelV4      SunoModel    = "V4"
-	ModelV35     SunoModel    = "V3_5"
+	ModelV55     SunoModel    = "suno-v5.5"
+	ModelV5      SunoModel    = "suno-v5"
+	ModelV45Plus SunoModel    = "suno-v4.5-plus"
+	ModelV45All  SunoModel    = "suno-v4.5-all"
+	ModelV45     SunoModel    = "suno-v4.5"
+	ModelV4      SunoModel    = "suno-v4"
+	ModelV35     SunoModel    = "suno-v3.5"
 	GenderMale   VocalGender  = "m"
 	GenderFemale VocalGender  = "f"
 	StylePersona PersonaModel = "style_persona"
@@ -28,7 +28,7 @@ const (
 
 type SunoBaseParams struct {
 	CallbackURL         string      `json:"callback_url,omitempty" help:"optional; webhook URL for async notifications"`
-	Model               SunoModel   `json:"model,omitempty" help:"required; V5, V4_5PLUS, V4_5ALL, V4_5, V4, V3_5"`
+	Model               SunoModel   `json:"model,omitempty" help:"required; suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5, suno-v4, suno-v3.5"`
 	VocalGender         VocalGender `json:"vocal_gender,omitempty" help:"optional; m or f (custom_mode only, not guaranteed)"`
 	StyleWeight         *float64    `json:"style_weight,omitempty" help:"optional; 0-1, 2 decimal places"`
 	WeirdnessConstraint *float64    `json:"weirdness_constraint,omitempty" help:"optional; 0-1, 2 decimal places"`
@@ -37,15 +37,15 @@ type SunoBaseParams struct {
 
 type TextToMusicParams struct {
 	SunoBaseParams
-	Prompt       string       `json:"prompt,omitempty" help:"required; song description (<=500) or lyrics when custom_mode (V4:<=3000, V5:<=5000)"`
-	Style        string       `json:"style,omitempty" help:"required when custom_mode; genre tags (V4:<=200, V5:<=1000)"`
-	Title        string       `json:"title,omitempty" help:"required when custom_mode; song title (V4:<=80, V4_5+:<=100)"`
+	Prompt       string       `json:"prompt,omitempty" help:"required; song description (<=500) or lyrics when custom_mode (suno-v4:<=3000, suno-v5:<=5000)"`
+	Style        string       `json:"style,omitempty" help:"required when custom_mode; genre tags (suno-v4:<=200, suno-v5:<=1000)"`
+	Title        string       `json:"title,omitempty" help:"required when custom_mode; song title (suno-v4:<=80, suno-v4.5+:<=100)"`
 	CustomMode   bool         `json:"custom_mode" help:"required; true=provide lyrics/style/title, false=prompt only"`
 	Instrumental bool         `json:"instrumental" help:"required; true=no vocals"`
 	NegativeTags string       `json:"negative_tags,omitempty" help:"optional; styles to avoid"`
 	PersonaID    string       `json:"persona_id,omitempty" help:"optional; voice persona ID (custom_mode only)"`
-	PersonaModel PersonaModel `json:"persona_model,omitempty" help:"optional; style_persona (default) or voice_persona (V5 only)"`
-	Duration     *int         `json:"duration,omitempty" help:"optional; target duration in seconds (V4:<=240, V5:<=480)"`
+	PersonaModel PersonaModel `json:"persona_model,omitempty" help:"optional; style_persona (default) or voice_persona (suno-v5 only)"`
+	Duration     *int         `json:"duration,omitempty" help:"optional; target duration in seconds (suno-v4:<=240, suno-v5:<=480)"`
 	ContinueAt   *float64     `json:"continue_at,omitempty" help:"optional; timestamp in seconds to continue from"`
 	Endpoint     string       `json:"endpoint,omitempty" help:"optional; API endpoint override"`
 }
@@ -58,13 +58,13 @@ type ExtendMusicParams struct {
 	UploadURL        string       `json:"upload_url,omitempty" help:"optional; uploaded source audio URL to extend"`
 	DefaultParamFlag bool         `json:"default_param_flag" help:"required; true=provide custom params, false=inherit from source"`
 	Instrumental     *bool        `json:"instrumental,omitempty" help:"optional; true=no vocals"`
-	Prompt           string       `json:"prompt,omitempty" help:"required when default_param_flag; lyrics (V4:<=3000, V5:<=5000)"`
-	Style            string       `json:"style,omitempty" help:"required when default_param_flag; genre tags (V4:<=200, V5:<=1000)"`
+	Prompt           string       `json:"prompt,omitempty" help:"required when default_param_flag; lyrics (suno-v4:<=3000, suno-v5:<=5000)"`
+	Style            string       `json:"style,omitempty" help:"required when default_param_flag; genre tags (suno-v4:<=200, suno-v5:<=1000)"`
 	Title            string       `json:"title,omitempty" help:"required when default_param_flag; song title (<=80-100)"`
 	ContinueAt       *float64     `json:"continue_at,omitempty" help:"required when default_param_flag; seconds, >0 and <total duration"`
 	PersonaID        string       `json:"persona_id,omitempty" help:"optional; voice persona ID"`
-	PersonaModel     PersonaModel `json:"persona_model,omitempty" help:"optional; style_persona (default) or voice_persona (V5 only)"`
-	Model            SunoModel    `json:"model" help:"required; V5, V4_5PLUS, V4_5ALL, V4_5, V4, V3_5"`
+	PersonaModel     PersonaModel `json:"persona_model,omitempty" help:"optional; style_persona (default) or voice_persona (suno-v5 only)"`
+	Model            SunoModel    `json:"model" help:"required; suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5, suno-v4, suno-v3.5"`
 	NegativeTags     string       `json:"negative_tags,omitempty" help:"optional; styles to avoid"`
 }
 
@@ -79,7 +79,7 @@ type CoverAudioParams struct {
 	Prompt       string       `json:"prompt,omitempty" help:"required when custom_mode; cover lyrics"`
 	CustomMode   bool         `json:"custom_mode" help:"required; true=provide lyrics/style/title"`
 	Instrumental bool         `json:"instrumental" help:"required; true=no vocals"`
-	Model        SunoModel    `json:"model" help:"required; V5, V4_5PLUS, V4_5ALL, V4_5, V4, V3_5"`
+	Model        SunoModel    `json:"model" help:"required; suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5, suno-v4, suno-v3.5"`
 	Style        string       `json:"style,omitempty" help:"required when custom_mode; genre tags"`
 	Title        string       `json:"title,omitempty" help:"required when custom_mode; song title"`
 	PersonaID    string       `json:"persona_id,omitempty" help:"optional; voice persona ID"`
@@ -93,7 +93,7 @@ type AddInstrumentalParams struct {
 	Title        string    `json:"title" help:"required; song title"`
 	NegativeTags string    `json:"negative_tags" help:"required; styles to avoid (can be empty string)"`
 	Tags         string    `json:"tags" help:"required; style/genre tags"`
-	Model        SunoModel `json:"model" help:"required; V5, V4_5PLUS, V4_5ALL, V4_5, V4, V3_5"`
+	Model        SunoModel `json:"model" help:"required; suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5, suno-v4, suno-v3.5"`
 }
 
 type AddVocalsParams struct {
@@ -103,7 +103,7 @@ type AddVocalsParams struct {
 	Title        string    `json:"title" help:"required; song title"`
 	NegativeTags string    `json:"negative_tags" help:"required; styles to avoid (can be empty string)"`
 	Style        string    `json:"style" help:"required; music style/genre tags"`
-	Model        SunoModel `json:"model" help:"required; V5, V4_5PLUS, V4_5ALL, V4_5, V4, V3_5"`
+	Model        SunoModel `json:"model" help:"required; suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5, suno-v4, suno-v3.5"`
 }
 
 type SeparateAudioStemsParams struct {
@@ -168,7 +168,7 @@ type BoostStyleParams struct {
 
 type TextToSoundParams struct {
 	Prompt      string    `json:"prompt" help:"required; sound description (<=500 chars)"`
-	Model       SunoModel `json:"model" help:"required; V5 or V5_5"`
+	Model       SunoModel `json:"model" help:"required; suno-v5 or suno-v5.5"`
 	SoundLoop   *bool     `json:"sound_loop,omitempty" help:"optional; true=loopable audio, default false"`
 	SoundTempo  *int      `json:"sound_tempo,omitempty" help:"optional; BPM 1-300"`
 	SoundKey    SoundKey  `json:"sound_key,omitempty" help:"optional; musical key (Cm, C#m...Bm, C, C#...B), default Any"`
@@ -184,7 +184,7 @@ type CreateMashupParams struct {
 	Title         string    `json:"title,omitempty" help:"required when custom_mode is true; song title"`
 	CustomMode    bool      `json:"custom_mode" help:"required; true=provide lyrics/style/title"`
 	Instrumental  *bool     `json:"instrumental,omitempty" help:"optional; true=no vocals"`
-	Model         SunoModel `json:"model" help:"required; V5, V4_5PLUS, V4_5ALL, V4_5, V4, V3_5"`
+	Model         SunoModel `json:"model" help:"required; suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5, suno-v4, suno-v3.5"`
 }
 
 type AsyncTaskResponse struct {

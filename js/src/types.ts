@@ -1,7 +1,7 @@
 import type { AsyncTaskStatus } from '@runapi.ai/core';
 
-export type SunoModel = 'V5_5' | 'V5' | 'V4_5PLUS' | 'V4_5ALL' | 'V4_5' | 'V4' | 'V3_5';
-export type SoundModel = 'V5' | 'V5_5';
+export type SunoModel = 'suno-v5.5' | 'suno-v5' | 'suno-v4.5-plus' | 'suno-v4.5-all' | 'suno-v4.5' | 'suno-v4' | 'suno-v3.5';
+export type SoundModel = 'suno-v5' | 'suno-v5.5';
 export type SoundKey =
   | 'Cm' | 'C#m' | 'Dm' | 'D#m' | 'Em' | 'Fm'
   | 'F#m' | 'Gm' | 'G#m' | 'Am' | 'A#m' | 'Bm'

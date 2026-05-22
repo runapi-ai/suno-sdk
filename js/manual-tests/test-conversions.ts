@@ -23,7 +23,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'A short melody for WAV conversion testing',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Original music generated!');
@@ -89,7 +89,7 @@ async function main() {
       custom_mode: false,
       instrumental: true,
       prompt: 'Another melody for batch conversion test',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log(`   Music 2 generated: ${music2.id}`);

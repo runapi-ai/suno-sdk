@@ -22,7 +22,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'A simple pop song with catchy melody',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Original music generated!');
@@ -59,7 +59,7 @@ async function main() {
         custom_mode: false,
         instrumental: false,
         prompt: 'Transform into a jazz version with smooth saxophone',
-        model: 'V4_5PLUS',
+        model: 'suno-v4.5-plus',
       });
       
       console.log('✅ Upload and cover completed!');
@@ -80,7 +80,7 @@ async function main() {
         prompt: 'Heavy guitar riffs with powerful drums',
         style: 'Heavy Metal, Aggressive, Dark',
         title: 'Metal Transformation',
-        model: 'V5',
+        model: 'suno-v5',
       });
       
       console.log('✅ Custom upload cover completed!');

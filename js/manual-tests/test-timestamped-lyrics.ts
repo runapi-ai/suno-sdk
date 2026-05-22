@@ -23,7 +23,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'A song about chasing dreams with clear vocals',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Music generated!');

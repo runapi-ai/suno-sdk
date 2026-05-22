@@ -23,7 +23,7 @@ describe('AddInstrumental', () => {
         title: 'My Song',
         tags: 'Pop, Energetic',
         negative_tags: 'Heavy Metal',
-        model: 'V4_5PLUS',
+        model: 'suno-v4.5-plus',
       });
 
       expect(mockHttp.request).toHaveBeenCalledWith(
@@ -35,7 +35,7 @@ describe('AddInstrumental', () => {
             title: 'My Song',
             tags: 'Pop, Energetic',
             negative_tags: 'Heavy Metal',
-            model: 'V4_5PLUS',
+            model: 'suno-v4.5-plus',
           },
         }
       );

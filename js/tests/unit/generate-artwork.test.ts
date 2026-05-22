@@ -21,7 +21,7 @@ describe('GenerateArtwork', () => {
       const result = await generateArtwork.create({
         task_id: 'original-task-123',
         style: 'Jazz',
-        model: 'V4_5PLUS',
+        model: 'suno-v4.5-plus',
       });
 
       expect(mockHttp.request).toHaveBeenCalledWith(
@@ -31,7 +31,7 @@ describe('GenerateArtwork', () => {
           body: {
             task_id: 'original-task-123',
             style: 'Jazz',
-            model: 'V4_5PLUS',
+            model: 'suno-v4.5-plus',
           },
         }
       );

@@ -24,7 +24,7 @@ async function main() {
       prompt: 'Gentle piano melodies flowing like a peaceful river',
       style: 'Classical, Ambient, Meditative',
       title: 'River of Peace',
-      model: 'V5',
+      model: 'suno-v5',
     });
 
     console.log('✅ Generation completed successfully!');
@@ -40,7 +40,7 @@ async function main() {
 
     console.log('\n🎭 Test 2: Custom mode with different models');
     console.log('-'.repeat(50));
-    const models: Array<'V5' | 'V4_5PLUS' | 'V4_5ALL' | 'V4_5' | 'V4' | 'V3_5'> = ['V5', 'V4_5PLUS', 'V4_5ALL', 'V4'];
+    const models: Array<'suno-v5' | 'suno-v4.5-plus' | 'suno-v4.5-all' | 'suno-v4.5' | 'suno-v4' | 'suno-v3.5'> = ['suno-v5', 'suno-v4.5-plus', 'suno-v4.5-all', 'suno-v4'];
 
     for (const model of models) {
       console.log(`\n   Testing model: ${model}...`);
@@ -69,7 +69,7 @@ async function main() {
       prompt: 'Epic orchestral music with powerful strings and horns',
       style: 'Orchestral, Epic, Cinematic',
       title: 'Epic Journey',
-      model: 'V5',
+      model: 'suno-v5',
     });
 
     console.log('✅ Instrumental generation completed!');

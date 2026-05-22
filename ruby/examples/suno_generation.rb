@@ -26,7 +26,7 @@ run_example("1. Simple Mode Generation") do
     custom_mode: false,
     instrumental: false,
     prompt: "A chill lo-fi beat with warm piano melodies",
-    model: "V4_5PLUS"
+    model: "suno-v4.5-plus"
   )
   puts "Status: #{result["status"]}"
   gen_task_id = result["id"]
@@ -45,7 +45,7 @@ run_example("2. Custom Mode Generation") do
     style: "Classical, Ambient, Piano",
     title: "Morning Light",
     prompt: "Sunlight filters through the window, a new day begins with hope",
-    model: "V5"
+    model: "suno-v5"
   )
   puts "Status: #{result["status"]}"
   result["audios"]&.each_with_index do |audio, i|
@@ -67,7 +67,7 @@ run_example("4. Extension") do
   ext_result = client.extend_music.run(
     audio_id: gen_audio_id || raise("No audio_id"),
     default_param_flag: true,
-    model: "V4_5PLUS",
+    model: "suno-v4.5-plus",
     prompt: "Continue with a soaring chorus",
     style: "Pop, Uplifting",
     title: "Soaring Chorus",
@@ -85,7 +85,7 @@ run_example("5. Upload and Extension") do
     default_param_flag: false,
     instrumental: false,
     prompt: "Continue with a soaring chorus",
-    model: "V4_5PLUS",
+    model: "suno-v4.5-plus",
     continue_at: 30.0
   )
   puts "Status: #{ue_result["status"]}"
@@ -109,7 +109,7 @@ run_example("7. Upload and Cover") do
     custom_mode: false,
     instrumental: false,
     prompt: "A relaxing cover version",
-    model: "V4_5PLUS"
+    model: "suno-v4.5-plus"
   )
   puts "Status: #{uc_result["status"]}"
 end
@@ -158,7 +158,7 @@ run_example("11. Instrumentals") do
     title: "Instrumental Mix",
     negative_tags: "vocals, singing",
     tags: "piano, ambient, chill",
-    model: "V4_5PLUS"
+    model: "suno-v4.5-plus"
   )
   puts "Status: #{inst_result["status"]}"
 end
@@ -173,7 +173,7 @@ run_example("12. Vocals") do
     title: "Vocal Layer",
     negative_tags: "screaming, harsh",
     style: "Pop, Soft",
-    model: "V4_5PLUS"
+    model: "suno-v4.5-plus"
   )
   puts "Status: #{vocal_result["status"]}"
 end
@@ -248,7 +248,7 @@ task = client.text_to_music.create(
   custom_mode: false,
   instrumental: true,
   prompt: "An energetic electronic dance beat",
-  model: "V4_5PLUS"
+  model: "suno-v4.5-plus"
 )
 raise "Failed to create task" unless task["id"]
 puts "Task ID: #{task["id"]}"

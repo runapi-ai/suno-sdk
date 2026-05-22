@@ -22,7 +22,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'A chill lo-fi beat with soft piano melodies and ambient sounds',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Task created successfully!');
@@ -55,7 +55,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'Upbeat electronic dance music with energetic beats',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Generation completed successfully!');
@@ -80,7 +80,7 @@ async function main() {
       custom_mode: false,
       instrumental: true,
       prompt: 'Relaxing ambient music with nature sounds',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Instrumental generation completed!');

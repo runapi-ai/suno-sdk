@@ -23,7 +23,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'An energetic rock song with drums, electric bass, and guitar riffs',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
 
     console.log('✅ Original music generated!');

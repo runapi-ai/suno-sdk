@@ -23,7 +23,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'A relaxing piano melody with soft ambient sounds',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Original music generated!');

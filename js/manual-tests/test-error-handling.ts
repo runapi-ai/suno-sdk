@@ -41,7 +41,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'Test',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('   ⚠️  FAILED: Should throw AuthenticationError');
@@ -75,7 +75,7 @@ async function main() {
     await client.textToMusic.create({
       custom_mode: false,
       instrumental: false,
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('   ⚠️  Note: Backend accepted request without prompt (may have default behavior)');

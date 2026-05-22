@@ -18,9 +18,9 @@ overmind start
 
 The server should be available at `http://localhost:3000`.
 
-### 2. Get API Token
+### 2. Get API Key
 
-You need a valid API token with sufficient credits:
+You need a valid API Key with sufficient credits:
 
 **Option A: Using Rails Console**
 ```bash
@@ -29,12 +29,12 @@ bin/rails console
 
 Then in the console:
 ```ruby
-# Get the first API token
+# Get the first API Key
 ApiToken.first.token
 
 # Or create a new one for testing
 user = User.first
-token = user.api_tokens.create(name: "SDK Test Token")
+token = user.api_tokens.create(name: "SDK Test Key")
 token.token  # Copy this
 ```
 
@@ -54,7 +54,7 @@ SELECT token FROM api_tokens LIMIT 1;
 # Copy the example file
 cp .env.example .env
 
-# Edit .env with your API token
+# Edit .env with your API Key
 nano .env
 ```
 
@@ -92,7 +92,7 @@ pnpm --filter @runapi.ai/suno test:simple
 
 **What it tests:**
 - ✅ Custom mode with style and title
-- ✅ Different models (V5, V4_5PLUS, V4_5ALL, V4)
+- ✅ Different models (suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4)
 - ✅ Custom mode with persona
 - ✅ Custom mode instrumental
 
@@ -143,7 +143,7 @@ pnpm --filter @runapi.ai/suno test:extension
 **What it tests:**
 - ✅ Add instrumental to vocals
 - ✅ Use negative tags to control style
-- ✅ Different models comparison (V4_5PLUS, V5 only)
+- ✅ Different models comparison (suno-v4.5-plus, suno-v5 only)
 
 **Run:**
 ```bash
@@ -160,7 +160,7 @@ pnpm --filter @runapi.ai/suno test:instrumentals
 **What it tests:**
 - ✅ Add AI-generated vocals to instrumental
 - ✅ Different vocal styles
-- ✅ Different models comparison (V4_5PLUS, V5 only)
+- ✅ Different models comparison (suno-v4.5-plus, suno-v5 only)
 
 **Run:**
 ```bash
@@ -347,7 +347,7 @@ Total Duration: 120.5s
 - ✅ Persona management
 - ✅ Style management
 - ✅ Error handling
-- ✅ All models (V5, V4_5PLUS, V4_5ALL, V4_5, V4, V3_5)
+- ✅ All models (suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5, suno-v4, suno-v3.5)
 - ✅ create() method (async task creation)
 - ✅ get() method (status polling)
 - ✅ run() method (complete workflow)
@@ -392,7 +392,7 @@ Some tests require an external audio file. Either:
 ### Tests taking too long
 - Music generation takes 20-60 seconds per audio
 - Video generation takes 40-90 seconds
-- Use V4_5PLUS for faster results (V5 is slower but higher quality)
+- Use suno-v4.5-plus for faster results (suno-v5 is slower but higher quality)
 
 ---
 
@@ -419,7 +419,7 @@ bin/dev
 cd sdk/js/packages/suno/manual-tests
 cp .env.example .env
 
-# 3. Get API token and add to .env
+# 3. Get API Key and add to .env
 echo "RUNAPI_API_KEY=$(bin/rails runner 'puts ApiToken.first.token')" >> .env
 
 # 4. Run simple test (quick verification)

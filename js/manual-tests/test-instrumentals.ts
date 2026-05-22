@@ -32,7 +32,7 @@ async function main() {
       title: 'My Song with Instrumentals',
       tags: 'Pop, Upbeat, Energetic',
       negative_tags: 'Heavy Metal, Aggressive',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Instrumental addition completed!');
@@ -56,7 +56,7 @@ async function main() {
       title: 'Gentle Acoustic Version',
       tags: 'Acoustic, Soft, Gentle',
       negative_tags: 'Heavy Metal, Aggressive, Electronic',
-      model: 'V5',
+      model: 'suno-v5',
     });
     
     console.log('✅ Instrumental with negative tags completed!');
@@ -66,7 +66,7 @@ async function main() {
     console.log('\n🎹 Test 3: Different models comparison');
     console.log('-'.repeat(50));
     
-    const models: Array<'V5' | 'V4_5PLUS' | 'V4'> = ['V5', 'V4_5PLUS'];
+    const models: Array<'suno-v5' | 'suno-v4.5-plus' | 'suno-v4'> = ['suno-v5', 'suno-v4.5-plus'];
     
     for (const model of models) {
       console.log(`   Testing model: ${model}...`);

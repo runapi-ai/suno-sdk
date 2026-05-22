@@ -3,8 +3,8 @@
 module RunApi
   module Suno
     module Types
-      MODELS = %w[V5_5 V5 V4_5PLUS V4_5ALL V4_5 V4 V3_5].freeze
-      SOUND_MODELS = %w[V5 V5_5].freeze
+      MODELS = %w[suno-v5.5 suno-v5 suno-v4.5-plus suno-v4.5-all suno-v4.5 suno-v4 suno-v3.5].freeze
+      SOUND_MODELS = %w[suno-v5 suno-v5.5].freeze
       SOUND_KEYS = %w[
         Cm C#m Dm D#m Em Fm F#m Gm G#m Am A#m Bm
         C C# D D# E F F# G G# A A# B

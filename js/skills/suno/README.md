@@ -1,4 +1,25 @@
-# Suno AI API Skill for RunAPI
+<p align="center">
+  <a href="https://github.com/runapi-ai/suno">
+    <h3 align="center">Suno AI API Skill for RunAPI</h3>
+  </a>
+</p>
+
+<p align="center">
+  Install this agent skill, inspect Suno fields, then run jobs through the RunAPI CLI.
+</p>
+
+<p align="center">
+  <a href="https://runapi.ai/models/suno"><strong>Model Reference</strong></a> · <a href="https://github.com/runapi-ai/cli"><strong>CLI</strong></a> · <a href="https://github.com/runapi-ai/suno-sdk"><strong>SDK</strong></a>
+</p>
+
+<div align="center">
+
+[![skills.sh](https://www.skills.sh/b/runapi-ai/suno)](https://www.skills.sh/runapi-ai/suno/suno)
+[![ClawHub](https://img.shields.io/badge/ClawHub-runapi--suno-111827)](https://clawhub.ai/runapi-ai/runapi-suno)
+[![License](https://img.shields.io/github/license/runapi-ai/suno)](https://github.com/runapi-ai/suno/blob/main/LICENSE)
+
+</div>
+<br/>
 
 Generate music, lyrics, stems, covers, and music videos with the Suno SDK. This skill helps Claude Code, Codex, Gemini CLI, Cursor, and 50+ agents integrate Suno through RunAPI.
 
@@ -10,7 +31,18 @@ The canonical agent file is `skills/suno/SKILL.md`.
 npx skills add runapi-ai/suno -g
 ```
 
-Or manually: clone this repo and copy `skills/suno/` into your agent's skills directory.
+Or paste this prompt to your AI agent:
+
+```text
+Install the suno skill for me:
+
+1. Clone https://github.com/runapi-ai/suno
+2. Copy the skills/suno/ directory into your
+   user-level skills directory (e.g. ~/.claude/skills/
+   for Claude Code, ~/.codex/skills/ for Codex).
+3. Verify that SKILL.md is present.
+4. Confirm the install path when done.
+```
 
 ## Quick example
 
@@ -22,7 +54,7 @@ const result = await client.textToMusic.run({
   custom_mode: false,
   instrumental: false,
   prompt: 'A chill lo-fi beat with soft vocals',
-  model: 'V5',
+  model: 'suno-v5',
 });
 const audioUrl = result.audios[0].audio_url;
 ```

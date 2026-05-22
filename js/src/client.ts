@@ -31,7 +31,7 @@ import { BoostStyle } from './resources/boost-style';
  *   custom_mode: false,
  *   instrumental: false,
  *   prompt: 'A chill lo-fi beat with soft vocals',
- *   model: 'V4_5PLUS',
+ *   model: 'suno-v4.5-plus',
  * });
  * ```
  */

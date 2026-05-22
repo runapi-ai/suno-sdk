@@ -82,7 +82,7 @@ async function main() {
       prompt: runLyric?.text || 'Default lyrics',
       style: 'Rock, Motivational',
       title: 'Chase Your Dreams',
-      model: 'V5',
+      model: 'suno-v5',
     });
     
     console.log('✅ Music with custom lyrics generated!');

@@ -22,7 +22,7 @@ describe('TextToMusic', () => {
         custom_mode: false,
         instrumental: false,
         prompt: 'A chill lo-fi beat',
-        model: 'V4_5PLUS',
+        model: 'suno-v4.5-plus',
       });
 
       expect(mockHttp.request).toHaveBeenCalledWith(
@@ -33,7 +33,7 @@ describe('TextToMusic', () => {
             custom_mode: false,
             instrumental: false,
             prompt: 'A chill lo-fi beat',
-            model: 'V4_5PLUS',
+            model: 'suno-v4.5-plus',
           },
         }
       );
@@ -51,7 +51,7 @@ describe('TextToMusic', () => {
         prompt: 'Soft piano melodies',
         style: 'Classical',
         title: 'Peaceful Piano',
-        model: 'V4',
+        model: 'suno-v4',
       });
 
       expect(mockHttp.request).toHaveBeenCalledWith(
@@ -64,7 +64,7 @@ describe('TextToMusic', () => {
             prompt: 'Soft piano melodies',
             style: 'Classical',
             title: 'Peaceful Piano',
-            model: 'V4',
+            model: 'suno-v4',
           },
         }
       );
@@ -80,7 +80,7 @@ describe('TextToMusic', () => {
         custom_mode: false,
         instrumental: true,
         prompt: 'Upbeat rhythm',
-        model: 'V5',
+        model: 'suno-v5',
         callback_url: 'https://example.com/webhook',
         vocal_gender: 'm',
         style_weight: 0.65,
@@ -95,7 +95,7 @@ describe('TextToMusic', () => {
             custom_mode: false,
             instrumental: true,
             prompt: 'Upbeat rhythm',
-            model: 'V5',
+            model: 'suno-v5',
             callback_url: 'https://example.com/webhook',
             vocal_gender: 'm',
             style_weight: 0.65,
@@ -209,7 +209,7 @@ describe('TextToMusic', () => {
         custom_mode: false,
         instrumental: false,
         prompt: 'Test music',
-        model: 'V5',
+        model: 'suno-v5',
       });
 
       expect(result.status).toBe('completed');

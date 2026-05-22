@@ -22,7 +22,7 @@ async function main() {
       custom_mode: false,
       instrumental: false,
       prompt: 'A short uplifting piano intro',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Original music generated!');
@@ -46,7 +46,7 @@ async function main() {
       audio_id: firstAudio.id,
       default_param_flag: false,
       prompt: 'Continue with an energetic chorus and uplifting melody',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
     
     console.log('✅ Music extension completed!');
@@ -74,7 +74,7 @@ async function main() {
         default_param_flag: false,
         instrumental: false,
         prompt: 'Add a powerful outro with crescendo',
-        model: 'V4_5PLUS',
+        model: 'suno-v4.5-plus',
       });
       
       console.log('✅ Upload extension completed!');
@@ -92,7 +92,7 @@ async function main() {
         audio_id: currentTrackId,
         default_param_flag: false,
         prompt: `Add section ${i} with variation`,
-        model: 'V4_5PLUS',
+        model: 'suno-v4.5-plus',
       });
       console.log(`   ✅ Extension ${i} completed - Task ID: ${extendedResult.id}`);
       

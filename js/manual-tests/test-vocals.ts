@@ -33,7 +33,7 @@ async function main() {
       title: 'Summer Nights',
       style: 'Pop, Romantic',
       negative_tags: 'Screaming, Heavy Metal, Aggressive',
-      model: 'V4_5PLUS',
+      model: 'suno-v4.5-plus',
     });
 
     console.log('✅ Vocals addition completed!');
@@ -58,7 +58,7 @@ async function main() {
       title: 'Dance Party',
       style: 'EDM, Dance, Electronic',
       negative_tags: 'Slow, Ballad, Classical',
-      model: 'V5',
+      model: 'suno-v5',
     });
 
     console.log('✅ Vocals with EDM style completed!');
@@ -68,7 +68,7 @@ async function main() {
     console.log('\n🎹 Test 3: Different models comparison');
     console.log('-'.repeat(50));
 
-    const models: Array<'V5' | 'V4_5PLUS'> = ['V5', 'V4_5PLUS'];
+    const models: Array<'suno-v5' | 'suno-v4.5-plus'> = ['suno-v5', 'suno-v4.5-plus'];
 
     for (const model of models) {
       console.log(`   Testing model: ${model}...`);
