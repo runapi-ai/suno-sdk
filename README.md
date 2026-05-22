@@ -1,4 +1,24 @@
-# Suno AI API SDK for RunAPI
+<p align="center">
+  <a href="https://runapi.ai"><img src="https://runapi.ai/icon.svg" height="56" alt="RunAPI"></a>
+</p>
+
+<h3 align="center">
+  <a href="https://github.com/runapi-ai/suno-sdk">Suno API SDK for RunAPI</a>
+</h3>
+
+<p align="center">
+  Suno API SDKs for JavaScript, Ruby, and Go on RunAPI.
+</p>
+
+<div align="center">
+
+[![npm](https://img.shields.io/npm/v/@runapi.ai/suno)](https://www.npmjs.com/package/@runapi.ai/suno)
+[![RubyGems](https://img.shields.io/gem/v/runapi-suno)](https://rubygems.org/gems/runapi-suno)
+[![Go Reference](https://pkg.go.dev/badge/github.com/runapi-ai/suno-sdk/go.svg)](https://pkg.go.dev/github.com/runapi-ai/suno-sdk/go)
+[![License](https://img.shields.io/github/license/runapi-ai/suno-sdk)](https://github.com/runapi-ai/suno-sdk/blob/main/LICENSE)
+
+</div>
+<br/>
 
 The suno ai api SDK packages JavaScript, Ruby, and Go clients for Suno music generation on RunAPI. Use this suno ai api SDK for text-to-music, cover audio, music extension, stem separation, and related audio workflows.
 
@@ -26,7 +46,7 @@ const result = await client.textToMusic.run({
   custom_mode: false,
   instrumental: false,
   prompt: 'A chill lo-fi beat with soft vocals',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
 });
 
 console.log('Music URL:', result.audios?.[0]?.audio_url);
@@ -70,7 +90,7 @@ const result = await client.textToMusic.run({
   custom_mode: false,
   instrumental: false,
   prompt: 'A relaxing piano melody with soft ambient sounds',
-  model: 'V4_5PLUS', // or 'V5', 'V4_5ALL', 'V4_5', 'V4', 'V3_5'
+  model: 'suno-v4.5-plus', // or 'suno-v5', 'suno-v4.5-all', 'suno-v4.5', 'suno-v4', 'suno-v3.5'
 });
 ```
 
@@ -83,9 +103,9 @@ const result = await client.textToMusic.run({
   prompt: 'Soft piano melodies flowing gently',
   style: 'Classical, Ambient',
   title: 'Peaceful Piano Meditation',
-  model: 'V5',
+  model: 'suno-v5',
   persona_id: 'persona_123', // optional
-  persona_model: 'voice_persona', // optional, V5 only
+  persona_model: 'voice_persona', // optional, suno-v5 only
 });
 ```
 
@@ -96,7 +116,7 @@ const task = await client.textToMusic.create({
   custom_mode: false,
   instrumental: true,
   prompt: 'Upbeat electronic dance music',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
 });
 
 const status = await client.textToMusic.get(task.id);
@@ -113,7 +133,7 @@ const result = await client.coverAudio.run({
   custom_mode: false,
   instrumental: false,
   prompt: 'Transform into a jazz version',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
 });
 ```
 
@@ -136,13 +156,13 @@ const original = await client.textToMusic.run({
   custom_mode: false,
   instrumental: false,
   prompt: 'A short intro melody',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
 });
 
 const extended = await client.extendMusic.run({
   audio_id: original.audios?.[0]?.id,
   default_param_flag: false,
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
   prompt: 'Continue with an uplifting chorus',
 });
 ```
@@ -155,7 +175,7 @@ Extend uploaded audio files:
 const result = await client.extendMusic.run({
   upload_url: 'https://example.com/audio.mp3',
   default_param_flag: false,
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
   prompt: 'Continue with an uplifting chorus',
 });
 ```
@@ -168,13 +188,13 @@ const result = await client.addInstrumental.run({
   title: 'My Song',
   tags: 'Pop, Energetic, Upbeat',
   negative_tags: 'Heavy Metal, Aggressive',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
 });
 ```
 
 ### Add AddVocals
 
-Add AI-generated vocals to instrumental audio (V4_5PLUS/V5 only):
+Add AI-generated vocals to instrumental audio (suno-v4.5-plus/suno-v5 only):
 
 ```typescript
 const result = await client.addVocals.run({
@@ -183,7 +203,7 @@ const result = await client.addVocals.run({
   title: 'Summer Love',
   style: 'Pop, Romantic',
   negative_tags: 'Screaming, Heavy Metal',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
 });
 ```
 
@@ -194,7 +214,7 @@ const generation = await client.textToMusic.run({
   custom_mode: false,
   instrumental: false,
   prompt: 'A song with vocals',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
 });
 
 const separation = await client.separateAudioStems.run({
@@ -285,7 +305,7 @@ const generation = await client.textToMusic.run({
   custom_mode: false,
   instrumental: false,
   prompt: 'A song with distinctive vocals',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
 });
 
 // Generate a persona from the audio's voice
@@ -311,12 +331,12 @@ console.log('Generated Style:', style);
 
 | Model | Description | Use Case |
 |-------|-------------|----------|
-| `V5` | Latest model | Highest quality, latest features |
-| `V4_5PLUS` | Enhanced V4.5 | Great quality, cost-efficient |
-| `V4_5ALL` | V4.5 with all features | Smarter prompts, audio upload max 1 min |
-| `V4_5` | Mid-tier quality | Balanced quality and speed |
-| `V4` | Previous generation | Stable, proven quality |
-| `V3_5` | Legacy model | Fast generation, lower cost |
+| `suno-v5` | Latest model | Highest quality, latest features |
+| `suno-v4.5-plus` | Enhanced suno-v4.5 | Great quality, cost-efficient |
+| `suno-v4.5-all` | suno-v4.5 with all features | Smarter prompts, audio upload max 1 min |
+| `suno-v4.5` | Mid-tier quality | Balanced quality and speed |
+| `suno-v4` | Previous generation | Stable, proven quality |
+| `suno-v3.5` | Legacy model | Fast generation, lower cost |
 
 ## Generation Modes
 
@@ -331,23 +351,23 @@ console.log('Generated Style:', style);
 **Custom Mode** (`custom_mode: true`):
 - Fine-grained control
 - Specify style, title, persona
-- Larger prompt limits (up to 5000 chars for V5)
+- Larger prompt limits (up to 5000 chars for suno-v5)
 - Best for specific creative visions
 
 ### Character Limits
 
 **Prompt Limits**:
 - Simple Mode: 500 characters
-- Custom Mode (V5, V4_5PLUS, V4_5ALL, V4_5): 5000 characters
-- Custom Mode (V4, V3_5): 3000 characters
+- Custom Mode (suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5): 5000 characters
+- Custom Mode (suno-v4, suno-v3.5): 3000 characters
 
 **Style Limits**:
-- V4, V3_5: 200 characters
-- V5, V4_5PLUS, V4_5ALL, V4_5: 1000 characters
+- suno-v4, suno-v3.5: 200 characters
+- suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5: 1000 characters
 
 **Title Limits**:
-- V4, V3_5: 80 characters
-- V5, V4_5PLUS, V4_5ALL, V4_5: 100 characters
+- suno-v4, suno-v3.5: 80 characters
+- suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5: 100 characters
 
 ## Error Handling
 
@@ -365,7 +385,7 @@ try {
     custom_mode: false,
     instrumental: false,
     prompt: 'A beautiful melody',
-    model: 'V4_5PLUS',
+    model: 'suno-v4.5-plus',
   });
 } catch (error) {
   if (error instanceof AuthenticationError) {
@@ -389,7 +409,7 @@ const result = await client.textToMusic.create({
   custom_mode: false,
   instrumental: false,
   prompt: 'Test music',
-  model: 'V4_5PLUS',
+  model: 'suno-v4.5-plus',
   callback_url: 'https://your-domain.com/webhook',
 });
 ```
@@ -420,7 +440,7 @@ const result = await client.textToMusic.run({
   custom_mode: false,
   instrumental: false,
   prompt: 'Energetic rock music',
-  model: 'V5',
+  model: 'suno-v5',
   vocal_gender: 'm',           // Male vocals
   style_weight: 0.75,          // 0-1, higher = more style adherence
   weirdness_constraint: 0.50,  // 0-1, higher = more creative/experimental
