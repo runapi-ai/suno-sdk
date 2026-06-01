@@ -6,6 +6,10 @@ import { GetTimestampedLyrics } from '../../src/resources/get-timestamped-lyrics
 import { ReplaceSection } from '../../src/resources/replace-section';
 import { GeneratePersona } from '../../src/resources/generate-persona';
 import { BoostStyle } from '../../src/resources/boost-style';
+import { VoiceToValidationPhrase } from '../../src/resources/voice-to-validation-phrase';
+import { RegenerateValidationPhrase } from '../../src/resources/regenerate-validation-phrase';
+import { GenerateVoice } from '../../src/resources/generate-voice';
+import { CheckVoice } from '../../src/resources/check-voice';
 import type { HttpClient } from '@runapi.ai/core';
 
 describe('Remaining Resources', () => {
@@ -38,7 +42,7 @@ describe('Remaining Resources', () => {
       vi.mocked(mockHttp.request).mockResolvedValueOnce({
         id: 'wav-123',
         status: 'completed',
-        wav_url: 'https://example.com/audio.wav',
+        wav_url: 'https://cdn.runapi.ai/public/samples/audio.wav',
       });
 
       const convertAudio = new ConvertAudio(mockHttp);
@@ -49,7 +53,7 @@ describe('Remaining Resources', () => {
         '/api/v1/suno/convert_audio/wav-123',
         {}
       );
-      expect(result.wav_url).toBe('https://example.com/audio.wav');
+      expect(result.wav_url).toBe('https://cdn.runapi.ai/public/samples/audio.wav');
     });
   });
 
@@ -80,13 +84,13 @@ describe('Remaining Resources', () => {
       vi.mocked(mockHttp.request).mockResolvedValueOnce({
         id: 'video-123',
         status: 'completed',
-        video_url: 'https://example.com/video.mp4',
+        video_url: 'https://cdn.runapi.ai/public/samples/source.mp4',
       });
 
       const visualizeMusic = new VisualizeMusic(mockHttp);
       const result = await visualizeMusic.get('video-123');
 
-      expect(result.video_url).toBe('https://example.com/video.mp4');
+      expect(result.video_url).toBe('https://cdn.runapi.ai/public/samples/source.mp4');
     });
   });
 
@@ -164,7 +168,7 @@ describe('Remaining Resources', () => {
       const result = await replaceSection.create({
         task_id: 'gen-task-123',
         audio_id: 'audio-456',
-        prompt: 'Guitar solo',
+        lyrics: 'Guitar solo',
         tags: 'Rock',
         title: 'Epic Solo',
         infill_start_time: 30.0,
@@ -178,7 +182,7 @@ describe('Remaining Resources', () => {
           body: {
             task_id: 'gen-task-123',
             audio_id: 'audio-456',
-            prompt: 'Guitar solo',
+            lyrics: 'Guitar solo',
             tags: 'Rock',
             title: 'Epic Solo',
             infill_start_time: 30.0,
@@ -195,7 +199,7 @@ describe('Remaining Resources', () => {
         status: 'completed',
         track: {
           id: 'audio-789',
-          audio_url: 'https://example.com/audio.mp3',
+          audio_url: 'https://cdn.runapi.ai/public/samples/audio.mp3',
         },
       });
 
@@ -266,6 +270,144 @@ describe('Remaining Resources', () => {
         }
       );
       expect(result.style).toBe('Epic Orchestral');
+    });
+  });
+
+  describe('VoiceToValidationPhrase', () => {
+    it('should create validation phrase request', async () => {
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({ id: 'validate-123' });
+
+      const resource = new VoiceToValidationPhrase(mockHttp);
+      const result = await resource.create({
+        voice_url: 'https://files.runapi.ai/suno/source-vocal.mp3',
+        vocal_start_seconds: 2,
+        vocal_end_seconds: 12,
+        language: 'en',
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledWith(
+        'POST',
+        '/api/v1/suno/voice_to_validation_phrase',
+        {
+          body: {
+            voice_url: 'https://files.runapi.ai/suno/source-vocal.mp3',
+            vocal_start_seconds: 2,
+            vocal_end_seconds: 12,
+            language: 'en',
+          },
+        }
+      );
+      expect(result.id).toBe('validate-123');
+    });
+
+    it('should get validation phrase status', async () => {
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({
+        id: 'validate-123',
+        status: 'completed',
+        provider_status: 'wait_validating',
+        validation_phrase: 'Harmonies fill the air with joyful melodies tonight',
+      });
+
+      const resource = new VoiceToValidationPhrase(mockHttp);
+      const result = await resource.get('validate-123');
+
+      expect(mockHttp.request).toHaveBeenCalledWith(
+        'GET',
+        '/api/v1/suno/voice_to_validation_phrase/validate-123',
+        {}
+      );
+      expect(result.validation_phrase).toContain('Harmonies');
+    });
+  });
+
+  describe('RegenerateValidationPhrase', () => {
+    it('should create regeneration request', async () => {
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({ id: 'regenerate-123' });
+
+      const resource = new RegenerateValidationPhrase(mockHttp);
+      const result = await resource.create({
+        task_id: 'validate-123',
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledWith(
+        'POST',
+        '/api/v1/suno/regenerate_validation_phrase',
+        {
+          body: {
+            task_id: 'validate-123',
+          },
+        }
+      );
+      expect(result.id).toBe('regenerate-123');
+    });
+  });
+
+  describe('GenerateVoice', () => {
+    it('should create custom voice request', async () => {
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({ id: 'voice-task-123' });
+
+      const resource = new GenerateVoice(mockHttp);
+      const result = await resource.create({
+        task_id: 'validate-123',
+        verify_url: 'https://files.runapi.ai/suno/verify-read.mp3',
+        voice_name: 'Warm Test Voice',
+        singer_skill_level: 'advanced',
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledWith(
+        'POST',
+        '/api/v1/suno/generate_voice',
+        {
+          body: {
+            task_id: 'validate-123',
+            verify_url: 'https://files.runapi.ai/suno/verify-read.mp3',
+            voice_name: 'Warm Test Voice',
+            singer_skill_level: 'advanced',
+          },
+        }
+      );
+      expect(result.id).toBe('voice-task-123');
+    });
+
+    it('should get custom voice status', async () => {
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({
+        id: 'voice-task-123',
+        status: 'completed',
+        provider_status: 'success',
+        voice_id: 'voice_custom_123',
+      });
+
+      const resource = new GenerateVoice(mockHttp);
+      const result = await resource.get('voice-task-123');
+
+      expect(mockHttp.request).toHaveBeenCalledWith(
+        'GET',
+        '/api/v1/suno/generate_voice/voice-task-123',
+        {}
+      );
+      expect(result.voice_id).toBe('voice_custom_123');
+    });
+  });
+
+  describe('CheckVoice', () => {
+    it('should check custom voice availability', async () => {
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({ is_available: true });
+
+      const resource = new CheckVoice(mockHttp);
+      const result = await resource.run({
+        task_id: 'voice-task-123',
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledWith(
+        'POST',
+        '/api/v1/suno/check_voice',
+        {
+          body: {
+            task_id: 'voice-task-123',
+          },
+        }
+      );
+      expect(result.is_available).toBe(true);
     });
   });
 });

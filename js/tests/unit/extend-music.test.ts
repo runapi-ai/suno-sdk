@@ -20,7 +20,14 @@ describe('ExtendMusic', () => {
       const extendMusic = new ExtendMusic(mockHttp);
       const result = await extendMusic.create({
         task_id: 'original-task-123',
+        parameter_mode: 'custom',
+        model: 'suno-v5',
         prompt: 'Continue with uplifting chorus',
+        style: 'Pop',
+        title: 'Uplifting Chorus',
+        continue_at: 30,
+        persona_id: 'persona_123',
+        persona_type: 'style',
       });
 
       expect(mockHttp.request).toHaveBeenCalledWith(
@@ -29,12 +36,20 @@ describe('ExtendMusic', () => {
         {
           body: {
             task_id: 'original-task-123',
+            parameter_mode: 'custom',
+            model: 'suno-v5',
             prompt: 'Continue with uplifting chorus',
+            style: 'Pop',
+            title: 'Uplifting Chorus',
+            continue_at: 30,
+            persona_id: 'persona_123',
+            persona_type: 'style',
           },
         }
       );
       expect(result).toEqual(mockResponse);
     });
+
   });
 
   describe('get', () => {

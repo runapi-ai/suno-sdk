@@ -3,17 +3,33 @@
 module RunApi
   module Suno
     module Types
-      MODELS = %w[suno-v5.5 suno-v5 suno-v4.5-plus suno-v4.5-all suno-v4.5 suno-v4 suno-v3.5].freeze
+      MODELS = %w[suno-v5.5 suno-v5 suno-v4.5-plus suno-v4.5-all suno-v4.5 suno-v4].freeze
       SOUND_MODELS = %w[suno-v5 suno-v5.5].freeze
       SOUND_KEYS = %w[
         Cm C#m Dm D#m Em Fm F#m Gm G#m Am A#m Bm
         C C# D D# E F F# G G# A A# B
       ].freeze
-      VOCAL_GENDERS = %w[f m].freeze
-      PERSONA_MODELS = %w[style_persona voice_persona].freeze
+      VOCAL_GENDERS = %w[female male].freeze
+      PERSONA_TYPES = %w[style voice].freeze
+      PARAMETER_MODES = %w[source custom].freeze
+      VOCAL_MODES = %w[auto_lyrics exact_lyrics instrumental].freeze
       SEPARATE_AUDIO_STEMS_TYPES = %w[separate_vocal split_stem].freeze
+      VALIDATION_PHRASE_LANGUAGES = %w[en zh es fr pt de ja ko hi ru].freeze
+      SINGER_SKILL_LEVELS = %w[beginner intermediate advanced professional].freeze
 
       class Audio < RunApi::Core::BaseModel
+        optional :id, String
+        optional :audio_url, String
+        optional :stream_audio_url, String
+        optional :image_url, String
+        optional :lyrics, String
+        optional :model_name, String
+        optional :title, String
+        optional :tags, [String]
+        optional :duration, Numeric
+      end
+
+      class SoundAudio < RunApi::Core::BaseModel
         optional :id, String
         optional :audio_url, String
         optional :stream_audio_url, String
@@ -21,7 +37,7 @@ module RunApi
         optional :prompt, String
         optional :model_name, String
         optional :title, String
-        optional :tags, [ String ]
+        optional :tags, [String]
         optional :duration, Numeric
       end
 
@@ -63,7 +79,7 @@ module RunApi
 
       class MidiInstrument < RunApi::Core::BaseModel
         required :name, String
-        optional :notes, [ -> { MidiNote } ]
+        optional :notes, [-> { MidiNote }]
       end
 
       class Lyric < RunApi::Core::BaseModel
@@ -85,33 +101,36 @@ module RunApi
       end
 
       class TextToMusicResponse < AsyncTaskResponse
-        optional :audios, [ -> { Audio } ]
+        optional :audios, [-> { Audio }]
         optional :audio_url, String
       end
 
       class ExtendMusicResponse < AsyncTaskResponse
-        optional :audios, [ -> { Audio } ]
+        optional :audios, [-> { Audio }]
         optional :original_task_id, String
       end
 
       class GenerateArtworkResponse < AsyncTaskResponse
-        optional :covers, [ -> { Cover } ]
+        optional :covers, [-> { Cover }]
       end
 
       class CoverAudioResponse < AsyncTaskResponse
-        optional :audios, [ -> { Audio } ]
+        optional :audios, [-> { Audio }]
       end
 
       class AddInstrumentalResponse < TextToMusicResponse; end
       class AddVocalsResponse < TextToMusicResponse; end
-      class TextToSoundResponse < TextToMusicResponse; end
+
+      class TextToSoundResponse < AsyncTaskResponse
+        optional :audios, [-> { SoundAudio }]
+      end
 
       class SeparateAudioStemsResponse < AsyncTaskResponse
         optional :separated_audios, -> { SeparatedAudio }
       end
 
       class GenerateMidiResponse < AsyncTaskResponse
-        optional :instruments, [ -> { MidiInstrument } ]
+        optional :instruments, [-> { MidiInstrument }]
       end
 
       class ConvertAudioResponse < AsyncTaskResponse
@@ -125,19 +144,19 @@ module RunApi
       end
 
       class GenerateLyricsResponse < AsyncTaskResponse
-        optional :lyrics, [ -> { Lyric } ]
+        optional :lyrics, [-> { Lyric }]
       end
 
       class GetTimestampedLyricsResponse < RunApi::Core::BaseModel
-        optional :aligned_words, [ -> { AlignedWord } ]
-        optional :waveform_data, [ Numeric ]
+        optional :aligned_words, [-> { AlignedWord }]
+        optional :waveform_data, [Numeric]
         optional :hoot_cer, Numeric
         optional :is_streamed
       end
 
       class ReplaceSectionResponse < AsyncTaskResponse
         optional :track, -> { Audio }
-        optional :audios, [ -> { Audio } ]
+        optional :audios, [-> { Audio }]
       end
 
       class GeneratePersonaResponse < RunApi::Core::BaseModel
@@ -152,31 +171,46 @@ module RunApi
 
       class CreateMashupResponse < AsyncTaskResponse
         optional :audio, -> { Audio }
-        optional :audios, [ -> { Audio } ]
+        optional :audios, [-> { Audio }]
+      end
+
+      class ValidationPhraseResponse < AsyncTaskResponse
+        optional :provider_status, String
+        optional :validation_phrase, String
+      end
+
+      class VoiceGenerationResponse < AsyncTaskResponse
+        optional :provider_status, String
+        optional :voice_id, String
+      end
+
+      class CheckVoiceResponse < RunApi::Core::BaseModel
+        optional :is_available
+        optional :error, String
       end
 
       class CompletedTextToMusicResponse < TextToMusicResponse
-        required :audios, [ -> { Audio } ]
+        required :audios, [-> { Audio }]
       end
 
       class CompletedExtendMusicResponse < ExtendMusicResponse
-        required :audios, [ -> { Audio } ]
+        required :audios, [-> { Audio }]
       end
 
       class CompletedGenerateArtworkResponse < GenerateArtworkResponse
-        required :covers, [ -> { Cover } ]
+        required :covers, [-> { Cover }]
       end
 
       class CompletedCoverAudioResponse < CoverAudioResponse
-        required :audios, [ -> { Audio } ]
+        required :audios, [-> { Audio }]
       end
 
       class CompletedAddInstrumentalResponse < AddInstrumentalResponse
-        required :audios, [ -> { Audio } ]
+        required :audios, [-> { Audio }]
       end
 
       class CompletedAddVocalsResponse < AddVocalsResponse
-        required :audios, [ -> { Audio } ]
+        required :audios, [-> { Audio }]
       end
 
       class CompletedSeparateAudioStemsResponse < SeparateAudioStemsResponse
@@ -184,7 +218,7 @@ module RunApi
       end
 
       class CompletedGenerateMidiResponse < GenerateMidiResponse
-        required :instruments, [ -> { MidiInstrument } ]
+        required :instruments, [-> { MidiInstrument }]
       end
 
       class CompletedConvertAudioResponse < ConvertAudioResponse
@@ -196,7 +230,7 @@ module RunApi
       end
 
       class CompletedGenerateLyricsResponse < GenerateLyricsResponse
-        required :lyrics, [ -> { Lyric } ]
+        required :lyrics, [-> { Lyric }]
       end
 
       class CompletedReplaceSectionResponse < ReplaceSectionResponse
@@ -204,11 +238,19 @@ module RunApi
       end
 
       class CompletedCreateMashupResponse < CreateMashupResponse
-        required :audios, [ -> { Audio } ]
+        required :audios, [-> { Audio }]
       end
 
       class CompletedTextToSoundResponse < TextToSoundResponse
-        required :audios, [ -> { Audio } ]
+        required :audios, [-> { SoundAudio }]
+      end
+
+      class CompletedValidationPhraseResponse < ValidationPhraseResponse
+        required :validation_phrase, String
+      end
+
+      class CompletedVoiceGenerationResponse < VoiceGenerationResponse
+        required :voice_id, String
       end
     end
   end

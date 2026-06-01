@@ -20,11 +20,10 @@ gen_task_id = nil
 gen_audio_id = nil
 gen_audio_url = nil
 
-# 1. Simple mode generation
-run_example("1. Simple Mode Generation") do
+# 1. Prompt brief generation
+run_example("1. Prompt Brief Generation") do
   result = client.text_to_music.run(
-    custom_mode: false,
-    instrumental: false,
+    vocal_mode: "auto_lyrics",
     prompt: "A chill lo-fi beat with warm piano melodies",
     model: "suno-v4.5-plus"
   )
@@ -37,14 +36,13 @@ run_example("1. Simple Mode Generation") do
   end
 end
 
-# 2. Custom mode generation
-run_example("2. Custom Mode Generation") do
+# 2. Exact lyrics generation
+run_example("2. Exact Lyrics Generation") do
   result = client.text_to_music.run(
-    custom_mode: true,
-    instrumental: false,
+    vocal_mode: "exact_lyrics",
     style: "Classical, Ambient, Piano",
     title: "Morning Light",
-    prompt: "Sunlight filters through the window, a new day begins with hope",
+    lyrics: "[Verse]\nSunlight filters through the window\nA new day begins with hope",
     model: "suno-v5"
   )
   puts "Status: #{result["status"]}"
@@ -66,7 +64,7 @@ end
 run_example("4. Extension") do
   ext_result = client.extend_music.run(
     audio_id: gen_audio_id || raise("No audio_id"),
-    default_param_flag: true,
+    parameter_mode: "custom",
     model: "suno-v4.5-plus",
     prompt: "Continue with a soaring chorus",
     style: "Pop, Uplifting",
@@ -82,8 +80,7 @@ run_example("5. Upload and Extension") do
 
   ue_result = client.extend_music.run(
     upload_url: gen_audio_url,
-    default_param_flag: false,
-    instrumental: false,
+    parameter_mode: "source",
     prompt: "Continue with a soaring chorus",
     model: "suno-v4.5-plus",
     continue_at: 30.0
@@ -106,8 +103,7 @@ run_example("7. Upload and Cover") do
 
   uc_result = client.cover_audio.run(
     upload_url: gen_audio_url,
-    custom_mode: false,
-    instrumental: false,
+    vocal_mode: "auto_lyrics",
     prompt: "A relaxing cover version",
     model: "suno-v4.5-plus"
   )
@@ -169,7 +165,7 @@ run_example("12. Vocals") do
 
   vocal_result = client.add_vocals.run(
     upload_url: gen_audio_url,
-    prompt: "Gentle humming melody over the beat",
+    lyrics: "[Verse]\nGentle humming melody over the beat",
     title: "Vocal Layer",
     negative_tags: "screaming, harsh",
     style: "Pop, Soft",
@@ -195,7 +191,7 @@ run_example("14. Section Replacement") do
   sr_result = client.replace_section.run(
     task_id: gen_task_id || raise("No task_id"),
     audio_id: gen_audio_id || raise("No audio_id"),
-    prompt: "A bright and uplifting verse",
+    lyrics: "[Verse]\nA bright and uplifting verse",
     tags: "Pop, Upbeat",
     title: "Replaced Section",
     full_lyrics: "[Verse]\nA chill lo-fi beat with warm piano melodies",
@@ -245,9 +241,9 @@ end
 # 18. Manual polling (create + get)
 puts "\n=== 18. Manual Polling ==="
 task = client.text_to_music.create(
-  custom_mode: false,
-  instrumental: true,
-  prompt: "An energetic electronic dance beat",
+  vocal_mode: "instrumental",
+  style: "Electronic, Dance",
+  title: "Neon Pulse",
   model: "suno-v4.5-plus"
 )
 raise "Failed to create task" unless task["id"]
@@ -268,13 +264,13 @@ end
 # 19. Error handling
 puts "\n=== 19. Error Handling ==="
 begin
-  client.text_to_music.create(custom_mode: false, instrumental: false)
+  client.text_to_music.create(model: "suno-v4.5-plus")
 rescue RunApi::Core::ValidationError => e
   puts "Caught ValidationError: #{e.message}"
 end
 
 begin
-  client.text_to_music.create(custom_mode: false, instrumental: false, prompt: "test", model: "INVALID")
+  client.text_to_music.create(vocal_mode: "auto_lyrics", prompt: "test", model: "INVALID")
 rescue RunApi::Core::ValidationError => e
   puts "Caught ValidationError: #{e.message}"
 end

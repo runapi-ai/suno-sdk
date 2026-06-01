@@ -1,6 +1,6 @@
 {
   "name": "@runapi.ai/suno",
-  "version": "0.2.4",
+  "version": "0.2.6",
   "description": "RunAPI Suno SDK for JavaScript, Ruby, and Go",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -25,27 +25,10 @@
     "build": "tsup",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "clean": "rm -rf dist",
-    "test:simple": "dotenv -e manual-tests/.env -- tsx manual-tests/test-generation-simple.ts",
-    "test:custom": "dotenv -e manual-tests/.env -- tsx manual-tests/test-generation-custom.ts",
-    "test:covers": "dotenv -e manual-tests/.env -- tsx manual-tests/test-covers.ts",
-    "test:extension": "dotenv -e manual-tests/.env -- tsx manual-tests/test-extension.ts",
-    "test:instrumentals": "dotenv -e manual-tests/.env -- tsx manual-tests/test-instrumentals.ts",
-    "test:vocals": "dotenv -e manual-tests/.env -- tsx manual-tests/test-vocals.ts",
-    "test:vocal-removal": "dotenv -e manual-tests/.env -- tsx manual-tests/test-vocal-removal.ts",
-    "test:conversions": "dotenv -e manual-tests/.env -- tsx manual-tests/test-conversions.ts",
-    "test:music-videos": "dotenv -e manual-tests/.env -- tsx manual-tests/test-music-videos.ts",
-    "test:lyrics": "dotenv -e manual-tests/.env -- tsx manual-tests/test-lyrics.ts",
-    "test:timestamped-lyrics": "dotenv -e manual-tests/.env -- tsx manual-tests/test-timestamped-lyrics.ts",
-    "test:section-replacements": "dotenv -e manual-tests/.env -- tsx manual-tests/test-section-replacements.ts",
-    "test:personas-styles": "dotenv -e manual-tests/.env -- tsx manual-tests/test-personas-styles.ts",
-    "test:midi": "dotenv -e manual-tests/.env -- tsx manual-tests/test-midi.ts",
-    "test:errors": "dotenv -e manual-tests/.env -- tsx manual-tests/test-error-handling.ts",
-    "test:all": "dotenv -e manual-tests/.env -- tsx manual-tests/test-all.ts",
-    "test:manual": "npm run test:all"
+    "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@runapi.ai/core": "^0.2.4"
+    "@runapi.ai/core": "^0.2.5"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

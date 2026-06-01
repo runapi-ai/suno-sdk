@@ -21,7 +21,7 @@
 </div>
 <br/>
 
-Generate music, lyrics, stems, covers, and music videos with the Suno SDK. This skill helps Claude Code, Codex, Gemini CLI, Cursor, and 50+ agents integrate Suno through RunAPI.
+Generate music, lyrics, stems, covers, music videos, voice validation phrases, and reusable custom voices with the Suno SDK. This skill helps Claude Code, Codex, Gemini CLI, Cursor, and 50+ agents integrate Suno through RunAPI.
 
 The canonical agent file is `skills/suno/SKILL.md`.
 
@@ -51,8 +51,6 @@ import { SunoClient } from '@runapi.ai/suno';
 
 const client = new SunoClient();
 const result = await client.textToMusic.run({
-  custom_mode: false,
-  instrumental: false,
   prompt: 'A chill lo-fi beat with soft vocals',
   model: 'suno-v5',
 });

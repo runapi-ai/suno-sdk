@@ -36,7 +36,7 @@ describe('SunoClient', () => {
   it('should accept valid client options', () => {
     const client = new SunoClient({
       apiKey: 'sk-test-123',
-      baseUrl: 'https://custom-api.com',
+      baseUrl: 'https://api.example.com',
     });
 
     expect(client).toBeInstanceOf(SunoClient);

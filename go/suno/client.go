@@ -3,7 +3,7 @@
 //	client, err := suno.NewClient(option.WithAPIKey("sk-your-api-key"))
 //	result, err := client.TextToMusic.Run(ctx, suno.TextToMusicParams{
 //	    SunoBaseParams: suno.SunoBaseParams{Model: suno.ModelV45Plus},
-//	    CustomMode: false, Instrumental: false, Prompt: "A chill lo-fi beat",
+//	    Prompt: "A chill lo-fi beat",
 //	})
 package suno
 
@@ -15,43 +15,51 @@ import (
 )
 
 const (
-	textToMusicPath          = "/api/v1/suno/text_to_music"
-	extendMusicPath          = "/api/v1/suno/extend_music"
-	generateArtworkPath      = "/api/v1/suno/generate_artwork"
-	coverAudioPath           = "/api/v1/suno/cover_audio"
-	addInstrumentalPath      = "/api/v1/suno/add_instrumental"
-	addVocalsPath            = "/api/v1/suno/add_vocals"
-	separateAudioStemsPath   = "/api/v1/suno/separate_audio_stems"
-	generateMidiPath         = "/api/v1/suno/generate_midi"
-	convertAudioPath         = "/api/v1/suno/convert_audio"
-	visualizeMusicPath       = "/api/v1/suno/visualize_music"
-	generateLyricsPath       = "/api/v1/suno/generate_lyrics"
-	getTimestampedLyricsPath = "/api/v1/suno/get_timestamped_lyrics"
-	replaceSectionPath       = "/api/v1/suno/replace_section"
-	createMashupPath         = "/api/v1/suno/create_mashup"
-	textToSoundPath          = "/api/v1/suno/text_to_sound"
-	generatePersonaPath      = "/api/v1/suno/generate_persona"
-	boostStylePath           = "/api/v1/suno/boost_style"
+	textToMusicPath                = "/api/v1/suno/text_to_music"
+	extendMusicPath                = "/api/v1/suno/extend_music"
+	generateArtworkPath            = "/api/v1/suno/generate_artwork"
+	coverAudioPath                 = "/api/v1/suno/cover_audio"
+	addInstrumentalPath            = "/api/v1/suno/add_instrumental"
+	addVocalsPath                  = "/api/v1/suno/add_vocals"
+	separateAudioStemsPath         = "/api/v1/suno/separate_audio_stems"
+	generateMidiPath               = "/api/v1/suno/generate_midi"
+	convertAudioPath               = "/api/v1/suno/convert_audio"
+	visualizeMusicPath             = "/api/v1/suno/visualize_music"
+	generateLyricsPath             = "/api/v1/suno/generate_lyrics"
+	getTimestampedLyricsPath       = "/api/v1/suno/get_timestamped_lyrics"
+	replaceSectionPath             = "/api/v1/suno/replace_section"
+	createMashupPath               = "/api/v1/suno/create_mashup"
+	textToSoundPath                = "/api/v1/suno/text_to_sound"
+	generatePersonaPath            = "/api/v1/suno/generate_persona"
+	boostStylePath                 = "/api/v1/suno/boost_style"
+	voiceToValidationPhrasePath    = "/api/v1/suno/voice_to_validation_phrase"
+	regenerateValidationPhrasePath = "/api/v1/suno/regenerate_validation_phrase"
+	generateVoicePath              = "/api/v1/suno/generate_voice"
+	checkVoicePath                 = "/api/v1/suno/check_voice"
 )
 
 type Client struct {
-	TextToMusic          *TextToMusic
-	ExtendMusic          *ExtendMusic
-	GenerateArtwork      *GenerateArtwork
-	CoverAudio           *CoverAudio
-	AddInstrumental      *AddInstrumental
-	AddVocals            *AddVocals
-	SeparateAudioStems   *SeparateAudioStems
-	GenerateMidi         *GenerateMidi
-	ConvertAudio         *ConvertAudio
-	VisualizeMusic       *VisualizeMusic
-	GenerateLyrics       *GenerateLyrics
-	GetTimestampedLyrics *GetTimestampedLyrics
-	ReplaceSection       *ReplaceSection
-	CreateMashup         *CreateMashup
-	TextToSound          *TextToSound
-	GeneratePersona      *GeneratePersona
-	BoostStyle           *BoostStyle
+	TextToMusic                *TextToMusic
+	ExtendMusic                *ExtendMusic
+	GenerateArtwork            *GenerateArtwork
+	CoverAudio                 *CoverAudio
+	AddInstrumental            *AddInstrumental
+	AddVocals                  *AddVocals
+	SeparateAudioStems         *SeparateAudioStems
+	GenerateMidi               *GenerateMidi
+	ConvertAudio               *ConvertAudio
+	VisualizeMusic             *VisualizeMusic
+	GenerateLyrics             *GenerateLyrics
+	GetTimestampedLyrics       *GetTimestampedLyrics
+	ReplaceSection             *ReplaceSection
+	CreateMashup               *CreateMashup
+	TextToSound                *TextToSound
+	GeneratePersona            *GeneratePersona
+	BoostStyle                 *BoostStyle
+	VoiceToValidationPhrase    *VoiceToValidationPhrase
+	RegenerateValidationPhrase *RegenerateValidationPhrase
+	GenerateVoice              *GenerateVoice
+	CheckVoice                 *CheckVoice
 }
 
 func NewClient(opts ...option.ClientOption) (*Client, error) {
@@ -68,23 +76,27 @@ func NewClient(opts ...option.ClientOption) (*Client, error) {
 
 func NewClientWithHTTP(httpClient core.HTTPClient) *Client {
 	return &Client{
-		TextToMusic:          &TextToMusic{http: httpClient},
-		ExtendMusic:          &ExtendMusic{http: httpClient},
-		GenerateArtwork:      &GenerateArtwork{http: httpClient},
-		CoverAudio:           &CoverAudio{http: httpClient},
-		AddInstrumental:      &AddInstrumental{http: httpClient},
-		AddVocals:            &AddVocals{http: httpClient},
-		SeparateAudioStems:   &SeparateAudioStems{http: httpClient},
-		GenerateMidi:         &GenerateMidi{http: httpClient},
-		ConvertAudio:         &ConvertAudio{http: httpClient},
-		VisualizeMusic:       &VisualizeMusic{http: httpClient},
-		GenerateLyrics:       &GenerateLyrics{http: httpClient},
-		GetTimestampedLyrics: &GetTimestampedLyrics{http: httpClient},
-		ReplaceSection:       &ReplaceSection{http: httpClient},
-		CreateMashup:         &CreateMashup{http: httpClient},
-		TextToSound:          &TextToSound{http: httpClient},
-		GeneratePersona:      &GeneratePersona{http: httpClient},
-		BoostStyle:           &BoostStyle{http: httpClient},
+		TextToMusic:                &TextToMusic{http: httpClient},
+		ExtendMusic:                &ExtendMusic{http: httpClient},
+		GenerateArtwork:            &GenerateArtwork{http: httpClient},
+		CoverAudio:                 &CoverAudio{http: httpClient},
+		AddInstrumental:            &AddInstrumental{http: httpClient},
+		AddVocals:                  &AddVocals{http: httpClient},
+		SeparateAudioStems:         &SeparateAudioStems{http: httpClient},
+		GenerateMidi:               &GenerateMidi{http: httpClient},
+		ConvertAudio:               &ConvertAudio{http: httpClient},
+		VisualizeMusic:             &VisualizeMusic{http: httpClient},
+		GenerateLyrics:             &GenerateLyrics{http: httpClient},
+		GetTimestampedLyrics:       &GetTimestampedLyrics{http: httpClient},
+		ReplaceSection:             &ReplaceSection{http: httpClient},
+		CreateMashup:               &CreateMashup{http: httpClient},
+		TextToSound:                &TextToSound{http: httpClient},
+		GeneratePersona:            &GeneratePersona{http: httpClient},
+		BoostStyle:                 &BoostStyle{http: httpClient},
+		VoiceToValidationPhrase:    &VoiceToValidationPhrase{http: httpClient},
+		RegenerateValidationPhrase: &RegenerateValidationPhrase{http: httpClient},
+		GenerateVoice:              &GenerateVoice{http: httpClient},
+		CheckVoice:                 &CheckVoice{http: httpClient},
 	}
 }
 
@@ -105,6 +117,10 @@ type CreateMashup struct{ http core.HTTPClient }
 type TextToSound struct{ http core.HTTPClient }
 type GeneratePersona struct{ http core.HTTPClient }
 type BoostStyle struct{ http core.HTTPClient }
+type VoiceToValidationPhrase struct{ http core.HTTPClient }
+type RegenerateValidationPhrase struct{ http core.HTTPClient }
+type GenerateVoice struct{ http core.HTTPClient }
+type CheckVoice struct{ http core.HTTPClient }
 
 func (r *TextToMusic) Create(ctx context.Context, params TextToMusicParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
@@ -293,6 +309,56 @@ func (r *TextToSound) Get(ctx context.Context, id string, opts ...option.Request
 func (r *TextToSound) Run(ctx context.Context, params TextToSoundParams, opts ...option.RequestOption) (*TextToSoundResponse, error) {
 	_, pollingOptions := option.ResolveRequestOptions(opts...)
 	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, params, opts...) }, func(ctx context.Context, id string) (*TextToSoundResponse, error) { return r.Get(ctx, id, opts...) }, pollingOptions)
+}
+
+func (r *VoiceToValidationPhrase) Create(ctx context.Context, params VoiceToValidationPhraseParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, voiceToValidationPhrasePath, core.CompactParams(params), requestOptions)
+}
+func (r *VoiceToValidationPhrase) Get(ctx context.Context, id string, opts ...option.RequestOption) (*ValidationPhraseResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[ValidationPhraseResponse](ctx, r.http, core.ResourcePath(voiceToValidationPhrasePath, id), requestOptions)
+}
+func (r *VoiceToValidationPhrase) Run(ctx context.Context, params VoiceToValidationPhraseParams, opts ...option.RequestOption) (*ValidationPhraseResponse, error) {
+	_, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, params, opts...) }, func(ctx context.Context, id string) (*ValidationPhraseResponse, error) {
+		return r.Get(ctx, id, opts...)
+	}, pollingOptions)
+}
+
+func (r *RegenerateValidationPhrase) Create(ctx context.Context, params RegenerateValidationPhraseParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, regenerateValidationPhrasePath, core.CompactParams(params), requestOptions)
+}
+func (r *RegenerateValidationPhrase) Get(ctx context.Context, id string, opts ...option.RequestOption) (*ValidationPhraseResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[ValidationPhraseResponse](ctx, r.http, core.ResourcePath(regenerateValidationPhrasePath, id), requestOptions)
+}
+func (r *RegenerateValidationPhrase) Run(ctx context.Context, params RegenerateValidationPhraseParams, opts ...option.RequestOption) (*ValidationPhraseResponse, error) {
+	_, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, params, opts...) }, func(ctx context.Context, id string) (*ValidationPhraseResponse, error) {
+		return r.Get(ctx, id, opts...)
+	}, pollingOptions)
+}
+
+func (r *GenerateVoice) Create(ctx context.Context, params GenerateVoiceParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, generateVoicePath, core.CompactParams(params), requestOptions)
+}
+func (r *GenerateVoice) Get(ctx context.Context, id string, opts ...option.RequestOption) (*VoiceGenerationResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[VoiceGenerationResponse](ctx, r.http, core.ResourcePath(generateVoicePath, id), requestOptions)
+}
+func (r *GenerateVoice) Run(ctx context.Context, params GenerateVoiceParams, opts ...option.RequestOption) (*VoiceGenerationResponse, error) {
+	_, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, params, opts...) }, func(ctx context.Context, id string) (*VoiceGenerationResponse, error) {
+		return r.Get(ctx, id, opts...)
+	}, pollingOptions)
+}
+
+func (r *CheckVoice) Run(ctx context.Context, params CheckVoiceParams, opts ...option.RequestOption) (*CheckVoiceResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.PostJSON[CheckVoiceResponse](ctx, r.http, checkVoicePath, core.CompactParams(params), requestOptions)
 }
 
 func (r *GeneratePersona) Run(ctx context.Context, params GeneratePersonaParams, opts ...option.RequestOption) (*GeneratePersonaResponse, error) {

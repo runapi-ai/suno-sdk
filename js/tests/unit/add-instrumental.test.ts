@@ -19,7 +19,7 @@ describe('AddInstrumental', () => {
 
       const addInstrumental = new AddInstrumental(mockHttp);
       const result = await addInstrumental.create({
-        upload_url: 'https://example.com/addVocals.mp3',
+        upload_url: 'https://cdn.runapi.ai/public/samples/vocals.mp3',
         title: 'My Song',
         tags: 'Pop, Energetic',
         negative_tags: 'Heavy Metal',
@@ -31,7 +31,7 @@ describe('AddInstrumental', () => {
         '/api/v1/suno/add_instrumental',
         {
           body: {
-            upload_url: 'https://example.com/addVocals.mp3',
+            upload_url: 'https://cdn.runapi.ai/public/samples/vocals.mp3',
             title: 'My Song',
             tags: 'Pop, Energetic',
             negative_tags: 'Heavy Metal',

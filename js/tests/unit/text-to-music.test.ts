@@ -19,8 +19,7 @@ describe('TextToMusic', () => {
 
       const textToMusic = new TextToMusic(mockHttp);
       const result = await textToMusic.create({
-        custom_mode: false,
-        instrumental: false,
+        vocal_mode: 'auto_lyrics',
         prompt: 'A chill lo-fi beat',
         model: 'suno-v4.5-plus',
       });
@@ -30,8 +29,7 @@ describe('TextToMusic', () => {
         '/api/v1/suno/text_to_music',
         {
           body: {
-            custom_mode: false,
-            instrumental: false,
+            vocal_mode: 'auto_lyrics',
             prompt: 'A chill lo-fi beat',
             model: 'suno-v4.5-plus',
           },
@@ -40,15 +38,14 @@ describe('TextToMusic', () => {
       expect(result).toEqual(mockResponse);
     });
 
-    it('should send correct request for custom mode', async () => {
+    it('should send correct request with exact lyrics', async () => {
       const mockResponse: TaskCreateResponse = { id: 'task-456' };
       vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
 
       const textToMusic = new TextToMusic(mockHttp);
       const result = await textToMusic.create({
-        custom_mode: true,
-        instrumental: false,
-        prompt: 'Soft piano melodies',
+        vocal_mode: 'exact_lyrics',
+        lyrics: '[Verse] Soft piano melodies',
         style: 'Classical',
         title: 'Peaceful Piano',
         model: 'suno-v4',
@@ -59,9 +56,8 @@ describe('TextToMusic', () => {
         '/api/v1/suno/text_to_music',
         {
           body: {
-            custom_mode: true,
-            instrumental: false,
-            prompt: 'Soft piano melodies',
+            vocal_mode: 'exact_lyrics',
+            lyrics: '[Verse] Soft piano melodies',
             style: 'Classical',
             title: 'Peaceful Piano',
             model: 'suno-v4',
@@ -77,12 +73,15 @@ describe('TextToMusic', () => {
 
       const textToMusic = new TextToMusic(mockHttp);
       await textToMusic.create({
-        custom_mode: false,
-        instrumental: true,
-        prompt: 'Upbeat rhythm',
+        vocal_mode: 'exact_lyrics',
+        lyrics: '[Verse] Upbeat rhythm',
+        style: 'Pop',
+        title: 'Upbeat Rhythm',
         model: 'suno-v5',
         callback_url: 'https://example.com/webhook',
-        vocal_gender: 'm',
+        vocal_gender: 'male',
+        persona_id: 'persona_123',
+        persona_type: 'style',
         style_weight: 0.65,
         weirdness_constraint: 0.72,
       });
@@ -92,18 +91,22 @@ describe('TextToMusic', () => {
         '/api/v1/suno/text_to_music',
         {
           body: {
-            custom_mode: false,
-            instrumental: true,
-            prompt: 'Upbeat rhythm',
+            vocal_mode: 'exact_lyrics',
+            lyrics: '[Verse] Upbeat rhythm',
+            style: 'Pop',
+            title: 'Upbeat Rhythm',
             model: 'suno-v5',
             callback_url: 'https://example.com/webhook',
-            vocal_gender: 'm',
+            vocal_gender: 'male',
+            persona_id: 'persona_123',
+            persona_type: 'style',
             style_weight: 0.65,
             weirdness_constraint: 0.72,
           },
         }
       );
     });
+
   });
 
   describe('get', () => {
@@ -134,10 +137,10 @@ describe('TextToMusic', () => {
         audios: [
           {
             id: 'audio-1',
-            audio_url: 'https://example.com/audio.mp3',
+            audio_url: 'https://cdn.runapi.ai/public/samples/audio.mp3',
             stream_audio_url: 'https://example.com/stream',
-            image_url: 'https://example.com/cover.jpg',
-            prompt: '[Verse] GenerateLyrics...',
+            image_url: 'https://cdn.runapi.ai/public/samples/cover.jpg',
+            lyrics: '[Verse] Generated lyrics...',
             model_name: 'chirp-v4-5-plus',
             title: 'Song Title',
             tags: ['chill', 'lo-fi'],
@@ -152,7 +155,7 @@ describe('TextToMusic', () => {
 
       expect(result.status).toBe('completed');
       expect(result.audios).toHaveLength(1);
-      expect(result.audios?.[0].audio_url).toBe('https://example.com/audio.mp3');
+      expect(result.audios?.[0].audio_url).toBe('https://cdn.runapi.ai/public/samples/audio.mp3');
     });
 
     it('should return failed status with error', async () => {
@@ -187,10 +190,10 @@ describe('TextToMusic', () => {
         audios: [
           {
             id: 'audio-1',
-            audio_url: 'https://example.com/audio.mp3',
+            audio_url: 'https://cdn.runapi.ai/public/samples/audio.mp3',
             stream_audio_url: 'https://example.com/stream',
-            image_url: 'https://example.com/cover.jpg',
-            prompt: '[Verse] Test lyrics',
+            image_url: 'https://cdn.runapi.ai/public/samples/cover.jpg',
+            lyrics: '[Verse] Test lyrics',
             model_name: 'chirp-v5',
             title: 'Test Song',
             tags: ['test'],
@@ -206,8 +209,7 @@ describe('TextToMusic', () => {
 
       const textToMusic = new TextToMusic(mockHttp);
       const result = await textToMusic.run({
-        custom_mode: false,
-        instrumental: false,
+        vocal_mode: 'auto_lyrics',
         prompt: 'Test music',
         model: 'suno-v5',
       });

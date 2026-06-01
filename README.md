@@ -7,7 +7,7 @@
 </h3>
 
 <p align="center">
-  Suno API SDKs for JavaScript, Ruby, and Go on RunAPI.
+  Suno API SDKs for JavaScript, Ruby, and Go on RunAPI, including music generation, voice validation phrase, and custom voice workflows.
 </p>
 
 <div align="center">
@@ -20,7 +20,7 @@
 </div>
 <br/>
 
-The suno ai api SDK packages JavaScript, Ruby, and Go clients for Suno music generation on RunAPI. Use this suno ai api SDK for text-to-music, cover audio, music extension, stem separation, and related audio workflows.
+The suno ai api SDK packages JavaScript, Ruby, and Go clients for Suno music generation on RunAPI. Use this suno ai api SDK for text-to-music, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows.
 
 ## Installation
 
@@ -43,8 +43,6 @@ const client = new SunoClient({
 });
 
 const result = await client.textToMusic.run({
-  custom_mode: false,
-  instrumental: false,
   prompt: 'A chill lo-fi beat with soft vocals',
   model: 'suno-v4.5-plus',
 });
@@ -65,6 +63,8 @@ console.log('Music URL:', result.audios?.[0]?.audio_url);
 - **Visualize Music**: Generate videos for your music
 - **Generate Lyrics**: Generate and retrieve timestamped lyrics
 - **Replace Section**: Replace specific sections of music
+- **Voice Validation Phrase**: Generate and regenerate phrases for voice verification flows
+- **Custom Voice Generation**: Create reusable custom voices, check availability, and use `voice_id` as `persona_id` with `persona_type: 'voice'`
 - **Generate Persona & Boost Style**: Manage custom voice personas and music styles
 - **Full TypeScript Support**: Complete type definitions for all API endpoints
 - **Automatic Polling**: Built-in polling for async music generation
@@ -83,29 +83,27 @@ const client = new SunoClient({
 
 ### Music Generation
 
-#### Simple Mode (Recommended for Beginners)
+#### Prompt Brief
 
 ```typescript
 const result = await client.textToMusic.run({
-  custom_mode: false,
-  instrumental: false,
+  vocal_mode: 'auto_lyrics',
   prompt: 'A relaxing piano melody with soft ambient sounds',
-  model: 'suno-v4.5-plus', // or 'suno-v5', 'suno-v4.5-all', 'suno-v4.5', 'suno-v4', 'suno-v3.5'
+  model: 'suno-v4.5-plus', // or 'suno-v5', 'suno-v4.5-all', 'suno-v4.5', 'suno-v4'
 });
 ```
 
-#### Custom Mode (Advanced)
+#### Exact Lyrics
 
 ```typescript
 const result = await client.textToMusic.run({
-  custom_mode: true,
-  instrumental: false,
-  prompt: 'Soft piano melodies flowing gently',
+  vocal_mode: 'exact_lyrics',
+  lyrics: '[Verse]\nSoft piano melodies flowing gently',
   style: 'Classical, Ambient',
   title: 'Peaceful Piano Meditation',
   model: 'suno-v5',
   persona_id: 'persona_123', // optional
-  persona_model: 'voice_persona', // optional, suno-v5 only
+  persona_type: 'voice', // optional, suno-v5 only
 });
 ```
 
@@ -113,9 +111,9 @@ const result = await client.textToMusic.run({
 
 ```typescript
 const task = await client.textToMusic.create({
-  custom_mode: false,
-  instrumental: true,
-  prompt: 'Upbeat electronic dance music',
+  vocal_mode: 'instrumental',
+  style: 'Electronic, Dance',
+  title: 'Neon Pulse',
   model: 'suno-v4.5-plus',
 });
 
@@ -129,9 +127,7 @@ Transform uploaded audio into new styles:
 
 ```typescript
 const result = await client.coverAudio.run({
-  upload_url: 'https://example.com/audio.mp3',
-  custom_mode: false,
-  instrumental: false,
+  upload_url: 'https://cdn.runapi.ai/public/samples/voice.mp3',
   prompt: 'Transform into a jazz version',
   model: 'suno-v4.5-plus',
 });
@@ -153,15 +149,13 @@ Extend existing Suno generations:
 
 ```typescript
 const original = await client.textToMusic.run({
-  custom_mode: false,
-  instrumental: false,
   prompt: 'A short intro melody',
   model: 'suno-v4.5-plus',
 });
 
 const extended = await client.extendMusic.run({
   audio_id: original.audios?.[0]?.id,
-  default_param_flag: false,
+  parameter_mode: "source",
   model: 'suno-v4.5-plus',
   prompt: 'Continue with an uplifting chorus',
 });
@@ -173,8 +167,8 @@ Extend uploaded audio files:
 
 ```typescript
 const result = await client.extendMusic.run({
-  upload_url: 'https://example.com/audio.mp3',
-  default_param_flag: false,
+  upload_url: 'https://cdn.runapi.ai/public/samples/voice.mp3',
+  parameter_mode: "source",
   model: 'suno-v4.5-plus',
   prompt: 'Continue with an uplifting chorus',
 });
@@ -184,7 +178,7 @@ const result = await client.extendMusic.run({
 
 ```typescript
 const result = await client.addInstrumental.run({
-  upload_url: 'https://example.com/addVocals.mp3',
+  upload_url: 'https://cdn.runapi.ai/public/samples/voice.mp3',
   title: 'My Song',
   tags: 'Pop, Energetic, Upbeat',
   negative_tags: 'Heavy Metal, Aggressive',
@@ -192,14 +186,14 @@ const result = await client.addInstrumental.run({
 });
 ```
 
-### Add AddVocals
+### Add Vocals
 
 Add AI-generated vocals to instrumental audio (suno-v4.5-plus/suno-v5 only):
 
 ```typescript
 const result = await client.addVocals.run({
-  upload_url: 'https://example.com/instrumental.mp3',
-  prompt: 'Soft romantic lyrics about summer love',
+  upload_url: 'https://cdn.runapi.ai/public/samples/voice.mp3',
+  lyrics: '[Verse]\nSoft romantic lyrics about summer love',
   title: 'Summer Love',
   style: 'Pop, Romantic',
   negative_tags: 'Screaming, Heavy Metal',
@@ -211,8 +205,6 @@ const result = await client.addVocals.run({
 
 ```typescript
 const generation = await client.textToMusic.run({
-  custom_mode: false,
-  instrumental: false,
   prompt: 'A song with vocals',
   model: 'suno-v4.5-plus',
 });
@@ -287,7 +279,7 @@ timestamped.aligned_words?.forEach(word => {
 const result = await client.replaceSection.run({
   task_id: 'original-task-id',
   audio_id: 'audio-id',
-  prompt: 'A powerful guitar solo',
+  lyrics: '[Verse]\nA powerful guitar solo',
   tags: 'Rock, Energetic',
   title: 'Epic Guitar Solo',
   infill_start_time: 30.0,
@@ -297,13 +289,58 @@ const result = await client.replaceSection.run({
 console.log('Replaced track:', result.track?.audio_url);
 ```
 
+### Voice Validation Phrase
+
+Generate a phrase the user can read for a later voice verification step:
+
+```typescript
+const phrase = await client.voiceToValidationPhrase.run({
+  voice_url: 'https://file.runapi.ai/source-vocal.mp3',
+  vocal_start_seconds: 2,
+  vocal_end_seconds: 12,
+  language: 'en',
+});
+
+console.log('Validation phrase:', phrase.validation_phrase);
+```
+
+Regenerate the phrase from a prior validation phrase task:
+
+```typescript
+const replacement = await client.regenerateValidationPhrase.run({
+  task_id: phrase.id,
+});
+
+console.log('Replacement phrase:', replacement.validation_phrase);
+```
+
+Create a reusable custom voice after the user records the validation phrase:
+
+```typescript
+const customVoice = await client.generateVoice.run({
+  task_id: phrase.id,
+  verify_url: 'https://file.runapi.ai/verify-read.mp3',
+  voice_name: 'Warm Test Voice',
+  description: 'Warm vocal identity',
+  style: 'Pop, Female Vocal',
+  singer_skill_level: 'advanced',
+});
+
+const availability = await client.checkVoice.run({
+  task_id: customVoice.id,
+});
+
+console.log('Voice available:', availability.is_available);
+console.log('Use as voice persona_id:', customVoice.voice_id);
+```
+
+Use a completed `voice_id` as `persona_id` with `persona_type: 'voice'` on supported Suno v5 music generation endpoints.
+
 ### Generate Persona & Boost Style
 
 ```typescript
 // First generate some music with vocals
 const generation = await client.textToMusic.run({
-  custom_mode: false,
-  instrumental: false,
   prompt: 'A song with distinctive vocals',
   model: 'suno-v4.5-plus',
 });
@@ -335,38 +372,37 @@ console.log('Generated Style:', style);
 | `suno-v4.5-plus` | Enhanced suno-v4.5 | Great quality, cost-efficient |
 | `suno-v4.5-all` | suno-v4.5 with all features | Smarter prompts, audio upload max 1 min |
 | `suno-v4.5` | Mid-tier quality | Balanced quality and speed |
-| `suno-v4` | Previous generation | Stable, proven quality |
-| `suno-v3.5` | Legacy model | Fast generation, lower cost |
+| `suno-v4` | Stable model | Stable, proven quality |
 
-## Generation Modes
+## Request Shapes
 
-### Simple Mode vs Custom Mode
+Choose `vocal_mode` for music, cover, and mashup requests.
 
-**Simple Mode** (`custom_mode: false`):
-- Just provide a prompt
-- Easiest to use
-- Suno handles all style decisions
-- Prompt limit: 500 characters
+### Automatic Lyrics
 
-**Custom Mode** (`custom_mode: true`):
-- Fine-grained control
-- Specify style, title, persona
-- Larger prompt limits (up to 5000 chars for suno-v5)
-- Best for specific creative visions
+Use `auto_lyrics` when `prompt` is a brief and lyrics should be generated automatically. Keep prompt briefs under 500 characters.
+
+### Exact Lyrics
+
+Use `exact_lyrics` when `lyrics` is the text to sing.
+
+### Instrumental
+
+Use `instrumental` for tracks without vocals.
 
 ### Character Limits
 
-**Prompt Limits**:
-- Simple Mode: 500 characters
-- Custom Mode (suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5): 5000 characters
-- Custom Mode (suno-v4, suno-v3.5): 3000 characters
+**Text Limits**:
+- `prompt`: 500 characters
+- `lyrics` with suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5: 5000 characters
+- `lyrics` with suno-v4: 3000 characters
 
 **Style Limits**:
-- suno-v4, suno-v3.5: 200 characters
+- suno-v4: 200 characters
 - suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5: 1000 characters
 
 **Title Limits**:
-- suno-v4, suno-v3.5: 80 characters
+- suno-v4: 80 characters
 - suno-v5, suno-v4.5-plus, suno-v4.5-all, suno-v4.5: 100 characters
 
 ## Error Handling
@@ -382,8 +418,6 @@ import {
 
 try {
   const result = await client.textToMusic.run({
-    custom_mode: false,
-    instrumental: false,
     prompt: 'A beautiful melody',
     model: 'suno-v4.5-plus',
   });
@@ -406,8 +440,6 @@ try {
 
 ```typescript
 const result = await client.textToMusic.create({
-  custom_mode: false,
-  instrumental: false,
   prompt: 'Test music',
   model: 'suno-v4.5-plus',
   callback_url: 'https://your-domain.com/webhook',
@@ -437,11 +469,9 @@ The webhook will be called at multiple stages:
 
 ```typescript
 const result = await client.textToMusic.run({
-  custom_mode: false,
-  instrumental: false,
   prompt: 'Energetic rock music',
   model: 'suno-v5',
-  vocal_gender: 'm',           // Male vocals
+  vocal_gender: 'male',        // Male vocals
   style_weight: 0.75,          // 0-1, higher = more style adherence
   weirdness_constraint: 0.50,  // 0-1, higher = more creative/experimental
   audio_weight: 0.65,          // 0-1, audio consistency weight

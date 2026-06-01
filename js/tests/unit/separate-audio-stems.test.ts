@@ -43,9 +43,9 @@ describe('SeparateAudioStems', () => {
         id: 'vocal-rem-123',
         status: 'completed',
         separated_audios: {
-          instrumental_url: 'https://example.com/instrumental.mp3',
-          vocal_url: 'https://example.com/addVocals.mp3',
-          piano_url: 'https://example.com/piano.mp3',
+          instrumental_url: 'https://cdn.runapi.ai/public/samples/instrumental.mp3',
+          vocal_url: 'https://cdn.runapi.ai/public/samples/vocals.mp3',
+          piano_url: 'https://cdn.runapi.ai/public/samples/piano.mp3',
         },
       };
       vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);

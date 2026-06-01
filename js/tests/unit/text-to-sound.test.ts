@@ -73,7 +73,13 @@ describe('TextToSound', () => {
         id: 'sound-123',
         status: 'completed',
         generation_stage: 'all_audios_ready',
-        audios: [],
+        audios: [
+          {
+            id: 'sound-1',
+            audio_url: 'https://cdn.runapi.ai/public/samples/sound.mp3',
+            prompt: 'Rain on a tin roof',
+          },
+        ],
       };
       vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
 
@@ -86,6 +92,7 @@ describe('TextToSound', () => {
         {}
       );
       expect(result).toEqual(mockResponse);
+      expect(result.audios?.[0].prompt).toBe('Rain on a tin roof');
     });
   });
 });

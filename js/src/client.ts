@@ -16,6 +16,10 @@ import { CreateMashup } from './resources/create-mashup';
 import { TextToSound } from './resources/text-to-sound';
 import { GeneratePersona } from './resources/generate-persona';
 import { BoostStyle } from './resources/boost-style';
+import { VoiceToValidationPhrase } from './resources/voice-to-validation-phrase';
+import { RegenerateValidationPhrase } from './resources/regenerate-validation-phrase';
+import { GenerateVoice } from './resources/generate-voice';
+import { CheckVoice } from './resources/check-voice';
 
 /**
  * Suno API client.
@@ -28,8 +32,6 @@ import { BoostStyle } from './resources/boost-style';
  * });
  *
  * const result = await client.textToMusic.run({
- *   custom_mode: false,
- *   instrumental: false,
  *   prompt: 'A chill lo-fi beat with soft vocals',
  *   model: 'suno-v4.5-plus',
  * });
@@ -53,6 +55,10 @@ export class SunoClient {
   public readonly textToSound: TextToSound;
   public readonly generatePersona: GeneratePersona;
   public readonly boostStyle: BoostStyle;
+  public readonly voiceToValidationPhrase: VoiceToValidationPhrase;
+  public readonly regenerateValidationPhrase: RegenerateValidationPhrase;
+  public readonly generateVoice: GenerateVoice;
+  public readonly checkVoice: CheckVoice;
 
   constructor(options: ClientOptions = {}) {
     const http = createHttpClient(options);
@@ -73,5 +79,9 @@ export class SunoClient {
     this.textToSound = new TextToSound(http);
     this.generatePersona = new GeneratePersona(http);
     this.boostStyle = new BoostStyle(http);
+    this.voiceToValidationPhrase = new VoiceToValidationPhrase(http);
+    this.regenerateValidationPhrase = new RegenerateValidationPhrase(http);
+    this.generateVoice = new GenerateVoice(http);
+    this.checkVoice = new CheckVoice(http);
   }
 }
