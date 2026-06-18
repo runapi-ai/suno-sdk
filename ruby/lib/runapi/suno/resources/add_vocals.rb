@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Generates and adds vocals to an uploaded instrumental track.
       class AddVocals
         include RunApi::Core::ResourceHelpers
 

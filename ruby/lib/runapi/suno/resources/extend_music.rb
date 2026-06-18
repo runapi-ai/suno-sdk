@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Continues an existing track from a specified timestamp, inheriting or overriding its settings.
       class ExtendMusic
         include RunApi::Core::ResourceHelpers
 

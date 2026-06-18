@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Step 2 (optional) of voice cloning: requests a new, easier validation phrase.
       class RegenerateValidationPhrase
         include RunApi::Core::ResourceHelpers
 

@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Re-records vocals over an uploaded audio file with a new style or voice.
       class CoverAudio
         include RunApi::Core::ResourceHelpers
 

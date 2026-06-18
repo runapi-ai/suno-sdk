@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Step 3 of voice cloning: trains a custom voice from the user's recording of the validation phrase.
       class GenerateVoice
         include RunApi::Core::ResourceHelpers
 

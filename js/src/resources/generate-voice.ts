@@ -10,9 +10,16 @@ import type {
 
 const ENDPOINT = '/api/v1/suno/generate_voice';
 
+/** Step 3 of voice cloning: trains a custom voice from the user's recording of the validation phrase. */
 export class GenerateVoice {
   constructor(private readonly http: HttpClient) {}
 
+  /**
+   * Create a generate voice task and wait until complete.
+   * @param params Generate voice parameters.
+   * @param options Per-request and polling overrides.
+   * @returns The completed generate voice response.
+   */
   async run(params: GenerateVoiceParams, options?: RequestOptions & PollingOptions): Promise<CompletedVoiceGenerationResponse> {
     const { id } = await this.create(params, options);
     const response = await pollUntilComplete<VoiceGenerationResponse>(() => this.get(id, options), {
@@ -22,6 +29,12 @@ export class GenerateVoice {
     return response as CompletedVoiceGenerationResponse;
   }
 
+  /**
+   * Create a generate voice task; returns immediately with a task id.
+   * @param params Generate voice parameters.
+   * @param options Per-request overrides.
+   * @returns The task creation result.
+   */
   async create(params: GenerateVoiceParams, options?: RequestOptions): Promise<TaskCreateResponse> {
     return this.http.request<TaskCreateResponse>('POST', ENDPOINT, {
       body: compactParams(params),
@@ -29,6 +42,12 @@ export class GenerateVoice {
     });
   }
 
+  /**
+   * Fetch the current status of a generate voice task.
+   * @param id The task id.
+   * @param options Per-request overrides.
+   * @returns The current generate voice task status.
+   */
   async get(id: string, options?: RequestOptions): Promise<VoiceGenerationResponse> {
     return this.http.request<VoiceGenerationResponse>('GET', `${ENDPOINT}/${id}`, {
       ...options,

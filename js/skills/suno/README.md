@@ -63,13 +63,12 @@ const audioUrl = result.audios[0].audio_url;
 - Product docs: https://runapi.ai/docs#suno
 - SDK docs: https://runapi.ai/docs#sdk-suno
 - SDK repository: https://github.com/runapi-ai/suno-sdk
-- Pricing and rate limits: https://runapi.ai/models/suno/v3.5
+- Pricing and rate limits: https://runapi.ai/models/suno/v4
 - Provider comparison: https://runapi.ai/providers/suno
 - Browse all RunAPI models and skills: https://runapi.ai/models
 
 ## Variants
 
-- [v3.5](https://runapi.ai/models/suno/v3.5)
 - [v4](https://runapi.ai/models/suno/v4)
 - [v4.5](https://runapi.ai/models/suno/v4.5)
 - [v4.5 all](https://runapi.ai/models/suno/v4.5-all)
@@ -79,6 +78,8 @@ const audioUrl = result.audios[0].audio_url;
 
 ## Agent rules
 
+- Integration work uses the target language SDK; one-off generation, manual smoke tests, debugging, or user-requested CLI runs use the RunAPI CLI skill: https://github.com/runapi-ai/cli-skill
+- RunAPI-generated file URLs are temporary. Download and store generated images, videos, audio, or other files in your own durable storage within 7 days; do not treat returned URLs as long-term assets.
 - Keep API keys in `RUNAPI_API_KEY` or RunAPI CLI config; never commit secrets.
 - Prefer `create`, `get`, and `run` JSON passthrough patterns instead of inventing flags for every model parameter.
 - For suno ai api pricing, rate-limit, and commercial-usage answers, link to the variant page rather than the repository README.

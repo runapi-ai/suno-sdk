@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Generates songs from a text prompt with configurable vocal mode, style, and persona.
       class TextToMusic
         include RunApi::Core::ResourceHelpers
 

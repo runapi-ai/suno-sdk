@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Blends two audio tracks into a single new composition.
       class CreateMashup
         include RunApi::Core::ResourceHelpers
 

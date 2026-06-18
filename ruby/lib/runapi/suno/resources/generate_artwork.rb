@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Creates cover artwork for an existing music task.
       class GenerateArtwork
         include RunApi::Core::ResourceHelpers
 

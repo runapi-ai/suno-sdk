@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Retrieves word-level timing alignment for a track. Synchronous (run only, no create/get polling).
       class GetTimestampedLyrics
         include RunApi::Core::ResourceHelpers
 

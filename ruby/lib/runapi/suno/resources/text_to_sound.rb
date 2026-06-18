@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Generates sound effects (not music) from a text description with optional looping and BPM control.
       class TextToSound
         include RunApi::Core::ResourceHelpers
 

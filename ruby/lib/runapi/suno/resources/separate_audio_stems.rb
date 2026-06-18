@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Splits a track into individual instrument stems (vocals, drums, bass, guitar, etc.).
       class SeparateAudioStems
         include RunApi::Core::ResourceHelpers
 

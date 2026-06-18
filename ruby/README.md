@@ -24,6 +24,8 @@ status = client.generations.get(task.id)
 
 Use `create` when you want to submit a task and return quickly, `get` when you need the latest task state, and `run` when a script should create and poll until completion. In web request handlers, prefer `create` plus webhook or later `get` polling so a worker is not held open.
 
+RunAPI-generated file URLs are temporary. Download and store generated images, videos, audio, or other files in your own durable storage within 7 days; do not treat returned URLs as long-term assets.
+
 ## Language notes
 
 Use Ruby keyword arguments and the `RunApi::Suno` error classes when building music jobs, Rails workers, or scripts. The available resources include generations, extensions, upload and extensions, covers, upload and covers, instrumentals, vocals, vocal removals, midi, wav conversions, music videos, lyrics, timestamped lyrics, section replacements, mashups, sounds, personas, and styles. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
@@ -33,7 +35,7 @@ Use Ruby keyword arguments and the `RunApi::Suno` error classes when building mu
 - Model page: https://runapi.ai/models/suno
 - SDK docs: https://runapi.ai/docs#sdk-suno
 - Product docs: https://runapi.ai/docs#suno
-- Pricing and rate limits: https://runapi.ai/models/suno/v3.5
+- Pricing and rate limits: https://runapi.ai/models/suno/v4
 - Provider comparison: https://runapi.ai/providers/suno
 - Full catalog: https://runapi.ai/models
 - Repository: https://github.com/runapi-ai/suno-sdk

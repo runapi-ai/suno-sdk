@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Generates and adds an instrumental backing track to uploaded audio.
       class AddInstrumental
         include RunApi::Core::ResourceHelpers
 

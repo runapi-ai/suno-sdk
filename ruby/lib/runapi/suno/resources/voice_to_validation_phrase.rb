@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Step 1 of voice cloning: extracts a validation phrase from a voice recording for the user to re-record.
       class VoiceToValidationPhrase
         include RunApi::Core::ResourceHelpers
 

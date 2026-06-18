@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Re-generates a time range within an existing track with new lyrics and style.
       class ReplaceSection
         include RunApi::Core::ResourceHelpers
 

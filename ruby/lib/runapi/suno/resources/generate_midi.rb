@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Extracts per-instrument MIDI note data from a generated track.
       class GenerateMidi
         include RunApi::Core::ResourceHelpers
 

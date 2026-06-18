@@ -3,6 +3,7 @@
 module RunApi
   module Suno
     module Resources
+      # Produces AI-generated lyrics from a text prompt.
       class GenerateLyrics
         include RunApi::Core::ResourceHelpers
 
