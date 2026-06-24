@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 from runapi.core import Resource
 
-from .. import _validators
+from ..contract_gen import CONTRACT
 from ..types import CompletedCoverAudioResponse, CoverAudioResponse
 
 
@@ -55,4 +55,4 @@ class CoverAudio(Resource):
         return self._request("get", f"{self.ENDPOINT}/{id}")
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
-        _validators.validate_cover_audio(params)
+        self._validate_contract(CONTRACT["cover-audio"], params)

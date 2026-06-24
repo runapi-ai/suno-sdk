@@ -173,7 +173,11 @@ type CheckVoice struct{ http core.HTTPClient }
 // Create submits a song-generation task and returns immediately with a task id.
 func (r *TextToMusic) Create(ctx context.Context, params TextToMusicParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
-	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, textToMusicPath, core.CompactParams(params), requestOptions)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["text-to-music"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, textToMusicPath, body, requestOptions)
 }
 
 // Get fetches the current status of a song-generation task by id.
@@ -227,7 +231,11 @@ func (r *GenerateArtwork) Run(ctx context.Context, params GenerateArtworkParams,
 // Create submits a cover-audio task and returns immediately with a task id.
 func (r *CoverAudio) Create(ctx context.Context, params CoverAudioParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
-	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, coverAudioPath, core.CompactParams(params), requestOptions)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["cover-audio"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, coverAudioPath, body, requestOptions)
 }
 
 // Get fetches the current status of a cover-audio task by id.
@@ -397,7 +405,11 @@ func (r *ReplaceSection) Run(ctx context.Context, params ReplaceSectionParams, o
 // Create submits a mashup task and returns immediately with a task id.
 func (r *CreateMashup) Create(ctx context.Context, params CreateMashupParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
-	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, createMashupPath, core.CompactParams(params), requestOptions)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["create-mashup"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, createMashupPath, body, requestOptions)
 }
 
 // Get fetches the current status of a mashup task by id.

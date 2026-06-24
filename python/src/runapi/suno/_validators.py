@@ -13,8 +13,6 @@ from runapi.core import ValidationError
 
 from . import types
 
-MUSIC_PROMPT_SHAPE_ERROR = "choose a valid vocal_mode: auto_lyrics, exact_lyrics, or instrumental"
-
 _TRUTHY_VALUES = [True, 1, "1", "true", "TRUE", "True"]
 
 
@@ -78,27 +76,6 @@ def validate_optional(params: Dict[str, Any], key: str, allowed: Sequence[Any]) 
         raise ValidationError(f"Invalid {key}: {value}. Must be one of: {joined}")
 
 
-def validate_music_prompt_shape(params: Dict[str, Any]) -> None:
-    mode = "" if _param(params, "vocal_mode") is None else str(_param(params, "vocal_mode"))
-    has_prompt = _truthy_presence(_param(params, "prompt"))
-    has_lyrics = _truthy_presence(_param(params, "lyrics"))
-    has_style = _truthy_presence(_param(params, "style"))
-    has_title = _truthy_presence(_param(params, "title"))
-
-    if mode == "auto_lyrics":
-        valid_shape = has_prompt and not has_lyrics and not has_style and not has_title
-    elif mode == "exact_lyrics":
-        valid_shape = (not has_prompt) and has_lyrics and has_style and has_title
-    elif mode == "instrumental":
-        valid_shape = (not has_prompt) and (not has_lyrics) and has_style and has_title
-    else:
-        valid_shape = False
-
-    if valid_shape:
-        return
-    raise ValidationError(MUSIC_PROMPT_SHAPE_ERROR)
-
-
 def validate_extend_music_prompt_shape(params: Dict[str, Any]) -> None:
     if not _truthy_presence(_param(params, "lyrics")):
         return
@@ -114,15 +91,6 @@ def validate_extend_music_prompt_shape(params: Dict[str, Any]) -> None:
         return
 
     raise ValidationError("lyrics can only be used when extending uploaded audio with custom parameters")
-
-
-def validate_text_to_music(params: Dict[str, Any]) -> None:
-    validate_music_prompt_shape(params)
-    require_param(params, "model")
-    validate_optional(params, "vocal_mode", types.VOCAL_MODES)
-    validate_optional(params, "model", types.MODELS)
-    validate_optional(params, "vocal_gender", types.VOCAL_GENDERS)
-    validate_optional(params, "persona_type", types.PERSONA_TYPES)
 
 
 def validate_extend_music(params: Dict[str, Any]) -> None:
@@ -144,16 +112,6 @@ def validate_extend_music(params: Dict[str, Any]) -> None:
 
 def validate_generate_artwork(params: Dict[str, Any]) -> None:
     require_param(params, "task_id")
-
-
-def validate_cover_audio(params: Dict[str, Any]) -> None:
-    require_param(params, "upload_url")
-    require_param(params, "model")
-    validate_music_prompt_shape(params)
-    validate_optional(params, "vocal_mode", types.VOCAL_MODES)
-    validate_optional(params, "model", types.MODELS)
-    validate_optional(params, "vocal_gender", types.VOCAL_GENDERS)
-    validate_optional(params, "persona_type", types.PERSONA_TYPES)
 
 
 def validate_add_instrumental(params: Dict[str, Any]) -> None:
@@ -206,18 +164,6 @@ def validate_replace_section(params: Dict[str, Any]) -> None:
     )
     if _to_f(_param(params, "infill_end_time")) <= _to_f(_param(params, "infill_start_time")):
         raise ValidationError("infill_end_time must be greater than infill_start_time")
-
-
-def validate_create_mashup(params: Dict[str, Any]) -> None:
-    upload_url_list = _param(params, "upload_url_list")
-    if not (isinstance(upload_url_list, list) and len(upload_url_list) == 2):
-        raise ValidationError("upload_url_list must contain exactly 2 URLs")
-    require_param(params, "model")
-    validate_music_prompt_shape(params)
-    validate_optional(params, "vocal_mode", types.VOCAL_MODES)
-    validate_optional(params, "model", types.MODELS)
-    validate_optional(params, "vocal_gender", types.VOCAL_GENDERS)
-    validate_optional(params, "persona_type", types.PERSONA_TYPES)
 
 
 def validate_text_to_sound(params: Dict[str, Any]) -> None:

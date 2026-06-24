@@ -6,7 +6,7 @@ from typing import Any, Dict
 
 from runapi.core import Resource
 
-from .. import _validators
+from ..contract_gen import CONTRACT
 from ..types import CompletedTextToMusicResponse, TextToMusicResponse
 
 
@@ -55,4 +55,4 @@ class TextToMusic(Resource):
         return self._request("get", f"{self.ENDPOINT}/{id}")
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
-        _validators.validate_text_to_music(params)
+        self._validate_contract(CONTRACT["text-to-music"], params)

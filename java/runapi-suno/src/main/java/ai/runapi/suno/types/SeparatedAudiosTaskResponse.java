@@ -1,0 +1,68 @@
+package ai.runapi.suno.types;
+
+import ai.runapi.core.errors.ValidationException;
+import ai.runapi.core.polling.AbstractTaskResponse;
+import ai.runapi.core.polling.Poller;
+import ai.runapi.core.polling.TaskStatus;
+import com.fasterxml.jackson.annotation.JsonAnyGetter;
+import com.fasterxml.jackson.annotation.JsonAnySetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+/** Task response base containing generated audio results. */
+public class SeparatedAudiosTaskResponse extends AbstractTaskResponse implements Poller.CompletedResult {
+  @JsonProperty("id")
+  private String id;
+
+  @JsonProperty("status")
+  private String status;
+
+  @JsonProperty("error")
+  private String error;
+
+  @JsonProperty("separated_audios")
+  private Map<String, Object> separatedAudios;
+
+  private final Map<String, JsonNode> extraFields = new LinkedHashMap<String, JsonNode>();
+
+  /** Returns the task ID. */
+  public String getId() {
+    return id;
+  }
+
+  /** Returns the current task status. */
+  public TaskStatus getStatus() {
+    return new TaskStatus(status == null ? "" : status);
+  }
+
+  /** Returns the task error message, if the task failed. */
+  public String getError() {
+    return error;
+  }
+
+  /** Returns the generated audio results, when present. */
+  public Map<String, Object> getSeparatedAudios() {
+    return separatedAudios;
+  }
+
+  /** Returns unrecognized response fields preserved from the API response. */
+  @JsonAnyGetter
+  public Map<String, JsonNode> extraFields() {
+    return Collections.unmodifiableMap(extraFields);
+  }
+
+  /** Ensures a completed response contains its expected result field. */
+  public void ensureResultPresent() {
+    if (separatedAudios == null) {
+      throw new ValidationException("completed task response is missing separated_audios");
+    }
+  }
+
+  @JsonAnySetter
+  void putExtraField(String name, JsonNode value) {
+    extraFields.put(name, value);
+  }
+}

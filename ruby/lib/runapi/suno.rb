@@ -2,6 +2,7 @@
 
 require "runapi/core"
 require_relative "suno/types"
+require_relative "suno/contract_gen"
 require_relative "suno/validators"
 require_relative "suno/resources/text_to_music"
 require_relative "suno/resources/extend_music"

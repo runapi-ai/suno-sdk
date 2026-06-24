@@ -198,19 +198,19 @@ def test_get_timestamped_lyrics_sync_run():
 def test_text_to_music_requires_model():
     client = SunoClient(api_key="k", http_client=FakeHttp())
     # valid auto_lyrics shape but no model
-    with pytest.raises(ValidationError, match="model is required"):
+    with pytest.raises(ValidationError, match="model must be one of:"):
         client.text_to_music.create(vocal_mode="auto_lyrics", prompt="hi")
 
 
 def test_music_prompt_shape_error():
     client = SunoClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="choose a valid vocal_mode"):
+    with pytest.raises(ValidationError, match="vocal_mode is required"):
         client.text_to_music.create(model="suno-v4.5-plus", prompt="hi")
 
 
 def test_text_to_music_rejects_unknown_model():
     client = SunoClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="Invalid model"):
+    with pytest.raises(ValidationError, match="model must be one of:"):
         client.text_to_music.create(model="nope", vocal_mode="auto_lyrics", prompt="hi")
 
 

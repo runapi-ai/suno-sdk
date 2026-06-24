@@ -5,15 +5,8 @@ module RunApi
     module Validators
       module_function
 
-      MUSIC_PROMPT_SHAPE_ERROR = "choose a valid vocal_mode: auto_lyrics, exact_lyrics, or instrumental"
-
       def validate_text_to_music!(params, resource)
-        validate_music_prompt_shape!(params, resource)
-        require_param!(resource, params, :model)
-        validate_optional!(resource, params, :vocal_mode, Types::VOCAL_MODES)
-        validate_optional!(resource, params, :model, Types::MODELS)
-        validate_optional!(resource, params, :vocal_gender, Types::VOCAL_GENDERS)
-        validate_optional!(resource, params, :persona_type, Types::PERSONA_TYPES)
+        resource.send(:validate_contract!, CONTRACT["text-to-music"], params)
       end
 
       def validate_extend_music!(params, resource)
@@ -40,13 +33,7 @@ module RunApi
       end
 
       def validate_cover_audio!(params, resource)
-        require_param!(resource, params, :upload_url)
-        require_param!(resource, params, :model)
-        validate_music_prompt_shape!(params, resource)
-        validate_optional!(resource, params, :vocal_mode, Types::VOCAL_MODES)
-        validate_optional!(resource, params, :model, Types::MODELS)
-        validate_optional!(resource, params, :vocal_gender, Types::VOCAL_GENDERS)
-        validate_optional!(resource, params, :persona_type, Types::PERSONA_TYPES)
+        resource.send(:validate_contract!, CONTRACT["cover-audio"], params)
       end
 
       def validate_add_instrumental!(params, resource)
@@ -98,12 +85,7 @@ module RunApi
         unless upload_url_list.is_a?(Array) && upload_url_list.size == 2
           raise Core::ValidationError, "upload_url_list must contain exactly 2 URLs"
         end
-        require_param!(resource, params, :model)
-        validate_music_prompt_shape!(params, resource)
-        validate_optional!(resource, params, :vocal_mode, Types::VOCAL_MODES)
-        validate_optional!(resource, params, :model, Types::MODELS)
-        validate_optional!(resource, params, :vocal_gender, Types::VOCAL_GENDERS)
-        validate_optional!(resource, params, :persona_type, Types::PERSONA_TYPES)
+        resource.send(:validate_contract!, CONTRACT["create-mashup"], params)
       end
 
       def validate_text_to_sound!(params, resource)
@@ -146,28 +128,6 @@ module RunApi
 
       def validate_boost_style!(params, resource)
         require_param!(resource, params, :description)
-      end
-
-      def validate_music_prompt_shape!(params, resource)
-        mode = param(resource, params, :vocal_mode).to_s
-        has_prompt = truthy_presence?(param(resource, params, :prompt))
-        has_lyrics = truthy_presence?(param(resource, params, :lyrics))
-        has_style = truthy_presence?(param(resource, params, :style))
-        has_title = truthy_presence?(param(resource, params, :title))
-
-        valid_shape = case mode
-        when "auto_lyrics"
-          has_prompt && !has_lyrics && !has_style && !has_title
-        when "exact_lyrics"
-          !has_prompt && has_lyrics && has_style && has_title
-        when "instrumental"
-          !has_prompt && !has_lyrics && has_style && has_title
-        else
-          false
-        end
-        return if valid_shape
-
-        raise Core::ValidationError, MUSIC_PROMPT_SHAPE_ERROR
       end
 
       def validate_extend_music_prompt_shape!(params, resource)

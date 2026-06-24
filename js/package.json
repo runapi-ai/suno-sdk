@@ -1,7 +1,10 @@
 {
   "name": "@runapi.ai/suno",
+  "runapi": {
+    "slug": "suno"
+  },
   "version": "0.2.7",
-  "description": "RunAPI Suno SDK for JavaScript, Ruby, and Go",
+  "description": "RunAPI Suno SDK for text-to-music, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows in JavaScript, Python, Ruby, Go, and Java",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -50,7 +53,15 @@
     "sdk",
     "typescript",
     "ruby",
-    "golang"
+    "golang",
+    "java",
+    "python",
+    "maven",
+    "gradle",
+    "music-generation",
+    "audio-generation",
+    "music-api",
+    "suno-ai-api"
   ],
   "author": "RunAPI",
   "license": "Apache-2.0",
