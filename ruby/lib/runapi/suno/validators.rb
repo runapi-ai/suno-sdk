@@ -74,10 +74,18 @@ module RunApi
       end
 
       def validate_replace_section!(params, resource)
-        require_all!(resource, params, :task_id, :audio_id, :lyrics, :tags, :title, :infill_start_time, :infill_end_time)
-        if param(resource, params, :infill_end_time).to_f <= param(resource, params, :infill_start_time).to_f
+        resource.send(:validate_contract!, CONTRACT["replace-section"], params)
+        validate_replace_section_source!(params, resource)
+        start_time = replace_section_time!(params, resource, :infill_start_time)
+        end_time = replace_section_time!(params, resource, :infill_end_time)
+        if end_time <= start_time
           raise Core::ValidationError, "infill_end_time must be greater than infill_start_time"
         end
+
+        duration = end_time - start_time
+        return if duration.between?(6, 60)
+
+        raise Core::ValidationError, "replacement duration must be between 6 and 60 seconds"
       end
 
       def validate_create_mashup!(params, resource)
@@ -145,6 +153,30 @@ module RunApi
         return if param(resource, params, :parameter_mode) == "custom" && upload_mode
 
         raise Core::ValidationError, "lyrics can only be used when extending uploaded audio with custom parameters"
+      end
+
+      def validate_replace_section_source!(params, resource)
+        has_existing_source = %i[task_id audio_id].any? { |key| truthy_presence?(param(resource, params, key)) }
+        has_uploaded_source = %i[upload_url model].any? { |key| truthy_presence?(param(resource, params, key)) }
+
+        if has_existing_source && has_uploaded_source
+          raise Core::ValidationError, "task_id/audio_id cannot be combined with upload_url/model"
+        end
+
+        if has_existing_source
+          require_all!(resource, params, :task_id, :audio_id)
+        elsif has_uploaded_source
+          require_all!(resource, params, :upload_url, :model)
+        else
+          raise Core::ValidationError, "task_id and audio_id, or upload_url and model are required"
+        end
+      end
+
+      def replace_section_time!(params, resource, key)
+        value = param(resource, params, key)
+        return value.to_f if value.is_a?(Numeric)
+
+        raise Core::ValidationError, "#{key} must be a number"
       end
 
       def require_all!(resource, params, *keys)

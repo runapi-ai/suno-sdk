@@ -249,27 +249,43 @@ export interface GetTimestampedLyricsParams {
   callback_url?: string;
 }
 
-/**
- * Params for re-generating a time range within an existing track with new lyrics and style.
- * `infill_start_time` and `infill_end_time` define the section boundaries in seconds.
- */
-export interface ReplaceSectionParams {
-  task_id: string;
-  audio_id: string;
+interface ReplaceSectionBaseParams {
   /** Replacement lyrics for the specified section. */
   lyrics: string;
   /** Style/genre tags for the replacement section. */
   tags: string;
   title: string;
-  /** Section start time in seconds. */
+  /** Section start time in seconds. The replacement window must be 6-60 seconds. */
   infill_start_time: number;
-  /** Section end time in seconds. */
+  /** Section end time in seconds; must be greater than infill_start_time. */
   infill_end_time: number;
   callback_url?: string;
   negative_tags?: string;
   /** Complete song lyrics for context; helps maintain coherence across sections. */
-  full_lyrics?: string;
+  full_lyrics: string;
 }
+
+/** Replace a section using an existing generated audio track. */
+export interface ReplaceSectionExistingAudioParams extends ReplaceSectionBaseParams {
+  task_id: string;
+  audio_id: string;
+  upload_url?: never;
+  model?: never;
+}
+
+/** Replace a section using an uploaded source audio file. */
+export interface ReplaceSectionUploadedAudioParams extends ReplaceSectionBaseParams {
+  upload_url: string;
+  model: SunoModel;
+  task_id?: never;
+  audio_id?: never;
+}
+
+/**
+ * Params for re-generating a time range within a track with new lyrics and style.
+ * Provide either `task_id` + `audio_id` for an existing generated track, or `upload_url` + `model` for uploaded audio.
+ */
+export type ReplaceSectionParams = ReplaceSectionExistingAudioParams | ReplaceSectionUploadedAudioParams;
 
 /**
  * Params for creating a reusable persona from an existing track's vocals.

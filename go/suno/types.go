@@ -225,19 +225,22 @@ type GetTimestampedLyricsParams struct {
 	AudioID string `json:"audio_id" help:"required; audio ID within the task"`
 }
 
-// ReplaceSectionParams configures replacing a time range within an existing track with new lyrics and style.
-// InfillStartTime and InfillEndTime define the section boundaries in seconds.
+// ReplaceSectionParams configures replacing a time range within a track with new lyrics and style.
+// Provide either TaskID + AudioID for an existing generated track, or UploadURL + Model
+// for uploaded audio. InfillStartTime and InfillEndTime define a 6-60 second section window.
 type ReplaceSectionParams struct {
-	TaskID          string  `json:"task_id" help:"required; source task ID"`
-	AudioID         string  `json:"audio_id" help:"required; audio ID within the task"`
-	Lyrics          string  `json:"lyrics" help:"required; replacement section lyrics"`
-	Tags            string  `json:"tags" help:"required; style/genre tags"`
-	Title           string  `json:"title" help:"required; song title"`
-	InfillStartTime float64 `json:"infill_start_time" help:"required; section start time in seconds"`
-	InfillEndTime   float64 `json:"infill_end_time" help:"required; section end time in seconds"`
-	CallbackURL     string  `json:"callback_url,omitempty" help:"optional; webhook URL"`
-	NegativeTags    string  `json:"negative_tags,omitempty" help:"optional; styles to avoid"`
-	FullLyrics      string  `json:"full_lyrics,omitempty" help:"optional; complete song lyrics for context"`
+	TaskID          string    `json:"task_id,omitempty" help:"required with audio_id; source task ID; do not combine with upload_url/model"`
+	AudioID         string    `json:"audio_id,omitempty" help:"required with task_id; audio ID within the task; do not combine with upload_url/model"`
+	UploadURL       string    `json:"upload_url,omitempty" help:"required with model; uploaded source audio URL; do not combine with task_id/audio_id"`
+	Model           SunoModel `json:"model,omitempty" help:"required with upload_url; model slug for uploaded source audio"`
+	Lyrics          string    `json:"lyrics" help:"required; replacement section lyrics"`
+	Tags            string    `json:"tags" help:"required; style/genre tags"`
+	Title           string    `json:"title" help:"required; song title"`
+	InfillStartTime float64   `json:"infill_start_time" help:"required; section start time in seconds; replacement window must be 6-60 seconds"`
+	InfillEndTime   float64   `json:"infill_end_time" help:"required; section end time in seconds; must be greater than infill_start_time"`
+	CallbackURL     string    `json:"callback_url,omitempty" help:"optional; webhook URL"`
+	NegativeTags    string    `json:"negative_tags,omitempty" help:"optional; styles to avoid"`
+	FullLyrics      string    `json:"full_lyrics" help:"required; complete song lyrics for context"`
 }
 
 // GeneratePersonaParams creates a reusable persona (style or voice) from an existing music task's vocals.

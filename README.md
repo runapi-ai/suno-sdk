@@ -7,7 +7,7 @@
 </h3>
 
 <p align="center">
-  Suno API SDKs for JavaScript, Python, Ruby, Go, and Java on RunAPI, covering text-to-music, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows.
+  Suno API SDKs for JavaScript, Python, Ruby, Go, Java, and PHP on RunAPI, covering text-to-music, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows.
 </p>
 
 <div align="center">
@@ -22,9 +22,9 @@
 </div>
 <br/>
 
-The Suno API SDK packages JavaScript, Python, Ruby, Go, and Java clients for Suno on RunAPI. Use it for text-to-music, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows when your app needs typed request builders, predictable task polling, file upload helpers, account helpers, and consistent RunAPI errors.
+The Suno API SDK packages JavaScript, Python, Ruby, Go, Java, and PHP clients for Suno on RunAPI. Use it for text-to-music, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows when your app needs typed request builders, predictable task polling, file upload helpers, account helpers, and consistent RunAPI errors.
 
-Suno is listed in the RunAPI model catalog at https://runapi.ai/models/suno. Variant pages below carry pricing, rate-limit, and commercial-usage details. The public `suno-sdk` repository groups the language packages, examples, CI, and release tags for this model.
+Suno is listed in the RunAPI model catalog at https://runapi.ai/models/suno. Variant pages below carry pricing, rate-limit, and commercial-usage details. The public `suno-sdk` repository groups the non-PHP language packages, examples, CI, and release tags for this model. The PHP package is released from a split Composer repository.
 
 ## Install
 
@@ -61,6 +61,8 @@ dependencies {
   implementation("ai.runapi:runapi-suno")
 }
 ```
+
+The PHP package is published from the split Composer repository as `runapi-ai/suno`; see https://github.com/runapi-ai/suno-php for PHP install and examples.
 
 ## What you can build
 
@@ -112,6 +114,7 @@ Most media endpoints are asynchronous. `create()` submits a task and returns its
 - SDK docs: https://runapi.ai/docs#sdk-suno
 - Product docs: https://runapi.ai/docs#suno
 - SDK repository: https://github.com/runapi-ai/suno-sdk
+- PHP package repository: https://github.com/runapi-ai/suno-php
 - Skill repository: https://github.com/runapi-ai/suno
 - Provider comparison: https://runapi.ai/providers/suno
 - Full catalog: https://runapi.ai/models
@@ -136,7 +139,7 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ### Which package should I install for Suno work?
 
-Install the model package for your language: `@runapi.ai/suno` on npm, `runapi-suno` on PyPI, `runapi-suno` on RubyGems, `github.com/runapi-ai/suno-sdk/go`, or `ai.runapi:runapi-suno`. Install core SDK packages only when you are building shared SDK infrastructure.
+Install the model package for your language: `@runapi.ai/suno` on npm, `runapi-suno` on PyPI, `runapi-suno` on RubyGems, `github.com/runapi-ai/suno-sdk/go`, `ai.runapi:runapi-suno` on Maven Central, or `runapi-ai/suno` on Packagist. Install core SDK packages only when you are building shared SDK infrastructure.
 
 ### Where should public links point?
 

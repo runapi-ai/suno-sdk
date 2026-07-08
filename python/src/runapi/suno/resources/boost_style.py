@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-from runapi.core import Resource
+from runapi.core import Resource, RequestOptions
 
 from .. import _validators
 from ..types import BoostStyleResponse
@@ -17,7 +17,7 @@ class BoostStyle(Resource):
 
     RESPONSE_CLASS = BoostStyleResponse
 
-    def run(self, **params: Any) -> Any:
+    def run(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Generate style/genre tags from a description (synchronous).
 
         Args:
@@ -28,7 +28,7 @@ class BoostStyle(Resource):
         """
         compacted = self._compact_params(params)
         self._validate_params(compacted)
-        return self._request("post", self.ENDPOINT, body=compacted)
+        return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
         _validators.validate_boost_style(params)

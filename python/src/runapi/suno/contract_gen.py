@@ -509,10 +509,25 @@ CONTRACT = {
         "models": [],
         "fields_by_model": {
             "_": {
-                "audio_id": {
+                "full_lyrics": {
                     "required": True
                 },
-                "task_id": {
+                "infill_end_time": {
+                    "required": True
+                },
+                "infill_start_time": {
+                    "required": True
+                },
+                "lyrics": {
+                    "required": True
+                },
+                "model": {
+                    "enum": ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"]
+                },
+                "tags": {
+                    "required": True
+                },
+                "title": {
                     "required": True
                 }
             }

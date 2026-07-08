@@ -65,6 +65,7 @@ import ai.runapi.suno.types.GetTimestampedLyricsParams;
 import ai.runapi.suno.types.GetTimestampedLyricsResponse;
 import ai.runapi.suno.types.RegenerateValidationPhraseParams;
 import ai.runapi.suno.types.RegenerateValidationPhraseResponse;
+import ai.runapi.suno.types.ReplaceSectionModel;
 import ai.runapi.suno.types.ReplaceSectionParams;
 import ai.runapi.suno.types.ReplaceSectionResponse;
 import ai.runapi.suno.types.SeparateAudioStemsParams;
@@ -815,13 +816,19 @@ class SunoClientTest {
     }
 
     @Test
-    void coversReplacesectionResourceMethods() {
+    void coversReplacesectionResourceMethods() throws Exception {
       CapturingTransport createTransport = new CapturingTransport("{\"id\":\"task_replace_section\",\"status\":\"processing\"}");
       SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
       assertNotNull(createClient.replaceSection().create(
               ReplaceSectionParams.builder()
                   .taskId("sample")
                   .audioId("sample")
+                  .lyrics("sample")
+                  .fullLyrics("sample")
+                  .tags("sample")
+                  .title("sample")
+                  .infillStartTime(10)
+                  .infillEndTime(20)
                   .build()
       ));
 
@@ -831,8 +838,82 @@ class SunoClientTest {
               ReplaceSectionParams.builder()
                   .taskId("sample")
                   .audioId("sample")
+                  .lyrics("sample")
+                  .fullLyrics("sample")
+                  .tags("sample")
+                  .title("sample")
+                  .infillStartTime(10)
+                  .infillEndTime(20)
                   .build(),
           RequestOptions.none()));
+
+      CapturingTransport uploadCreateTransport = new CapturingTransport("{\"id\":\"task_replace_section_upload\",\"status\":\"processing\"}");
+      SunoClient uploadCreateClient = SunoClient.builder().apiKey("sk-test").transport(uploadCreateTransport).build();
+      assertNotNull(uploadCreateClient.replaceSection().create(
+              ReplaceSectionParams.builder()
+                  .uploadUrl("https://cdn.runapi.ai/public/samples/music.mp3")
+                  .model(ReplaceSectionModel.SUNO_V5_5)
+                  .lyrics("sample")
+                  .fullLyrics("sample")
+                  .tags("sample")
+                  .title("sample")
+                  .infillStartTime(10)
+                  .infillEndTime(20)
+                  .build()
+      ));
+      JsonNode uploadBody = bodyJson(uploadCreateTransport.request);
+      assertEquals("https://cdn.runapi.ai/public/samples/music.mp3", uploadBody.get("upload_url").asText());
+      assertEquals("suno-v5.5", uploadBody.get("model").asText());
+
+      assertThrows(IllegalArgumentException.class, () ->
+          ReplaceSectionParams.builder()
+              .taskId("sample")
+              .audioId("sample")
+              .uploadUrl("https://cdn.runapi.ai/public/samples/music.mp3")
+              .model(ReplaceSectionModel.SUNO_V5_5)
+              .lyrics("sample")
+              .fullLyrics("sample")
+              .tags("sample")
+              .title("sample")
+              .infillStartTime(10)
+              .infillEndTime(20)
+              .build());
+
+      assertThrows(IllegalArgumentException.class, () ->
+          ReplaceSectionParams.builder()
+              .taskId("sample")
+              .audioId("sample")
+              .lyrics("sample")
+              .fullLyrics("sample")
+              .tags("sample")
+              .title("sample")
+              .infillStartTime(10)
+              .infillEndTime(5)
+              .build());
+
+      assertThrows(IllegalArgumentException.class, () ->
+          ReplaceSectionParams.builder()
+              .taskId("sample")
+              .audioId("sample")
+              .lyrics("sample")
+              .fullLyrics("sample")
+              .tags("sample")
+              .title("sample")
+              .infillStartTime(10)
+              .infillEndTime(15)
+              .build());
+
+      assertThrows(IllegalArgumentException.class, () ->
+          ReplaceSectionParams.builder()
+              .taskId("sample")
+              .audioId("sample")
+              .lyrics("sample")
+              .fullLyrics("sample")
+              .tags("sample")
+              .title("sample")
+              .infillStartTime(10)
+              .infillEndTime(71)
+              .build());
 
       CapturingTransport getTransport = new CapturingTransport("{\"id\":\"task_replace_section\",\"status\":\"completed\",\"track\":{\"url\":\"https://file.runapi.ai/generated\"}}");
       SunoClient getClient = SunoClient.builder().apiKey("sk-test").transport(getTransport).build();
@@ -850,6 +931,12 @@ class SunoClientTest {
               ReplaceSectionParams.builder()
                   .taskId("sample")
                   .audioId("sample")
+                  .lyrics("sample")
+                  .fullLyrics("sample")
+                  .tags("sample")
+                  .title("sample")
+                  .infillStartTime(10)
+                  .infillEndTime(20)
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
       assertNotNull(runResponse);
@@ -862,6 +949,12 @@ class SunoClientTest {
               ReplaceSectionParams.builder()
                   .taskId("sample")
                   .audioId("sample")
+                  .lyrics("sample")
+                  .fullLyrics("sample")
+                  .tags("sample")
+                  .title("sample")
+                  .infillStartTime(10)
+                  .infillEndTime(20)
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
     }

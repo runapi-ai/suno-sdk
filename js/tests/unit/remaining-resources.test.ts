@@ -169,6 +169,7 @@ describe('Remaining Resources', () => {
         task_id: 'gen-task-123',
         audio_id: 'audio-456',
         lyrics: 'Guitar solo',
+        full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
         tags: 'Rock',
         title: 'Epic Solo',
         infill_start_time: 30.0,
@@ -183,6 +184,7 @@ describe('Remaining Resources', () => {
             task_id: 'gen-task-123',
             audio_id: 'audio-456',
             lyrics: 'Guitar solo',
+            full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
             tags: 'Rock',
             title: 'Epic Solo',
             infill_start_time: 30.0,
@@ -191,6 +193,78 @@ describe('Remaining Resources', () => {
         }
       );
       expect(result.id).toBe('section-123');
+    });
+
+    it('should create section replacement from uploaded audio', async () => {
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({ id: 'section-upload-123' });
+
+      const replaceSection = new ReplaceSection(mockHttp);
+      const result = await replaceSection.create({
+        upload_url: 'https://cdn.runapi.ai/public/samples/music.mp3',
+        model: 'suno-v5.5',
+        lyrics: 'Guitar solo',
+        full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
+        tags: 'Rock',
+        title: 'Epic Solo',
+        infill_start_time: 30.0,
+        infill_end_time: 45.0,
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledWith(
+        'POST',
+        '/api/v1/suno/replace_section',
+        {
+          body: {
+            upload_url: 'https://cdn.runapi.ai/public/samples/music.mp3',
+            model: 'suno-v5.5',
+            lyrics: 'Guitar solo',
+            full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
+            tags: 'Rock',
+            title: 'Epic Solo',
+            infill_start_time: 30.0,
+            infill_end_time: 45.0,
+          },
+        }
+      );
+      expect(result.id).toBe('section-upload-123');
+    });
+
+    it('should reject mixed section replacement sources', async () => {
+      const replaceSection = new ReplaceSection(mockHttp);
+
+      await expect(replaceSection.create({
+        task_id: 'gen-task-123',
+        audio_id: 'audio-456',
+        upload_url: 'https://cdn.runapi.ai/public/samples/music.mp3',
+        model: 'suno-v5.5',
+        lyrics: 'Guitar solo',
+        full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
+        tags: 'Rock',
+        title: 'Epic Solo',
+        infill_start_time: 30.0,
+        infill_end_time: 45.0,
+      } as never)).rejects.toThrow('task_id/audio_id cannot be combined with upload_url/model');
+      expect(mockHttp.request).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      [30.0, 25.0, 'infill_end_time must be greater than infill_start_time'],
+      [30.0, 35.0, 'replacement duration must be between 6 and 60 seconds'],
+      [30.0, 91.0, 'replacement duration must be between 6 and 60 seconds'],
+    ])('should reject invalid section replacement time window', async (startTime, endTime, message) => {
+      const replaceSection = new ReplaceSection(mockHttp);
+
+      await expect(replaceSection.create({
+        task_id: 'gen-task-123',
+        audio_id: 'audio-456',
+        lyrics: 'Guitar solo',
+        full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
+        tags: 'Rock',
+        title: 'Epic Solo',
+        infill_start_time: startTime,
+        infill_end_time: endTime,
+      })).rejects.toThrow(message);
+      expect(mockHttp.request).not.toHaveBeenCalled();
     });
 
     it('should get section replacement status', async () => {

@@ -7,6 +7,7 @@ message strings. Resources call these from their ``_validate_params`` hook.
 
 from __future__ import annotations
 
+from numbers import Real
 from typing import Any, Dict, Sequence
 
 from runapi.core import ValidationError
@@ -152,18 +153,35 @@ def validate_get_timestamped_lyrics(params: Dict[str, Any]) -> None:
 
 
 def validate_replace_section(params: Dict[str, Any]) -> None:
-    require_all(
-        params,
-        "task_id",
-        "audio_id",
-        "lyrics",
-        "tags",
-        "title",
-        "infill_start_time",
-        "infill_end_time",
-    )
-    if _to_f(_param(params, "infill_end_time")) <= _to_f(_param(params, "infill_start_time")):
+    validate_replace_section_source(params)
+    start_time = _number_param(params, "infill_start_time")
+    end_time = _number_param(params, "infill_end_time")
+    if end_time <= start_time:
         raise ValidationError("infill_end_time must be greater than infill_start_time")
+    if not 6 <= end_time - start_time <= 60:
+        raise ValidationError("replacement duration must be between 6 and 60 seconds")
+
+
+def _number_param(params: Dict[str, Any], key: str) -> float:
+    value = _param(params, key)
+    if isinstance(value, Real) and not isinstance(value, bool):
+        return float(value)
+    raise ValidationError(f"{key} must be a number")
+
+
+def validate_replace_section_source(params: Dict[str, Any]) -> None:
+    has_existing_source = any(_truthy_presence(_param(params, key)) for key in ("task_id", "audio_id"))
+    has_uploaded_source = any(_truthy_presence(_param(params, key)) for key in ("upload_url", "model"))
+
+    if has_existing_source and has_uploaded_source:
+        raise ValidationError("task_id/audio_id cannot be combined with upload_url/model")
+
+    if has_existing_source:
+        require_all(params, "task_id", "audio_id")
+    elif has_uploaded_source:
+        require_all(params, "upload_url", "model")
+    else:
+        raise ValidationError("task_id and audio_id, or upload_url and model are required")
 
 
 def validate_text_to_sound(params: Dict[str, Any]) -> None:

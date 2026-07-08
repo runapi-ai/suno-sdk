@@ -16,7 +16,7 @@ describe('SunoClient', () => {
   it('should initialize with all resources', () => {
     const client = new SunoClient({
       apiKey: 'test-key',
-      baseUrl: 'https://api.test.com',
+      baseUrl: 'https://runapi.ai',
     });
 
     expect(client.textToMusic).toBeDefined();
@@ -36,7 +36,7 @@ describe('SunoClient', () => {
   it('should accept valid client options', () => {
     const client = new SunoClient({
       apiKey: 'sk-test-123',
-      baseUrl: 'https://api.example.com',
+      baseUrl: 'https://runapi.ai',
     });
 
     expect(client).toBeInstanceOf(SunoClient);

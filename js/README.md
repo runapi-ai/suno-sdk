@@ -1,8 +1,8 @@
-# Suno AI API JavaScript SDK for RunAPI
+# Suno API JavaScript SDK for RunAPI
 
-The suno ai api JavaScript SDK is the language-specific package for Suno on RunAPI. Use this suno ai api package for song generation, lyrics, vocal, extension, and audio transformation flows when your application needs JSON request bodies, task status lookup, and consistent RunAPI errors in JavaScript.
+The Suno JavaScript SDK is the language-specific package for Suno on RunAPI. Use this package for song generation, lyrics, vocals, extension, and audio transformation workflows when your application needs request bodies, task status lookup, and consistent RunAPI errors in JavaScript.
 
-This suno ai api README is the JavaScript package guide inside the public `suno-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/suno; for API reference, use https://runapi.ai/docs#suno; for SDK docs, use https://runapi.ai/docs#sdk-suno.
+This README is the JavaScript package guide inside the public `suno-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/suno; for API reference, use https://runapi.ai/docs#suno; for SDK docs, use https://runapi.ai/docs#sdk-suno.
 
 ## Install
 
@@ -16,10 +16,10 @@ npm install @runapi.ai/suno
 import { SunoClient } from '@runapi.ai/suno';
 
 const client = new SunoClient();
-const task = await client.generations.create({
+const task = await client.textToMusic.create({
   // Pass the Suno JSON request body from https://runapi.ai/docs#suno.
 });
-const status = await client.generations.get(task.id);
+const status = await client.textToMusic.get(task.id);
 ```
 
 Use `create` when you want to submit a task and return quickly, `get` when you need the latest task state, and `run` when a script should create and poll until completion. In web request handlers, prefer `create` plus webhook or later `get` polling so a worker is not held open.
@@ -28,7 +28,7 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ## Language notes
 
-Use the TypeScript types in `src/types.ts` and the resource classes under `src/resources` when building music applications. The available resources include generations, extensions, upload and extensions, covers, upload and covers, instrumentals, vocals, vocal removals, midi, wav conversions, music videos, lyrics, timestamped lyrics, section replacements, mashups, sounds, personas, and styles. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
+Use the TypeScript types in `src/types.ts` and the resource classes under `src/resources` when building music applications. The available resources are `textToMusic`, `extendMusic`, `generateArtwork`, `coverAudio`, `addInstrumental`, `addVocals`, `separateAudioStems`, `generateMidi`, `convertAudio`, `visualizeMusic`, `generateLyrics`, `getTimestampedLyrics`, `replaceSection`, `createMashup`, `textToSound`, `generatePersona`, `boostStyle`, `voiceToValidationPhrase`, `regenerateValidationPhrase`, `generateVoice`, and `checkVoice`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
 
 ## Links
 

@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-from runapi.core import Resource
+from runapi.core import Resource, RequestOptions
 
 from .. import _validators
+from ..contract_gen import CONTRACT
 from ..types import CompletedReplaceSectionResponse, ReplaceSectionResponse
 
 
@@ -18,7 +19,7 @@ class ReplaceSection(Resource):
     RESPONSE_CLASS = ReplaceSectionResponse
     COMPLETED_RESPONSE_CLASS = CompletedReplaceSectionResponse
 
-    def run(self, **params: Any) -> Any:
+    def run(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Re-generate a section of a track and poll until it completes.
 
         Args:
@@ -27,10 +28,10 @@ class ReplaceSection(Resource):
         Returns:
             The completed (narrowed) response.
         """
-        task = self.create(**params)
-        return self._poll_until_complete(lambda: self.get(task.id))
+        task = self.create(options=options, **params)
+        return self._poll_until_complete(lambda: self.get(task.id, options=options))
 
-    def create(self, **params: Any) -> Any:
+    def create(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Create a replace-section task and return immediately with an id.
 
         Args:
@@ -41,9 +42,9 @@ class ReplaceSection(Resource):
         """
         compacted = self._compact_params(params)
         self._validate_params(compacted)
-        return self._request("post", self.ENDPOINT, body=compacted)
+        return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
-    def get(self, id: str) -> Any:
+    def get(self, id: str, options: Optional[RequestOptions] = None) -> Any:
         """Fetch the current status of a replace-section task.
 
         Args:
@@ -52,7 +53,8 @@ class ReplaceSection(Resource):
         Returns:
             The current task status.
         """
-        return self._request("get", f"{self.ENDPOINT}/{id}")
+        return self._request("get", f"{self.ENDPOINT}/{id}", options=options)
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
+        self._validate_contract(CONTRACT["replace-section"], params)
         _validators.validate_replace_section(params)

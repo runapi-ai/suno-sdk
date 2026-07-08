@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-from runapi.core import Resource
+from runapi.core import Resource, RequestOptions
 
 from .. import _validators
 from ..types import CompletedTextToSoundResponse, TextToSoundResponse
@@ -18,7 +18,7 @@ class TextToSound(Resource):
     RESPONSE_CLASS = TextToSoundResponse
     COMPLETED_RESPONSE_CLASS = CompletedTextToSoundResponse
 
-    def run(self, **params: Any) -> Any:
+    def run(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Generate sound effects and poll until it completes.
 
         Args:
@@ -27,10 +27,10 @@ class TextToSound(Resource):
         Returns:
             The completed (narrowed) response.
         """
-        task = self.create(**params)
-        return self._poll_until_complete(lambda: self.get(task.id))
+        task = self.create(options=options, **params)
+        return self._poll_until_complete(lambda: self.get(task.id, options=options))
 
-    def create(self, **params: Any) -> Any:
+    def create(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Create a text-to-sound task and return immediately with an id.
 
         Args:
@@ -41,9 +41,9 @@ class TextToSound(Resource):
         """
         compacted = self._compact_params(params)
         self._validate_params(compacted)
-        return self._request("post", self.ENDPOINT, body=compacted)
+        return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
-    def get(self, id: str) -> Any:
+    def get(self, id: str, options: Optional[RequestOptions] = None) -> Any:
         """Fetch the current status of a text-to-sound task.
 
         Args:
@@ -52,7 +52,7 @@ class TextToSound(Resource):
         Returns:
             The current task status.
         """
-        return self._request("get", f"{self.ENDPOINT}/{id}")
+        return self._request("get", f"{self.ENDPOINT}/{id}", options=options)
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
         _validators.validate_text_to_sound(params)

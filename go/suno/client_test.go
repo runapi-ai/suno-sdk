@@ -3,6 +3,7 @@ package suno
 import (
 	"context"
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/runapi-ai/core-sdk/go/core"
@@ -91,6 +92,7 @@ func TestReplaceSectionCreateUsesLyricsPayload(t *testing.T) {
 		TaskID:          "task-1",
 		AudioID:         "audio-1",
 		Lyrics:          "[Verse] replacement",
+		FullLyrics:      "[Verse] replacement\n[Chorus] return",
 		Tags:            "Rock",
 		Title:           "Song",
 		InfillStartTime: 10,
@@ -109,8 +111,116 @@ func TestReplaceSectionCreateUsesLyricsPayload(t *testing.T) {
 	if body["lyrics"] != "[Verse] replacement" {
 		t.Fatalf("expected lyrics payload, got %#v", body)
 	}
+	if body["full_lyrics"] != "[Verse] replacement\n[Chorus] return" {
+		t.Fatalf("expected full_lyrics payload, got %#v", body)
+	}
 	if _, ok := body["prompt"]; ok {
 		t.Fatalf("did not expect prompt payload, got %#v", body)
+	}
+}
+
+func TestReplaceSectionCreateSupportsUploadedAudioSource(t *testing.T) {
+	httpClient := &stubHTTPClient{}
+	client := NewClientWithHTTP(httpClient)
+	_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
+		UploadURL:       "https://cdn.runapi.ai/public/samples/music.mp3",
+		Model:           ModelV55,
+		Lyrics:          "[Verse] replacement",
+		FullLyrics:      "[Verse] replacement\n[Chorus] return",
+		Tags:            "Rock",
+		Title:           "Song",
+		InfillStartTime: 10,
+		InfillEndTime:   20,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	body, ok := httpClient.body.(map[string]any)
+	if !ok {
+		t.Fatalf("expected flat body map, got %T", httpClient.body)
+	}
+	if body["upload_url"] != "https://cdn.runapi.ai/public/samples/music.mp3" || body["model"] != string(ModelV55) {
+		t.Fatalf("expected uploaded audio payload, got %#v", body)
+	}
+	if _, ok := body["task_id"]; ok {
+		t.Fatalf("did not expect task_id payload, got %#v", body)
+	}
+	if _, ok := body["audio_id"]; ok {
+		t.Fatalf("did not expect audio_id payload, got %#v", body)
+	}
+}
+
+func TestReplaceSectionCreateRejectsMixedSources(t *testing.T) {
+	httpClient := &stubHTTPClient{}
+	client := NewClientWithHTTP(httpClient)
+	_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
+		TaskID:          "task-1",
+		AudioID:         "audio-1",
+		UploadURL:       "https://cdn.runapi.ai/public/samples/music.mp3",
+		Model:           ModelV55,
+		Lyrics:          "[Verse] replacement",
+		FullLyrics:      "[Verse] replacement\n[Chorus] return",
+		Tags:            "Rock",
+		Title:           "Song",
+		InfillStartTime: 10,
+		InfillEndTime:   20,
+	})
+	if err == nil || !strings.Contains(err.Error(), "task_id/audio_id cannot be combined with upload_url/model") {
+		t.Fatalf("expected mixed source validation error, got %v", err)
+	}
+	if httpClient.path != "" {
+		t.Fatalf("did not expect HTTP request, got %s", httpClient.path)
+	}
+}
+
+func TestReplaceSectionCreateRejectsInvalidTimeWindow(t *testing.T) {
+	cases := []struct {
+		name      string
+		startTime float64
+		endTime   float64
+		message   string
+	}{
+		{
+			name:      "end before start",
+			startTime: 10,
+			endTime:   5,
+			message:   "infill_end_time must be greater than infill_start_time",
+		},
+		{
+			name:      "duration too short",
+			startTime: 10,
+			endTime:   15,
+			message:   "replacement duration must be between 6 and 60 seconds",
+		},
+		{
+			name:      "duration too long",
+			startTime: 10,
+			endTime:   71,
+			message:   "replacement duration must be between 6 and 60 seconds",
+		},
+	}
+
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			httpClient := &stubHTTPClient{}
+			client := NewClientWithHTTP(httpClient)
+			_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
+				TaskID:          "task-1",
+				AudioID:         "audio-1",
+				Lyrics:          "[Verse] replacement",
+				FullLyrics:      "[Verse] replacement\n[Chorus] return",
+				Tags:            "Rock",
+				Title:           "Song",
+				InfillStartTime: tc.startTime,
+				InfillEndTime:   tc.endTime,
+			})
+			if err == nil || !strings.Contains(err.Error(), tc.message) {
+				t.Fatalf("expected %q validation error, got %v", tc.message, err)
+			}
+			if httpClient.path != "" {
+				t.Fatalf("did not expect HTTP request, got %s", httpClient.path)
+			}
+		})
 	}
 }
 

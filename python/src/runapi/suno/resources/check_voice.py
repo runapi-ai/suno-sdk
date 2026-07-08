@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-from runapi.core import Resource
+from runapi.core import Resource, RequestOptions
 
 from .. import _validators
 from ..types import CheckVoiceResponse
@@ -17,7 +17,7 @@ class CheckVoice(Resource):
 
     RESPONSE_CLASS = CheckVoiceResponse
 
-    def run(self, **params: Any) -> Any:
+    def run(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Check whether a custom voice is ready (synchronous).
 
         Args:
@@ -28,7 +28,7 @@ class CheckVoice(Resource):
         """
         compacted = self._compact_params(params)
         self._validate_params(compacted)
-        return self._request("post", self.ENDPOINT, body=compacted)
+        return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
         _validators.validate_check_voice(params)

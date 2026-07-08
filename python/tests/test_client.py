@@ -251,10 +251,75 @@ def test_replace_section_time_ordering():
             task_id="t",
             audio_id="a",
             lyrics="x",
+            full_lyrics="[Verse] x",
             tags="y",
             title="z",
             infill_start_time=10.0,
             infill_end_time=5.0,
+        )
+
+
+@pytest.mark.parametrize("start_time,end_time", [(10.0, 15.0), (10.0, 71.0)])
+def test_replace_section_duration_limits(start_time, end_time):
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="replacement duration must be between 6 and 60 seconds"):
+        client.replace_section.create(
+            task_id="t",
+            audio_id="a",
+            lyrics="x",
+            full_lyrics="[Verse] x",
+            tags="y",
+            title="z",
+            infill_start_time=start_time,
+            infill_end_time=end_time,
+        )
+
+
+def test_replace_section_upload_source_posts_body():
+    fake = FakeHttp({"id": "section_1", "status": "pending"})
+    client = SunoClient(api_key="k", http_client=fake)
+    client.replace_section.create(
+        upload_url="https://cdn.runapi.ai/public/samples/music.mp3",
+        model="suno-v5.5",
+        lyrics="x",
+        full_lyrics="[Verse] x",
+        tags="y",
+        title="z",
+        infill_start_time=10.0,
+        infill_end_time=20.0,
+    )
+    assert fake.calls == [
+        (
+            "post",
+            "/api/v1/suno/replace_section",
+            {
+                "upload_url": "https://cdn.runapi.ai/public/samples/music.mp3",
+                "model": "suno-v5.5",
+                "lyrics": "x",
+                "full_lyrics": "[Verse] x",
+                "tags": "y",
+                "title": "z",
+                "infill_start_time": 10.0,
+                "infill_end_time": 20.0,
+            },
+        )
+    ]
+
+
+def test_replace_section_rejects_mixed_sources():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="cannot be combined"):
+        client.replace_section.create(
+            task_id="t",
+            audio_id="a",
+            upload_url="https://cdn.runapi.ai/public/samples/music.mp3",
+            model="suno-v5.5",
+            lyrics="x",
+            full_lyrics="[Verse] x",
+            tags="y",
+            title="z",
+            infill_start_time=10.0,
+            infill_end_time=20.0,
         )
 
 

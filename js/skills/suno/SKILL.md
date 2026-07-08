@@ -36,6 +36,7 @@ Generate and transform music with Suno through RunAPI, including voice validatio
 When integrating Suno into an app, backend, worker, library, Rails service, Node service, Go service, webhook pipeline, or production workflow, start by checking the current SDK package and official usage. Confirm install commands, client methods (`create`, `get`, `run`), request fields, response shape, and error classes before using CLI help or raw HTTP examples. Use a RunAPI SDK package:
 
 - JavaScript / TypeScript: `@runapi.ai/suno`
+- PHP: `runapi-ai/suno`
 - Ruby: `runapi-suno`
 - Go: `github.com/runapi-ai/suno-sdk/go`
 

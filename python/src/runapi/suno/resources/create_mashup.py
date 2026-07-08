@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
-from runapi.core import Resource, ValidationError
+from runapi.core import Resource, ValidationError, RequestOptions
 
 from ..contract_gen import CONTRACT
 from ..types import CompletedCreateMashupResponse, CreateMashupResponse
@@ -18,7 +18,7 @@ class CreateMashup(Resource):
     RESPONSE_CLASS = CreateMashupResponse
     COMPLETED_RESPONSE_CLASS = CompletedCreateMashupResponse
 
-    def run(self, **params: Any) -> Any:
+    def run(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Blend two tracks into one and poll until it completes.
 
         Args:
@@ -27,10 +27,10 @@ class CreateMashup(Resource):
         Returns:
             The completed (narrowed) response.
         """
-        task = self.create(**params)
-        return self._poll_until_complete(lambda: self.get(task.id))
+        task = self.create(options=options, **params)
+        return self._poll_until_complete(lambda: self.get(task.id, options=options))
 
-    def create(self, **params: Any) -> Any:
+    def create(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         """Create a mashup task and return immediately with an id.
 
         Args:
@@ -41,9 +41,9 @@ class CreateMashup(Resource):
         """
         compacted = self._compact_params(params)
         self._validate_params(compacted)
-        return self._request("post", self.ENDPOINT, body=compacted)
+        return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
-    def get(self, id: str) -> Any:
+    def get(self, id: str, options: Optional[RequestOptions] = None) -> Any:
         """Fetch the current status of a mashup task.
 
         Args:
@@ -52,7 +52,7 @@ class CreateMashup(Resource):
         Returns:
             The current task status.
         """
-        return self._request("get", f"{self.ENDPOINT}/{id}")
+        return self._request("get", f"{self.ENDPOINT}/{id}", options=options)
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
         upload_url_list = params.get("upload_url_list")

@@ -9,6 +9,7 @@ package suno
 
 import (
 	"context"
+	"errors"
 
 	"github.com/runapi-ai/core-sdk/go/base"
 	"github.com/runapi-ai/core-sdk/go/core"
@@ -387,7 +388,14 @@ func (r *GetTimestampedLyrics) Run(ctx context.Context, params GetTimestampedLyr
 // Create submits a section-replacement task and returns immediately with a task id.
 func (r *ReplaceSection) Create(ctx context.Context, params ReplaceSectionParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
-	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, replaceSectionPath, core.CompactParams(params), requestOptions)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["replace-section"], body); err != nil {
+		return nil, err
+	}
+	if err := validateReplaceSection(body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, replaceSectionPath, body, requestOptions)
 }
 
 // Get fetches the current status of a section-replacement task by id.
@@ -400,6 +408,91 @@ func (r *ReplaceSection) Get(ctx context.Context, id string, opts ...option.Requ
 func (r *ReplaceSection) Run(ctx context.Context, params ReplaceSectionParams, opts ...option.RequestOption) (*ReplaceSectionResponse, error) {
 	_, pollingOptions := option.ResolveRequestOptions(opts...)
 	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, params, opts...) }, func(ctx context.Context, id string) (*ReplaceSectionResponse, error) { return r.Get(ctx, id, opts...) }, pollingOptions)
+}
+
+func validateReplaceSection(body map[string]any) error {
+	if err := validateReplaceSectionSource(body); err != nil {
+		return err
+	}
+
+	startTime, ok := numberValue(body["infill_start_time"])
+	if !ok {
+		return errors.New("infill_start_time must be a number")
+	}
+	endTime, ok := numberValue(body["infill_end_time"])
+	if !ok {
+		return errors.New("infill_end_time must be a number")
+	}
+	if endTime <= startTime {
+		return errors.New("infill_end_time must be greater than infill_start_time")
+	}
+	duration := endTime - startTime
+	if duration < 6 || duration > 60 {
+		return errors.New("replacement duration must be between 6 and 60 seconds")
+	}
+
+	return nil
+}
+
+func validateReplaceSectionSource(body map[string]any) error {
+	hasExistingSource := present(body["task_id"]) || present(body["audio_id"])
+	hasUploadedSource := present(body["upload_url"]) || present(body["model"])
+
+	if hasExistingSource && hasUploadedSource {
+		return errors.New("task_id/audio_id cannot be combined with upload_url/model")
+	}
+	if hasExistingSource {
+		if !present(body["task_id"]) {
+			return errors.New("task_id is required")
+		}
+		if !present(body["audio_id"]) {
+			return errors.New("audio_id is required")
+		}
+		return nil
+	}
+	if hasUploadedSource {
+		if !present(body["upload_url"]) {
+			return errors.New("upload_url is required")
+		}
+		if !present(body["model"]) {
+			return errors.New("model is required")
+		}
+		return nil
+	}
+
+	return errors.New("task_id and audio_id, or upload_url and model are required")
+}
+
+func numberValue(value any) (float64, bool) {
+	switch v := value.(type) {
+	case float64:
+		return v, true
+	case float32:
+		return float64(v), true
+	case int:
+		return float64(v), true
+	case int64:
+		return float64(v), true
+	case int32:
+		return float64(v), true
+	default:
+		return 0, false
+	}
+}
+
+func present(value any) bool {
+	switch v := value.(type) {
+	case nil:
+		return false
+	case string:
+		return v != ""
+	case []string:
+		return len(v) > 0
+	case []any:
+		return len(v) > 0
+	default:
+		return true
+	}
 }
 
 // Create submits a mashup task and returns immediately with a task id.

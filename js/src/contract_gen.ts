@@ -775,10 +775,32 @@ export const contract = {
     "models": [],
     "fields_by_model": {
       "_": {
-        "audio_id": {
+        "full_lyrics": {
           "required": true
         },
-        "task_id": {
+        "infill_end_time": {
+          "required": true
+        },
+        "infill_start_time": {
+          "required": true
+        },
+        "lyrics": {
+          "required": true
+        },
+        "model": {
+          "enum": [
+            "suno-v4",
+            "suno-v4.5",
+            "suno-v4.5-all",
+            "suno-v4.5-plus",
+            "suno-v5",
+            "suno-v5.5"
+          ]
+        },
+        "tags": {
+          "required": true
+        },
+        "title": {
           "required": true
         }
       }
