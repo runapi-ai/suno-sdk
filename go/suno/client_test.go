@@ -10,9 +10,10 @@ import (
 )
 
 type stubHTTPClient struct {
-	method string
-	path   string
-	body   any
+	method   string
+	path     string
+	body     any
+	response json.RawMessage
 }
 
 func (s *stubHTTPClient) Request(ctx context.Context, method, path string, opts *core.HTTPRequestOptions) (json.RawMessage, error) {
@@ -20,6 +21,9 @@ func (s *stubHTTPClient) Request(ctx context.Context, method, path string, opts 
 	s.path = path
 	if opts != nil {
 		s.body = opts.Body
+	}
+	if s.response != nil {
+		return s.response, nil
 	}
 	return json.RawMessage(`{"id":"task_123","status":"processing"}`), nil
 }
@@ -82,6 +86,71 @@ func TestAddVocalsCreateUsesLyricsPayload(t *testing.T) {
 	}
 	if _, ok := body["prompt"]; ok {
 		t.Fatalf("did not expect prompt payload, got %#v", body)
+	}
+}
+
+func TestSeparateAudioStemsCreateUsesAdvancedStemPayload(t *testing.T) {
+	httpClient := &stubHTTPClient{}
+	client := NewClientWithHTTP(httpClient)
+	_, err := client.SeparateAudioStems.Create(context.Background(), SeparateAudioStemsParams{
+		TaskID:   "task-1",
+		AudioID:  "audio-1",
+		Type:     "split_stem_advanced",
+		StemName: "Bass",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.method != "POST" || httpClient.path != "/api/v1/suno/separate_audio_stems" {
+		t.Fatalf("unexpected request: %s %s", httpClient.method, httpClient.path)
+	}
+	body, ok := httpClient.body.(map[string]any)
+	if !ok {
+		t.Fatalf("expected flat body map, got %T", httpClient.body)
+	}
+	if body["type"] != "split_stem_advanced" || body["stem_name"] != "Bass" {
+		t.Fatalf("expected advanced stem payload, got %#v", body)
+	}
+}
+
+func TestSeparateAudioStemsCreateRequiresAdvancedStemName(t *testing.T) {
+	httpClient := &stubHTTPClient{}
+	client := NewClientWithHTTP(httpClient)
+	_, err := client.SeparateAudioStems.Create(context.Background(), SeparateAudioStemsParams{
+		TaskID:  "task-1",
+		AudioID: "audio-1",
+		Type:    "split_stem_advanced",
+	})
+	if err == nil || !strings.Contains(err.Error(), "stem_name is required when type is split_stem_advanced") {
+		t.Fatalf("expected advanced stem_name validation error, got %v", err)
+	}
+	if httpClient.method != "" {
+		t.Fatalf("did not expect an HTTP request, got %s %s", httpClient.method, httpClient.path)
+	}
+}
+
+func TestSeparateAudioStemsGetDecodesAdvancedPair(t *testing.T) {
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{
+		"id":"advanced-stem-123",
+		"status":"completed",
+		"separated_audios":{"pairs":[{
+			"stem_name":"Bass",
+			"extracted_audio":{"id":"audio-bass","duration_seconds":116.28,"audio_url":"https://file.runapi.ai/bass.mp3"},
+			"remaining_audio":{"id":"audio-without-bass","duration_seconds":116.28,"audio_url":"https://file.runapi.ai/without-bass.mp3"}
+		}]}
+	}`)}
+	client := NewClientWithHTTP(httpClient)
+
+	response, err := client.SeparateAudioStems.Get(context.Background(), "advanced-stem-123")
+	if err != nil {
+		t.Fatal(err)
+	}
+	pair := response.SeparatedAudios.Pairs[0]
+	if pair.StemName != "Bass" || pair.ExtractedAudio.ID != "audio-bass" {
+		t.Fatalf("unexpected advanced pair: %#v", pair)
+	}
+	if pair.RemainingAudio.AudioURL != "https://file.runapi.ai/without-bass.mp3" {
+		t.Fatalf("unexpected remaining audio: %#v", pair.RemainingAudio)
 	}
 }
 

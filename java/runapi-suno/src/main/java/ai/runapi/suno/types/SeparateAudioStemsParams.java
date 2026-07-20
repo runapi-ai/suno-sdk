@@ -9,12 +9,14 @@ public final class SeparateAudioStemsParams {
   private final String taskId;
   private final String audioId;
   private final String type;
+  private final String stemName;
   private final String callbackUrl;
 
   private SeparateAudioStemsParams(Builder builder) {
     this.taskId = SunoParamUtils.requireNonBlank(builder.taskId, "taskId");
     this.audioId = SunoParamUtils.requireNonBlank(builder.audioId, "audioId");
     this.type = builder.type;
+    this.stemName = builder.stemName;
     this.callbackUrl = builder.callbackUrl;
   }
 
@@ -34,6 +36,7 @@ public final class SeparateAudioStemsParams {
     raw.put("task_id", SunoParamUtils.wireValue(taskId));
     raw.put("audio_id", SunoParamUtils.wireValue(audioId));
     raw.put("type", SunoParamUtils.wireValue(type));
+    raw.put("stem_name", SunoParamUtils.wireValue(stemName));
     raw.put("callback_url", SunoParamUtils.wireValue(callbackUrl));
     return SunoParamUtils.compact(raw);
   }
@@ -45,6 +48,7 @@ public final class SeparateAudioStemsParams {
     private String taskId;
     private String audioId;
     private String type;
+    private String stemName;
     private String callbackUrl;
 
     private Builder() {}
@@ -64,6 +68,12 @@ public final class SeparateAudioStemsParams {
     /** Sets the type. */
     public Builder type(String value) {
       this.type = SunoParamUtils.requireNonBlank(value, "type");
+      return this;
+    }
+
+    /** Sets the stem name. */
+    public Builder stemName(String value) {
+      this.stemName = SunoParamUtils.requireNonBlank(value, "stemName");
       return this;
     }
 

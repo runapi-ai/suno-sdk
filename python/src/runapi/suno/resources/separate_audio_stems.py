@@ -6,7 +6,7 @@ from typing import Any, Dict, Optional
 
 from runapi.core import Resource, RequestOptions
 
-from .. import _validators
+from ..contract_gen import CONTRACT
 from ..types import CompletedSeparateAudioStemsResponse, SeparateAudioStemsResponse
 
 
@@ -55,4 +55,4 @@ class SeparateAudioStems(Resource):
         return self._request("get", f"{self.ENDPOINT}/{id}", options=options)
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
-        _validators.validate_separate_audio_stems(params)
+        self._validate_contract(CONTRACT["separate-audio-stems"], params)

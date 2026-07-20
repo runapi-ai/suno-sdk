@@ -10,6 +10,7 @@ from runapi.suno.types import (
     CompletedTextToMusicResponse,
     GeneratePersonaResponse,
     GetTimestampedLyricsResponse,
+    SeparateAudioStemsResponse,
     TextToMusicResponse,
 )
 
@@ -351,8 +352,67 @@ def test_voice_to_validation_phrase_seconds_ordering():
 
 def test_separate_audio_stems_enum():
     client = SunoClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="Invalid type"):
+    with pytest.raises(ValidationError, match="type must be one of"):
         client.separate_audio_stems.create(task_id="t", audio_id="a", type="nope")
+
+
+def test_separate_audio_stems_advanced_payload():
+    fake = FakeHttp({"id": "advanced_1", "status": "processing"})
+    client = SunoClient(api_key="k", http_client=fake)
+
+    client.separate_audio_stems.create(
+        task_id="t", audio_id="a", type="split_stem_advanced", stem_name="Bass"
+    )
+
+    assert fake.calls == [
+        (
+            "post",
+            "/api/v1/suno/separate_audio_stems",
+            {"task_id": "t", "audio_id": "a", "type": "split_stem_advanced", "stem_name": "Bass"},
+        )
+    ]
+
+
+def test_separate_audio_stems_advanced_requires_stem_name():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+
+    with pytest.raises(ValidationError, match="stem_name is required when type is split_stem_advanced"):
+        client.separate_audio_stems.create(task_id="t", audio_id="a", type="split_stem_advanced")
+
+
+def test_separate_audio_stems_advanced_response_is_typed():
+    fake = FakeHttp(
+        {
+            "id": "advanced_1",
+            "status": "completed",
+            "separated_audios": {
+                "pairs": [
+                    {
+                        "stem_name": "Bass",
+                        "extracted_audio": {
+                            "id": "audio-bass",
+                            "duration_seconds": 116.28,
+                            "audio_url": "https://file.runapi.ai/bass.mp3",
+                        },
+                        "remaining_audio": {
+                            "id": "audio-without-bass",
+                            "duration_seconds": 116.28,
+                            "audio_url": "https://file.runapi.ai/without-bass.mp3",
+                        },
+                    }
+                ]
+            },
+        }
+    )
+    client = SunoClient(api_key="k", http_client=fake)
+
+    response = client.separate_audio_stems.get("advanced_1")
+    pair = response.separated_audios.pairs[0]
+
+    assert isinstance(response, SeparateAudioStemsResponse)
+    assert pair.stem_name == "Bass"
+    assert pair.extracted_audio.id == "audio-bass"
+    assert pair.remaining_audio.audio_url == "https://file.runapi.ai/without-bass.mp3"
 
 
 def test_generate_voice_skill_level_enum():

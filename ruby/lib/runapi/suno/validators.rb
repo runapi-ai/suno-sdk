@@ -49,8 +49,7 @@ module RunApi
       end
 
       def validate_separate_audio_stems!(params, resource)
-        require_all!(resource, params, :task_id, :audio_id)
-        validate_optional!(resource, params, :type, Types::SEPARATE_AUDIO_STEMS_TYPES)
+        resource.send(:validate_contract!, CONTRACT["separate-audio-stems"], params)
       end
 
       def validate_generate_midi!(params, resource)

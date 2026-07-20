@@ -43,7 +43,6 @@ VOCAL_GENDERS = ["female", "male"]
 PERSONA_TYPES = ["style", "voice"]
 PARAMETER_MODES = ["source", "custom"]
 VOCAL_MODES = ["auto_lyrics", "exact_lyrics", "instrumental"]
-SEPARATE_AUDIO_STEMS_TYPES = ["separate_vocal", "split_stem"]
 VALIDATION_PHRASE_LANGUAGES = ["en", "zh", "es", "fr", "pt", "de", "ja", "ko", "hi", "ru"]
 SINGER_SKILL_LEVELS = ["beginner", "intermediate", "advanced", "professional"]
 
@@ -84,6 +83,22 @@ class AlignedWord(BaseModel):
     palign = required(float)
 
 
+class AdvancedStemAudio(BaseModel):
+    """One audio result in an advanced stem extraction pair."""
+
+    id = required(str)
+    duration_seconds = required(float)
+    audio_url = required(str)
+
+
+class AdvancedStemPair(BaseModel):
+    """Extracted target stem and the remaining audio after removing it."""
+
+    stem_name = required(str)
+    extracted_audio = required(lambda: AdvancedStemAudio)
+    remaining_audio = required(lambda: AdvancedStemAudio)
+
+
 class SeparatedAudio(BaseModel):
     vocal_url = optional(str)
     instrumental_url = optional(str)
@@ -99,6 +114,7 @@ class SeparatedAudio(BaseModel):
     strings_url = optional(str)
     synth_url = optional(str)
     woodwinds_url = optional(str)
+    pairs = optional([lambda: AdvancedStemPair])
 
 
 class MidiNote(BaseModel):

@@ -127,11 +127,6 @@ def validate_add_vocals(params: Dict[str, Any]) -> None:
     validate_optional(params, "vocal_gender", types.VOCAL_GENDERS)
 
 
-def validate_separate_audio_stems(params: Dict[str, Any]) -> None:
-    require_all(params, "task_id", "audio_id")
-    validate_optional(params, "type", types.SEPARATE_AUDIO_STEMS_TYPES)
-
-
 def validate_generate_midi(params: Dict[str, Any]) -> None:
     require_param(params, "task_id")
 

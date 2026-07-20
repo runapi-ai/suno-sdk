@@ -24,7 +24,7 @@ public class SeparatedAudiosTaskResponse extends AbstractTaskResponse implements
   private String error;
 
   @JsonProperty("separated_audios")
-  private Map<String, Object> separatedAudios;
+  private SeparatedAudio separatedAudios;
 
   private final Map<String, JsonNode> extraFields = new LinkedHashMap<String, JsonNode>();
 
@@ -44,7 +44,7 @@ public class SeparatedAudiosTaskResponse extends AbstractTaskResponse implements
   }
 
   /** Returns the generated audio results, when present. */
-  public Map<String, Object> getSeparatedAudios() {
+  public SeparatedAudio getSeparatedAudios() {
     return separatedAudios;
   }
 

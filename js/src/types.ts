@@ -206,8 +206,10 @@ export interface AddVocalsParams extends SunoBaseParams {
 export interface SeparateAudioStemsParams {
   task_id: string;
   audio_id: string;
-  /** `separate_vocal` isolates vocals+instrumental; `split_stem` splits into all individual instruments. */
-  type?: 'separate_vocal' | 'split_stem' | string;
+  /** Separation mode. Accepted values are validated by the Input Contract. */
+  type?: string;
+  /** Target stem. Required when `type` is `split_stem_advanced`. */
+  stem_name?: string;
   callback_url?: string;
 }
 
@@ -515,6 +517,21 @@ export interface SeparatedAudio {
   strings_url?: string;
   synth_url?: string;
   woodwinds_url?: string;
+  pairs?: AdvancedStemPair[];
+}
+
+/** One audio result in an advanced stem extraction pair. */
+export interface AdvancedStemAudio {
+  id: string;
+  duration_seconds: number;
+  audio_url: string;
+}
+
+/** Extracted target stem and the remaining audio after removing it. */
+export interface AdvancedStemPair {
+  stem_name: string;
+  extracted_audio: AdvancedStemAudio;
+  remaining_audio: AdvancedStemAudio;
 }
 
 /** Result of a stem separation task. */

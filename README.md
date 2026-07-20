@@ -39,7 +39,7 @@ Gradle:
 
 ```kotlin
 dependencies {
-  implementation("ai.runapi:runapi-suno:0.1.2")
+  implementation("ai.runapi:runapi-suno:0.1.3")
 }
 ```
 
@@ -49,7 +49,7 @@ Maven:
 <dependency>
   <groupId>ai.runapi</groupId>
   <artifactId>runapi-suno</artifactId>
-  <version>0.1.2</version>
+  <version>0.1.3</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ Use the Java BOM when installing multiple RunAPI Java modules:
 
 ```kotlin
 dependencies {
-  implementation(platform("ai.runapi:runapi-bom:0.1.7"))
+  implementation(platform("ai.runapi:runapi-bom:0.2.0"))
   implementation("ai.runapi:runapi-suno")
 }
 ```
@@ -99,6 +99,22 @@ Java packages target Java 8 bytecode and are tested on Java 8, 11, 17, and 21. E
 ## Task lifecycle
 
 Most media endpoints are asynchronous. `create()` submits a task and returns its id, `get(id)` fetches the latest task state, and `run(params)` creates the task and polls until it reaches a terminal state. In web request handlers, prefer `create()` plus webhook or later `get()` polling so the server does not hold a worker open.
+
+## Advanced stem separation
+
+Use `split_stem_advanced` with `stem_name` to extract one target stem and receive both the extracted audio and the mix remaining after its removal:
+
+```typescript
+const result = await client.separateAudioStems.run({
+  task_id: "source-task-id",
+  audio_id: "source-audio-id",
+  type: "split_stem_advanced",
+  stem_name: "Bass",
+});
+
+const pair = result.separated_audios.pairs?.[0];
+console.log(pair?.extracted_audio.audio_url, pair?.remaining_audio.audio_url);
+```
 
 ## Repository layout
 

@@ -186,7 +186,8 @@ type AddVocalsParams struct {
 type SeparateAudioStemsParams struct {
 	TaskID      string `json:"task_id" help:"required; source task ID"`
 	AudioID     string `json:"audio_id" help:"required; audio ID within the task"`
-	Type        string `json:"type,omitempty" help:"optional; separation type"`
+	Type        string `json:"type,omitempty" help:"optional; separation mode"`
+	StemName    string `json:"stem_name,omitempty" help:"required when type is split_stem_advanced; target stem"`
 	CallbackURL string `json:"callback_url,omitempty" help:"optional; webhook URL"`
 }
 
@@ -406,20 +407,35 @@ type TextToSoundResponse struct {
 
 // SeparatedAudio holds URLs for each isolated instrument stem after separation.
 type SeparatedAudio struct {
-	VocalURL         string `json:"vocal_url,omitempty"`
-	InstrumentalURL  string `json:"instrumental_url,omitempty"`
-	BackingVocalsURL string `json:"backing_vocals_url,omitempty"`
-	BassURL          string `json:"bass_url,omitempty"`
-	BrassURL         string `json:"brass_url,omitempty"`
-	DrumsURL         string `json:"drums_url,omitempty"`
-	FXURL            string `json:"fx_url,omitempty"`
-	GuitarURL        string `json:"guitar_url,omitempty"`
-	KeyboardURL      string `json:"keyboard_url,omitempty"`
-	PercussionURL    string `json:"percussion_url,omitempty"`
-	PianoURL         string `json:"piano_url,omitempty"`
-	StringsURL       string `json:"strings_url,omitempty"`
-	SynthURL         string `json:"synth_url,omitempty"`
-	WoodwindsURL     string `json:"woodwinds_url,omitempty"`
+	VocalURL         string             `json:"vocal_url,omitempty"`
+	InstrumentalURL  string             `json:"instrumental_url,omitempty"`
+	BackingVocalsURL string             `json:"backing_vocals_url,omitempty"`
+	BassURL          string             `json:"bass_url,omitempty"`
+	BrassURL         string             `json:"brass_url,omitempty"`
+	DrumsURL         string             `json:"drums_url,omitempty"`
+	FXURL            string             `json:"fx_url,omitempty"`
+	GuitarURL        string             `json:"guitar_url,omitempty"`
+	KeyboardURL      string             `json:"keyboard_url,omitempty"`
+	PercussionURL    string             `json:"percussion_url,omitempty"`
+	PianoURL         string             `json:"piano_url,omitempty"`
+	StringsURL       string             `json:"strings_url,omitempty"`
+	SynthURL         string             `json:"synth_url,omitempty"`
+	WoodwindsURL     string             `json:"woodwinds_url,omitempty"`
+	Pairs            []AdvancedStemPair `json:"pairs,omitempty"`
+}
+
+// AdvancedStemAudio is one output in an advanced stem extraction pair.
+type AdvancedStemAudio struct {
+	ID              string  `json:"id"`
+	DurationSeconds float64 `json:"duration_seconds"`
+	AudioURL        string  `json:"audio_url"`
+}
+
+// AdvancedStemPair contains the target stem and the audio remaining after its removal.
+type AdvancedStemPair struct {
+	StemName       string            `json:"stem_name"`
+	ExtractedAudio AdvancedStemAudio `json:"extracted_audio"`
+	RemainingAudio AdvancedStemAudio `json:"remaining_audio"`
 }
 
 // SeparateAudioStemsResponse is the completed result of a stem separation task.

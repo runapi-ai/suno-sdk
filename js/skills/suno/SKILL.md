@@ -49,6 +49,7 @@ Inspect the available commands and request fields with CLI help:
 ```shell
 runapi suno --help
 runapi suno text-to-music --help
+runapi suno separate-audio-stems --help
 runapi suno voice-to-validation-phrase --help
 runapi suno regenerate-validation-phrase --help
 runapi suno generate-voice --help
@@ -63,6 +64,8 @@ runapi suno voice-to-validation-phrase --input-file voice-phrase.json
 runapi suno generate-voice --input-file generate-voice.json
 runapi suno check-voice --input-file check-voice.json
 ```
+
+For advanced stem separation, set `type` to `split_stem_advanced` and include a target `stem_name`. The result contains the extracted stem and the remaining audio under `separated_audios.pairs`.
 
 Submit asynchronously and poll separately:
 

@@ -2,6 +2,7 @@ package ai.runapi.suno;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ai.runapi.core.RequestOptions;
@@ -171,6 +172,56 @@ class SunoClientTest {
                     .model(TextToSoundModel.SUNO_V5)
                     .build(),
             RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
+  }
+
+  @Test
+  void separateAudioStemsAdvancedUsesCanonicalStemName() throws Exception {
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"task_stems\",\"status\":\"processing\"}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    client.separateAudioStems().create(
+        SeparateAudioStemsParams.builder()
+            .taskId("task_source")
+            .audioId("audio_source")
+            .type("split_stem_advanced")
+            .stemName("Bass")
+            .build());
+
+    JsonNode body = bodyJson(transport.request);
+    assertEquals("split_stem_advanced", body.get("type").asText());
+    assertEquals("Bass", body.get("stem_name").asText());
+    assertEquals(false, body.has("stemName"));
+  }
+
+  @Test
+  void separateAudioStemsAdvancedRequiresStemNameBeforeRequest() {
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"unused\",\"status\":\"processing\"}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    ValidationException error = assertThrows(
+        ValidationException.class,
+        () -> client.separateAudioStems().create(
+            SeparateAudioStemsParams.builder()
+                .taskId("task_source")
+                .audioId("audio_source")
+                .type("split_stem_advanced")
+                .build()));
+
+    assertEquals("stem_name is required when type is split_stem_advanced", error.getMessage());
+    assertNull(transport.request);
+  }
+
+  @Test
+  void separateAudioStemsAdvancedDecodesTypedPair() {
+    CapturingTransport transport = new CapturingTransport(
+        "{\"id\":\"task_stems\",\"status\":\"completed\",\"separated_audios\":{\"pairs\":[{\"stem_name\":\"Bass\",\"extracted_audio\":{\"id\":\"audio_bass\",\"duration_seconds\":116.28,\"audio_url\":\"https://file.runapi.ai/bass.mp3\"},\"remaining_audio\":{\"id\":\"audio_without_bass\",\"duration_seconds\":116.28,\"audio_url\":\"https://file.runapi.ai/without-bass.mp3\"}}]}}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    SeparateAudioStemsResponse response = client.separateAudioStems().get("task_stems");
+
+    assertEquals("Bass", response.getSeparatedAudios().getPairs().get(0).getStemName());
+    assertEquals("audio_bass", response.getSeparatedAudios().getPairs().get(0).getExtractedAudio().getId());
+    assertEquals("https://file.runapi.ai/without-bass.mp3", response.getSeparatedAudios().getPairs().get(0).getRemainingAudio().getAudioUrl());
   }
 
     @Test

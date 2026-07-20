@@ -21,7 +21,6 @@ module RunApi
       # auto_lyrics: generates from prompt; exact_lyrics: sings literal lyrics; instrumental: no vocals.
       VOCAL_MODES = %w[auto_lyrics exact_lyrics instrumental].freeze
       # separate_vocal: isolates vocals+instrumental; split_stem: splits into all individual instruments.
-      SEPARATE_AUDIO_STEMS_TYPES = %w[separate_vocal split_stem].freeze
       # Language for the voice-cloning validation phrase the user must read back.
       VALIDATION_PHRASE_LANGUAGES = %w[en zh es fr pt de ja ko hi ru].freeze
       # Singing ability of the voice being cloned; calibrates model expectations.
@@ -67,6 +66,20 @@ module RunApi
         required :palign, Numeric
       end
 
+      # One audio result in an advanced stem extraction pair.
+      class AdvancedStemAudio < RunApi::Core::BaseModel
+        required :id, String
+        required :duration_seconds, Numeric
+        required :audio_url, String
+      end
+
+      # Extracted target stem and the remaining audio after removing it.
+      class AdvancedStemPair < RunApi::Core::BaseModel
+        required :stem_name, String
+        required :extracted_audio, -> { AdvancedStemAudio }
+        required :remaining_audio, -> { AdvancedStemAudio }
+      end
+
       # URLs for each isolated instrument stem after separation. Only populated stems have URLs.
       class SeparatedAudio < RunApi::Core::BaseModel
         optional :vocal_url, String
@@ -83,6 +96,7 @@ module RunApi
         optional :strings_url, String
         optional :synth_url, String
         optional :woodwinds_url, String
+        optional :pairs, [-> { AdvancedStemPair }]
       end
 
       # A single MIDI note event within an instrument track.

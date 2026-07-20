@@ -290,7 +290,11 @@ func (r *AddVocals) Run(ctx context.Context, params AddVocalsParams, opts ...opt
 // Create submits an audio-stem-separation task and returns immediately with a task id.
 func (r *SeparateAudioStems) Create(ctx context.Context, params SeparateAudioStemsParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
-	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, separateAudioStemsPath, core.CompactParams(params), requestOptions)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["separate-audio-stems"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, separateAudioStemsPath, body, requestOptions)
 }
 
 // Get fetches the current status of an audio-stem-separation task by id.
