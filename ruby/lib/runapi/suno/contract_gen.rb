@@ -239,7 +239,9 @@ module RunApi
               "enum" => ["style", "voice"]
             },
             "upload_url_list" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
             },
             "vocal_gender" => {
               "enum" => ["male", "female"]
@@ -257,7 +259,9 @@ module RunApi
               "enum" => ["style", "voice"]
             },
             "upload_url_list" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
             },
             "vocal_gender" => {
               "enum" => ["male", "female"]
@@ -275,7 +279,9 @@ module RunApi
               "enum" => ["style", "voice"]
             },
             "upload_url_list" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
             },
             "vocal_gender" => {
               "enum" => ["male", "female"]
@@ -293,7 +299,9 @@ module RunApi
               "enum" => ["style", "voice"]
             },
             "upload_url_list" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
             },
             "vocal_gender" => {
               "enum" => ["male", "female"]
@@ -311,7 +319,9 @@ module RunApi
               "enum" => ["style", "voice"]
             },
             "upload_url_list" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
             },
             "vocal_gender" => {
               "enum" => ["male", "female"]
@@ -329,7 +339,9 @@ module RunApi
               "enum" => ["style", "voice"]
             },
             "upload_url_list" => {
-              "required" => true
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
             },
             "vocal_gender" => {
               "enum" => ["male", "female"]

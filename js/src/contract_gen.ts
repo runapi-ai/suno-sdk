@@ -356,7 +356,9 @@ export const contract = {
           ]
         },
         "upload_url_list": {
-          "required": true
+          "required": true,
+          "min_items": 2,
+          "max_items": 2
         },
         "vocal_gender": {
           "enum": [
@@ -384,7 +386,9 @@ export const contract = {
           ]
         },
         "upload_url_list": {
-          "required": true
+          "required": true,
+          "min_items": 2,
+          "max_items": 2
         },
         "vocal_gender": {
           "enum": [
@@ -412,7 +416,9 @@ export const contract = {
           ]
         },
         "upload_url_list": {
-          "required": true
+          "required": true,
+          "min_items": 2,
+          "max_items": 2
         },
         "vocal_gender": {
           "enum": [
@@ -440,7 +446,9 @@ export const contract = {
           ]
         },
         "upload_url_list": {
-          "required": true
+          "required": true,
+          "min_items": 2,
+          "max_items": 2
         },
         "vocal_gender": {
           "enum": [
@@ -468,7 +476,9 @@ export const contract = {
           ]
         },
         "upload_url_list": {
-          "required": true
+          "required": true,
+          "min_items": 2,
+          "max_items": 2
         },
         "vocal_gender": {
           "enum": [
@@ -496,7 +506,9 @@ export const contract = {
           ]
         },
         "upload_url_list": {
-          "required": true
+          "required": true,
+          "min_items": 2,
+          "max_items": 2
         },
         "vocal_gender": {
           "enum": [

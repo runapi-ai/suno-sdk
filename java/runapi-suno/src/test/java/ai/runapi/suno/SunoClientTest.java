@@ -483,7 +483,7 @@ class SunoClientTest {
       assertNotNull(createClient.createMashup().create(
               CreateMashupParams.builder()
                   .model(CreateMashupModel.SUNO_V4)
-                  .uploadUrlList(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg"))
+                  .uploadUrlList(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg", "https://cdn.runapi.ai/public/samples/image.jpg"))
                   .vocalMode("auto_lyrics")
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build()
@@ -494,7 +494,7 @@ class SunoClientTest {
       assertNotNull(createWithOptionsClient.createMashup().create(
               CreateMashupParams.builder()
                   .model(CreateMashupModel.SUNO_V4)
-                  .uploadUrlList(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg"))
+                  .uploadUrlList(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg", "https://cdn.runapi.ai/public/samples/image.jpg"))
                   .vocalMode("auto_lyrics")
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build(),
@@ -515,7 +515,7 @@ class SunoClientTest {
       CompletedCreateMashupResponse runResponse = runClient.createMashup().run(
               CreateMashupParams.builder()
                   .model(CreateMashupModel.SUNO_V4)
-                  .uploadUrlList(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg"))
+                  .uploadUrlList(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg", "https://cdn.runapi.ai/public/samples/image.jpg"))
                   .vocalMode("auto_lyrics")
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build(),
@@ -529,7 +529,7 @@ class SunoClientTest {
       assertNotNull(runWithOptionsClient.createMashup().run(
               CreateMashupParams.builder()
                   .model(CreateMashupModel.SUNO_V4)
-                  .uploadUrlList(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg"))
+                  .uploadUrlList(java.util.Arrays.asList("https://cdn.runapi.ai/public/samples/image.jpg", "https://cdn.runapi.ai/public/samples/image.jpg"))
                   .vocalMode("auto_lyrics")
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build(),

@@ -326,7 +326,7 @@ def test_replace_section_rejects_mixed_sources():
 
 def test_create_mashup_requires_two_urls():
     client = SunoClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="upload_url_list must contain exactly 2 URLs"):
+    with pytest.raises(ValidationError, match="upload_url_list must contain between 2 and 2 items"):
         client.create_mashup.create(upload_url_list=["only-one"], model="suno-v5")
 
 

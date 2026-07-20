@@ -235,7 +235,9 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "upload_url_list": {
-                    "required": True
+                    "required": True,
+                    "min_items": 2,
+                    "max_items": 2
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
@@ -253,7 +255,9 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "upload_url_list": {
-                    "required": True
+                    "required": True,
+                    "min_items": 2,
+                    "max_items": 2
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
@@ -271,7 +275,9 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "upload_url_list": {
-                    "required": True
+                    "required": True,
+                    "min_items": 2,
+                    "max_items": 2
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
@@ -289,7 +295,9 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "upload_url_list": {
-                    "required": True
+                    "required": True,
+                    "min_items": 2,
+                    "max_items": 2
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
@@ -307,7 +315,9 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "upload_url_list": {
-                    "required": True
+                    "required": True,
+                    "min_items": 2,
+                    "max_items": 2
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
@@ -325,7 +335,9 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "upload_url_list": {
-                    "required": True
+                    "required": True,
+                    "min_items": 2,
+                    "max_items": 2
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]

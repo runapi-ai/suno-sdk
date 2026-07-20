@@ -88,10 +88,6 @@ module RunApi
       end
 
       def validate_create_mashup!(params, resource)
-        upload_url_list = param(resource, params, :upload_url_list)
-        unless upload_url_list.is_a?(Array) && upload_url_list.size == 2
-          raise Core::ValidationError, "upload_url_list must contain exactly 2 URLs"
-        end
         resource.send(:validate_contract!, CONTRACT["create-mashup"], params)
       end
 

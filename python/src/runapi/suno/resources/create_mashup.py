@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Dict, Optional
 
-from runapi.core import Resource, ValidationError, RequestOptions
+from runapi.core import Resource, RequestOptions
 
 from ..contract_gen import CONTRACT
 from ..types import CompletedCreateMashupResponse, CreateMashupResponse
@@ -55,7 +55,4 @@ class CreateMashup(Resource):
         return self._request("get", f"{self.ENDPOINT}/{id}", options=options)
 
     def _validate_params(self, params: Dict[str, Any]) -> None:
-        upload_url_list = params.get("upload_url_list")
-        if not (isinstance(upload_url_list, list) and len(upload_url_list) == 2):
-            raise ValidationError("upload_url_list must contain exactly 2 URLs")
         self._validate_contract(CONTRACT["create-mashup"], params)
