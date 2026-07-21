@@ -7,7 +7,7 @@
 </h3>
 
 <p align="center">
-  Suno API SDKs for JavaScript, Python, Ruby, Go, Java, and PHP on RunAPI, covering text-to-music, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows.
+  Suno API SDKs for JavaScript, Python, Ruby, Go, Java, and PHP on RunAPI, covering text-to-music, lyric generation and blending, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows.
 </p>
 
 <div align="center">
@@ -22,7 +22,7 @@
 </div>
 <br/>
 
-The Suno API SDK packages JavaScript, Python, Ruby, Go, Java, and PHP clients for Suno on RunAPI. Use it for text-to-music, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows when your app needs typed request builders, predictable task polling, file upload helpers, account helpers, and consistent RunAPI errors.
+The Suno API SDK packages JavaScript, Python, Ruby, Go, Java, and PHP clients for Suno on RunAPI. Use it for text-to-music, lyric generation and blending, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows when your app needs typed request builders, predictable task polling, file upload helpers, account helpers, and consistent RunAPI errors.
 
 Suno is listed in the RunAPI model catalog at https://runapi.ai/models/suno. Variant pages below carry pricing, rate-limit, and commercial-usage details. The public `suno-sdk` repository groups the non-PHP language packages, examples, CI, and release tags for this model. The PHP package is released from a split Composer repository.
 
@@ -39,7 +39,7 @@ Gradle:
 
 ```kotlin
 dependencies {
-  implementation("ai.runapi:runapi-suno:0.1.3")
+  implementation("ai.runapi:runapi-suno:0.2.0")
 }
 ```
 
@@ -49,7 +49,7 @@ Maven:
 <dependency>
   <groupId>ai.runapi</groupId>
   <artifactId>runapi-suno</artifactId>
-  <version>0.1.3</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ Use the Java BOM when installing multiple RunAPI Java modules:
 
 ```kotlin
 dependencies {
-  implementation(platform("ai.runapi:runapi-bom:0.2.2"))
+  implementation(platform("ai.runapi:runapi-bom:0.2.3"))
   implementation("ai.runapi:runapi-suno")
 }
 ```
@@ -69,6 +69,7 @@ The PHP package is published from the split Composer repository as `runapi-ai/su
 - Build apps, agent workflows, batch jobs, and production services around Suno requests.
 - Install only the language package your app needs while keeping one model-specific repository for docs and releases.
 - Use `create` for submit-only jobs, `get` for status lookup, and `run` for submit-and-poll scripts.
+- Combine two caller-authored lyrics texts through the typed `blendLyrics` / `blend_lyrics` resource for each language.
 - Upload local files, URL files, or base64 files through shared RunAPI file helpers.
 - Handle validation, authentication, rate limits, insufficient credits, task failures, and polling timeouts through RunAPI SDK errors.
 

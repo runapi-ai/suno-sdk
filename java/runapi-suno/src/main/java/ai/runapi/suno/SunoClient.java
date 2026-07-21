@@ -7,6 +7,7 @@ import java.net.URI;
 import ai.runapi.suno.resources.AddInstrumentalResource;
 import ai.runapi.suno.resources.AddVocalsResource;
 import ai.runapi.suno.resources.BoostStyleResource;
+import ai.runapi.suno.resources.BlendLyricsResource;
 import ai.runapi.suno.resources.CheckVoiceResource;
 import ai.runapi.suno.resources.ConvertAudioResource;
 import ai.runapi.suno.resources.CoverAudioResource;
@@ -31,6 +32,7 @@ public final class SunoClient extends BaseClient {
   private final AddInstrumentalResource addInstrumental;
   private final AddVocalsResource addVocals;
   private final BoostStyleResource boostStyle;
+  private final BlendLyricsResource blendLyrics;
   private final CheckVoiceResource checkVoice;
   private final ConvertAudioResource convertAudio;
   private final CoverAudioResource coverAudio;
@@ -55,6 +57,7 @@ public final class SunoClient extends BaseClient {
     this.addInstrumental = new AddInstrumentalResource(transport(), options());
     this.addVocals = new AddVocalsResource(transport(), options());
     this.boostStyle = new BoostStyleResource(transport(), options());
+    this.blendLyrics = new BlendLyricsResource(transport(), options());
     this.checkVoice = new CheckVoiceResource(transport(), options());
     this.convertAudio = new ConvertAudioResource(transport(), options());
     this.coverAudio = new CoverAudioResource(transport(), options());
@@ -93,6 +96,11 @@ public final class SunoClient extends BaseClient {
   /** Boost Style operations. */
   public BoostStyleResource boostStyle() {
     return boostStyle;
+  }
+
+  /** Blend Lyrics operations. */
+  public BlendLyricsResource blendLyrics() {
+    return blendLyrics;
   }
 
   /** Check Voice operations. */

@@ -32,7 +32,7 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ## Language notes
 
-Use the public Go module with `github.com/runapi-ai/core-sdk/go` options when building music services, CLIs, or workers. The available resources are `TextToMusic`, `ExtendMusic`, `GenerateArtwork`, `CoverAudio`, `AddInstrumental`, `AddVocals`, `SeparateAudioStems`, `GenerateMidi`, `ConvertAudio`, `VisualizeMusic`, `GenerateLyrics`, `GetTimestampedLyrics`, `ReplaceSection`, `CreateMashup`, `TextToSound`, `GeneratePersona`, `BoostStyle`, `VoiceToValidationPhrase`, `RegenerateValidationPhrase`, `GenerateVoice`, and `CheckVoice`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
+Use the public Go module with `github.com/runapi-ai/core-sdk/go` options when building music services, CLIs, or workers. The available resources are `TextToMusic`, `ExtendMusic`, `GenerateArtwork`, `CoverAudio`, `AddInstrumental`, `AddVocals`, `SeparateAudioStems`, `GenerateMidi`, `ConvertAudio`, `VisualizeMusic`, `GenerateLyrics`, `BlendLyrics`, `GetTimestampedLyrics`, `ReplaceSection`, `CreateMashup`, `TextToSound`, `GeneratePersona`, `BoostStyle`, `VoiceToValidationPhrase`, `RegenerateValidationPhrase`, `GenerateVoice`, and `CheckVoice`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
 
 ## Links
 

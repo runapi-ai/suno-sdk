@@ -74,6 +74,19 @@ module RunApi
           }
         }
       },
+      "blend-lyrics" => {
+        "models" => [],
+        "fields_by_model" => {
+          "_" => {
+            "lyrics_a" => {
+              "required" => true
+            },
+            "lyrics_b" => {
+              "required" => true
+            }
+          }
+        }
+      },
       "boost-style" => {
         "models" => [],
         "fields_by_model" => {
@@ -474,7 +487,11 @@ module RunApi
       "generate-lyrics" => {
         "models" => [],
         "fields_by_model" => {
-          "_" => {}
+          "_" => {
+            "prompt" => {
+              "required" => true
+            }
+          }
         }
       },
       "generate-midi" => {

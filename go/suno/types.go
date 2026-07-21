@@ -219,6 +219,13 @@ type GenerateLyricsParams struct {
 	CallbackURL string `json:"callback_url,omitempty" help:"optional; webhook URL"`
 }
 
+// BlendLyricsParams blends two caller-authored lyrics texts.
+type BlendLyricsParams struct {
+	LyricsA     string `json:"lyrics_a" help:"required; first lyrics text to blend"`
+	LyricsB     string `json:"lyrics_b" help:"required; second lyrics text to blend"`
+	CallbackURL string `json:"callback_url,omitempty" help:"optional; webhook URL"`
+}
+
 // GetTimestampedLyricsParams retrieves word-level timing data for a generated track.
 // This is synchronous (use Run directly, no Create/Get polling).
 type GetTimestampedLyricsParams struct {
@@ -486,6 +493,12 @@ type LyricsItem struct {
 
 // GenerateLyricsResponse is the completed result of a lyrics generation task.
 type GenerateLyricsResponse struct {
+	AsyncTaskResponse
+	Lyrics []LyricsItem `json:"lyrics,omitempty"`
+}
+
+// BlendLyricsResponse is the completed result of a lyrics blending task.
+type BlendLyricsResponse struct {
 	AsyncTaskResponse
 	Lyrics []LyricsItem `json:"lyrics,omitempty"`
 }

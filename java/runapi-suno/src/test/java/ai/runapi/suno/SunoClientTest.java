@@ -34,6 +34,7 @@ import ai.runapi.suno.types.CompletedGenerateArtworkResponse;
 import ai.runapi.suno.types.CompletedGenerateLyricsResponse;
 import ai.runapi.suno.types.CompletedGenerateMidiResponse;
 import ai.runapi.suno.types.CompletedGenerateVoiceResponse;
+import ai.runapi.suno.types.BlendLyricsParams;
 import ai.runapi.suno.types.CompletedRegenerateValidationPhraseResponse;
 import ai.runapi.suno.types.CompletedReplaceSectionResponse;
 import ai.runapi.suno.types.CompletedSeparateAudioStemsResponse;
@@ -121,6 +122,25 @@ class SunoClientTest {
     assertEquals("/api/v1/suno/text_to_sound", transport.request.getPath());
     JsonNode body = bodyJson(transport.request);
     assertNotNull(body);
+  }
+
+  @Test
+  void blendLyricsCreateSendsTheFlatLyricsPair() throws Exception {
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"blend_123\",\"status\":\"processing\"}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    client.blendLyrics().create(
+        BlendLyricsParams.builder()
+            .lyricsA("First verse")
+            .lyricsB("Second verse")
+            .build()
+    );
+
+    assertEquals("POST", transport.request.getMethod().name());
+    assertEquals("/api/v1/suno/blend_lyrics", transport.request.getPath());
+    JsonNode body = bodyJson(transport.request);
+    assertEquals("First verse", body.get("lyrics_a").asText());
+    assertEquals("Second verse", body.get("lyrics_b").asText());
   }
 
   @Test
@@ -682,6 +702,12 @@ class SunoClientTest {
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
+    }
+
+    @Test
+    void generateLyricsRequiresPrompt() {
+      assertThrows(NullPointerException.class, () -> GenerateLyricsParams.builder().build());
+      assertThrows(IllegalArgumentException.class, () -> GenerateLyricsParams.builder().prompt(" "));
     }
 
     @Test

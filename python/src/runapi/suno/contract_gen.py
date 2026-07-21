@@ -70,6 +70,19 @@ CONTRACT = {
             }
         }
     },
+    "blend-lyrics": {
+        "models": [],
+        "fields_by_model": {
+            "_": {
+                "lyrics_a": {
+                    "required": True
+                },
+                "lyrics_b": {
+                    "required": True
+                }
+            }
+        }
+    },
     "boost-style": {
         "models": [],
         "fields_by_model": {
@@ -470,7 +483,11 @@ CONTRACT = {
     "generate-lyrics": {
         "models": [],
         "fields_by_model": {
-            "_": {}
+            "_": {
+                "prompt": {
+                    "required": True
+                }
+            }
         }
     },
     "generate-midi": {

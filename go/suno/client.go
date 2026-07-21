@@ -28,6 +28,7 @@ const (
 	convertAudioPath               = "/api/v1/suno/convert_audio"
 	visualizeMusicPath             = "/api/v1/suno/visualize_music"
 	generateLyricsPath             = "/api/v1/suno/generate_lyrics"
+	blendLyricsPath                = "/api/v1/suno/blend_lyrics"
 	getTimestampedLyricsPath       = "/api/v1/suno/get_timestamped_lyrics"
 	replaceSectionPath             = "/api/v1/suno/replace_section"
 	createMashupPath               = "/api/v1/suno/create_mashup"
@@ -55,6 +56,7 @@ type Client struct {
 	ConvertAudio               *ConvertAudio
 	VisualizeMusic             *VisualizeMusic
 	GenerateLyrics             *GenerateLyrics
+	BlendLyrics                *BlendLyrics
 	GetTimestampedLyrics       *GetTimestampedLyrics
 	ReplaceSection             *ReplaceSection
 	CreateMashup               *CreateMashup
@@ -95,6 +97,7 @@ func NewClientWithHTTP(httpClient core.HTTPClient) *Client {
 		ConvertAudio:               &ConvertAudio{http: httpClient},
 		VisualizeMusic:             &VisualizeMusic{http: httpClient},
 		GenerateLyrics:             &GenerateLyrics{http: httpClient},
+		BlendLyrics:                &BlendLyrics{http: httpClient},
 		GetTimestampedLyrics:       &GetTimestampedLyrics{http: httpClient},
 		ReplaceSection:             &ReplaceSection{http: httpClient},
 		CreateMashup:               &CreateMashup{http: httpClient},
@@ -140,6 +143,9 @@ type VisualizeMusic struct{ http core.HTTPClient }
 
 // GenerateLyrics produces AI-generated lyrics from a text prompt.
 type GenerateLyrics struct{ http core.HTTPClient }
+
+// BlendLyrics blends two caller-authored lyrics texts.
+type BlendLyrics struct{ http core.HTTPClient }
 
 // GetTimestampedLyrics retrieves word-level timing alignment for a track. Synchronous (Run only).
 type GetTimestampedLyrics struct{ http core.HTTPClient }
@@ -381,6 +387,28 @@ func (r *GenerateLyrics) Get(ctx context.Context, id string, opts ...option.Requ
 func (r *GenerateLyrics) Run(ctx context.Context, params GenerateLyricsParams, opts ...option.RequestOption) (*GenerateLyricsResponse, error) {
 	_, pollingOptions := option.ResolveRequestOptions(opts...)
 	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, params, opts...) }, func(ctx context.Context, id string) (*GenerateLyricsResponse, error) { return r.Get(ctx, id, opts...) }, pollingOptions)
+}
+
+// Create submits a lyrics-blending task and returns immediately with a task id.
+func (r *BlendLyrics) Create(ctx context.Context, params BlendLyricsParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["blend-lyrics"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, blendLyricsPath, body, requestOptions)
+}
+
+// Get fetches the current status of a lyrics-blending task by id.
+func (r *BlendLyrics) Get(ctx context.Context, id string, opts ...option.RequestOption) (*BlendLyricsResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[BlendLyricsResponse](ctx, r.http, core.ResourcePath(blendLyricsPath, id), requestOptions)
+}
+
+// Run submits a lyrics-blending task and polls until it completes.
+func (r *BlendLyrics) Run(ctx context.Context, params BlendLyricsParams, opts ...option.RequestOption) (*BlendLyricsResponse, error) {
+	_, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, params, opts...) }, func(ctx context.Context, id string) (*BlendLyricsResponse, error) { return r.Get(ctx, id, opts...) }, pollingOptions)
 }
 
 // Run retrieves word-level timing alignment for a track and returns the result.

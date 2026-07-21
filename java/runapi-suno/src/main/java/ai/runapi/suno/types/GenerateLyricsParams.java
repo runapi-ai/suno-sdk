@@ -10,7 +10,7 @@ public final class GenerateLyricsParams {
   private final String callbackUrl;
 
   private GenerateLyricsParams(Builder builder) {
-    this.prompt = builder.prompt;
+    this.prompt = SunoParamUtils.requireNonBlank(builder.prompt, "prompt");
     this.callbackUrl = builder.callbackUrl;
   }
 

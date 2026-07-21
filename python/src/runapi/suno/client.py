@@ -9,6 +9,7 @@ from runapi.core import ClientOptions, HttpClient, resolve_api_key
 from .resources.add_instrumental import AddInstrumental
 from .resources.add_vocals import AddVocals
 from .resources.boost_style import BoostStyle
+from .resources.blend_lyrics import BlendLyrics
 from .resources.check_voice import CheckVoice
 from .resources.convert_audio import ConvertAudio
 from .resources.cover_audio import CoverAudio
@@ -58,6 +59,7 @@ class SunoClient:
         self.convert_audio = ConvertAudio(http)
         self.visualize_music = VisualizeMusic(http)
         self.generate_lyrics = GenerateLyrics(http)
+        self.blend_lyrics = BlendLyrics(http)
         self.get_timestamped_lyrics = GetTimestampedLyrics(http)
         self.replace_section = ReplaceSection(http)
         self.create_mashup = CreateMashup(http)

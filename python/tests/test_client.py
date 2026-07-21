@@ -80,6 +80,7 @@ def test_exposes_all_resource_accessors():
         "convert_audio": R.ConvertAudio,
         "visualize_music": R.VisualizeMusic,
         "generate_lyrics": R.GenerateLyrics,
+        "blend_lyrics": R.BlendLyrics,
         "get_timestamped_lyrics": R.GetTimestampedLyrics,
         "replace_section": R.ReplaceSection,
         "create_mashup": R.CreateMashup,
@@ -91,7 +92,7 @@ def test_exposes_all_resource_accessors():
         "generate_persona": R.GeneratePersona,
         "boost_style": R.BoostStyle,
     }
-    assert len(expected) == 21
+    assert len(expected) == 22
     for name, cls in expected.items():
         assert isinstance(getattr(client, name), cls), name
 
@@ -120,6 +121,24 @@ def test_get_fetches_by_id():
     client = SunoClient(api_key="k", http_client=fake)
     client.text_to_music.get("t1")
     assert fake.calls == [("get", "/api/v1/suno/text_to_music/t1", None)]
+
+
+def test_blend_lyrics_posts_flat_lyrics_pair():
+    fake = FakeHttp({"id": "blend_1", "status": "processing"})
+    client = SunoClient(api_key="k", http_client=fake)
+
+    client.blend_lyrics.create(lyrics_a="First verse", lyrics_b="Second verse")
+
+    assert fake.calls == [
+        ("post", "/api/v1/suno/blend_lyrics", {"lyrics_a": "First verse", "lyrics_b": "Second verse"}),
+    ]
+
+
+def test_blend_lyrics_requires_both_lyrics_texts():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+
+    with pytest.raises(ValidationError, match="lyrics_b"):
+        client.blend_lyrics.create(lyrics_a="First verse")
 
 
 def test_run_narrows_completed_type():

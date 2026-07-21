@@ -16,7 +16,7 @@ Gradle:
 
 ```kotlin
 dependencies {
-  implementation("ai.runapi:runapi-suno:0.1.3")
+  implementation("ai.runapi:runapi-suno:0.2.0")
 }
 ```
 
@@ -26,7 +26,7 @@ Maven:
 <dependency>
   <groupId>ai.runapi</groupId>
   <artifactId>runapi-suno</artifactId>
-  <version>0.1.3</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
@@ -34,7 +34,7 @@ Use the BOM when multiple RunAPI Java modules are installed:
 
 ```kotlin
 dependencies {
-  implementation(platform("ai.runapi:runapi-bom:0.2.2"))
+  implementation(platform("ai.runapi:runapi-bom:0.2.3"))
   implementation("ai.runapi:runapi-suno")
 }
 ```
@@ -47,7 +47,7 @@ Maven BOM:
     <dependency>
       <groupId>ai.runapi</groupId>
       <artifactId>runapi-bom</artifactId>
-      <version>0.2.2</version>
+      <version>0.2.3</version>
       <type>pom</type>
       <scope>import</scope>
     </dependency>
@@ -104,6 +104,8 @@ TextToMusicParams params = TextToMusicParams.builder()
 TaskCreateResponse task = client.textToMusic().create(params);
 TextToMusicResponse status = client.textToMusic().get(task.getId());
 ```
+
+Use `client.blendLyrics()` with `BlendLyricsParams` to combine two caller-authored lyrics texts through the same `create`, `get`, and `run` lifecycle.
 
 ## Files
 

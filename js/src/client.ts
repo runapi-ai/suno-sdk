@@ -10,6 +10,7 @@ import { GenerateMidi } from './resources/generate-midi';
 import { ConvertAudio } from './resources/convert-audio';
 import { VisualizeMusic } from './resources/visualize-music';
 import { GenerateLyrics } from './resources/generate-lyrics';
+import { BlendLyrics } from './resources/blend-lyrics';
 import { GetTimestampedLyrics } from './resources/get-timestamped-lyrics';
 import { ReplaceSection } from './resources/replace-section';
 import { CreateMashup } from './resources/create-mashup';
@@ -61,6 +62,8 @@ export class SunoClient extends BaseClient {
   public readonly visualizeMusic: VisualizeMusic;
   /** Produces AI-generated lyrics from a text prompt. */
   public readonly generateLyrics: GenerateLyrics;
+  /** Blends two caller-authored lyrics texts into a new lyrics result. */
+  public readonly blendLyrics: BlendLyrics;
   /** Retrieves word-level timing alignment for a track. Synchronous (run only). */
   public readonly getTimestampedLyrics: GetTimestampedLyrics;
   /** Re-generates a time range within an existing track with new lyrics and style. */
@@ -95,6 +98,7 @@ export class SunoClient extends BaseClient {
     this.convertAudio = new ConvertAudio(this.http);
     this.visualizeMusic = new VisualizeMusic(this.http);
     this.generateLyrics = new GenerateLyrics(this.http);
+    this.blendLyrics = new BlendLyrics(this.http);
     this.getTimestampedLyrics = new GetTimestampedLyrics(this.http);
     this.replaceSection = new ReplaceSection(this.http);
     this.createMashup = new CreateMashup(this.http);

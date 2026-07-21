@@ -193,6 +193,11 @@ module RunApi
         optional :lyrics, [-> { Lyric }]
       end
 
+      # Result of a lyrics blending task.
+      class BlendLyricsResponse < AsyncTaskResponse
+        optional :lyrics, [-> { Lyric }]
+      end
+
       # Synchronous response containing word-level timing data and waveform for a track.
       class GetTimestampedLyricsResponse < RunApi::Core::BaseModel
         optional :aligned_words, [-> { AlignedWord }]
@@ -284,6 +289,10 @@ module RunApi
       end
 
       class CompletedGenerateLyricsResponse < GenerateLyricsResponse
+        required :lyrics, [-> { Lyric }]
+      end
+
+      class CompletedBlendLyricsResponse < BlendLyricsResponse
         required :lyrics, [-> { Lyric }]
       end
 

@@ -92,6 +92,19 @@ export const contract = {
       }
     }
   },
+  "blend-lyrics": {
+    "models": [],
+    "fields_by_model": {
+      "_": {
+        "lyrics_a": {
+          "required": true
+        },
+        "lyrics_b": {
+          "required": true
+        }
+      }
+    }
+  },
   "boost-style": {
     "models": [],
     "fields_by_model": {
@@ -731,7 +744,11 @@ export const contract = {
   "generate-lyrics": {
     "models": [],
     "fields_by_model": {
-      "_": {}
+      "_": {
+        "prompt": {
+          "required": true
+        }
+      }
     }
   },
   "generate-midi": {

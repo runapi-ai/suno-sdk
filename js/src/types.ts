@@ -244,6 +244,13 @@ export interface GenerateLyricsParams {
   callback_url?: string;
 }
 
+/** Params for blending two caller-authored lyrics texts. */
+export interface BlendLyricsParams {
+  lyrics_a: string;
+  lyrics_b: string;
+  callback_url?: string;
+}
+
 /** Params for retrieving word-level timing alignment for a track. Synchronous -- use `run()` directly. */
 export interface GetTimestampedLyricsParams {
   task_id: string;
@@ -579,6 +586,11 @@ export interface GenerateLyricsResponse extends AsyncTaskResponse {
   lyrics?: Array<{ title?: string; text: string }>;
 }
 
+/** Result of blending two lyrics texts. */
+export interface BlendLyricsResponse extends AsyncTaskResponse {
+  lyrics?: Array<{ title?: string; text: string }>;
+}
+
 /** Word-level timing alignment for a single word in a track. */
 export interface AlignedWord {
   word: string;
@@ -665,6 +677,7 @@ export type CompletedGenerateMidiResponse = GenerateMidiResponse & { status: 'co
 export type CompletedConvertAudioResponse = ConvertAudioResponse & { status: 'completed'; wav_url: string };
 export type CompletedVisualizeMusicResponse = VisualizeMusicResponse & { status: 'completed'; video_url: string };
 export type CompletedGenerateLyricsResponse = GenerateLyricsResponse & { status: 'completed'; lyrics: Array<{ title?: string; text: string }> };
+export type CompletedBlendLyricsResponse = BlendLyricsResponse & { status: 'completed'; lyrics: Array<{ title?: string; text: string }> };
 export type CompletedReplaceSectionResponse = ReplaceSectionResponse & { status: 'completed'; track: Audio };
 export type CompletedCreateMashupResponse = CreateMashupResponse & { status: 'completed'; audios: Audio[] };
 export type CompletedTextToSoundResponse = TextToSoundResponse & { status: 'completed'; audios: SoundAudio[] };

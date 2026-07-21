@@ -34,6 +34,8 @@ module RunApi
       attr_reader :visualize_music
       # @return [Resources::GenerateLyrics] produces AI-generated lyrics from a text prompt
       attr_reader :generate_lyrics
+      # @return [Resources::BlendLyrics] blends two caller-authored lyrics texts
+      attr_reader :blend_lyrics
       # @return [Resources::GetTimestampedLyrics] retrieves word-level timing alignment for a track (synchronous)
       attr_reader :get_timestamped_lyrics
       # @return [Resources::ReplaceSection] re-generates a time range within an existing track
@@ -69,6 +71,7 @@ module RunApi
         @convert_audio = Resources::ConvertAudio.new(http)
         @visualize_music = Resources::VisualizeMusic.new(http)
         @generate_lyrics = Resources::GenerateLyrics.new(http)
+        @blend_lyrics = Resources::BlendLyrics.new(http)
         @get_timestamped_lyrics = Resources::GetTimestampedLyrics.new(http)
         @replace_section = Resources::ReplaceSection.new(http)
         @create_mashup = Resources::CreateMashup.new(http)

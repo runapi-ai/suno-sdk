@@ -89,6 +89,28 @@ func TestAddVocalsCreateUsesLyricsPayload(t *testing.T) {
 	}
 }
 
+func TestBlendLyricsCreateUsesLyricsPair(t *testing.T) {
+	httpClient := &stubHTTPClient{}
+	client := NewClientWithHTTP(httpClient)
+	_, err := client.BlendLyrics.Create(context.Background(), BlendLyricsParams{
+		LyricsA: "First verse",
+		LyricsB: "Second verse",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.method != "POST" || httpClient.path != "/api/v1/suno/blend_lyrics" {
+		t.Fatalf("unexpected request: %s %s", httpClient.method, httpClient.path)
+	}
+	body, ok := httpClient.body.(map[string]any)
+	if !ok {
+		t.Fatalf("expected flat body map, got %T", httpClient.body)
+	}
+	if body["lyrics_a"] != "First verse" || body["lyrics_b"] != "Second verse" {
+		t.Fatalf("expected lyrics pair, got %#v", body)
+	}
+}
+
 func TestSeparateAudioStemsCreateUsesAdvancedStemPayload(t *testing.T) {
 	httpClient := &stubHTTPClient{}
 	client := NewClientWithHTTP(httpClient)

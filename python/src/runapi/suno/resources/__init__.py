@@ -1,6 +1,7 @@
 from .add_instrumental import AddInstrumental
 from .add_vocals import AddVocals
 from .boost_style import BoostStyle
+from .blend_lyrics import BlendLyrics
 from .check_voice import CheckVoice
 from .convert_audio import ConvertAudio
 from .cover_audio import CoverAudio
@@ -32,6 +33,7 @@ __all__ = [
     "ConvertAudio",
     "VisualizeMusic",
     "GenerateLyrics",
+    "BlendLyrics",
     "GetTimestampedLyrics",
     "ReplaceSection",
     "CreateMashup",

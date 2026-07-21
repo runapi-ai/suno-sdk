@@ -28,7 +28,7 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ## Language notes
 
-Use the TypeScript types in `src/types.ts` and the resource classes under `src/resources` when building music applications. The available resources are `textToMusic`, `extendMusic`, `generateArtwork`, `coverAudio`, `addInstrumental`, `addVocals`, `separateAudioStems`, `generateMidi`, `convertAudio`, `visualizeMusic`, `generateLyrics`, `getTimestampedLyrics`, `replaceSection`, `createMashup`, `textToSound`, `generatePersona`, `boostStyle`, `voiceToValidationPhrase`, `regenerateValidationPhrase`, `generateVoice`, and `checkVoice`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
+Use the TypeScript types in `src/types.ts` and the resource classes under `src/resources` when building music applications. The available resources are `textToMusic`, `extendMusic`, `generateArtwork`, `coverAudio`, `addInstrumental`, `addVocals`, `separateAudioStems`, `generateMidi`, `convertAudio`, `visualizeMusic`, `generateLyrics`, `blendLyrics`, `getTimestampedLyrics`, `replaceSection`, `createMashup`, `textToSound`, `generatePersona`, `boostStyle`, `voiceToValidationPhrase`, `regenerateValidationPhrase`, `generateVoice`, and `checkVoice`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
 
 ## Links
 

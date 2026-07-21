@@ -28,6 +28,12 @@ print(result.audios[0].audio_url)
 # Generate lyrics from a prompt.
 lyrics = client.generate_lyrics.run(prompt="a song about the ocean at night")
 print(lyrics.lyrics[0].text)
+
+blended = client.blend_lyrics.run(
+    lyrics_a="[Verse]\nCity lights fade into dawn",
+    lyrics_b="[Chorus]\nWe rise with the morning sun",
+)
+print(blended.lyrics[0].text)
 ```
 
 Use `create` to submit a task and return quickly, `get` to fetch the latest task state, and `run` when a script should create and poll until completion:
@@ -48,7 +54,7 @@ RunAPI-generated file URLs are temporary. Download and store generated images, v
 
 ## Language notes
 
-Pass parameters as keyword arguments and catch the `runapi.suno` error classes when building music jobs or scripts. The available resources are `text_to_music`, `extend_music`, `generate_artwork`, `cover_audio`, `add_instrumental`, `add_vocals`, `separate_audio_stems`, `generate_midi`, `convert_audio`, `visualize_music`, `generate_lyrics`, `get_timestamped_lyrics`, `replace_section`, `create_mashup`, `text_to_sound`, `voice_to_validation_phrase`, `regenerate_validation_phrase`, `generate_voice`, `check_voice`, `generate_persona`, and `boost_style`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
+Pass parameters as keyword arguments and catch the `runapi.suno` error classes when building music jobs or scripts. The available resources are `text_to_music`, `extend_music`, `generate_artwork`, `cover_audio`, `add_instrumental`, `add_vocals`, `separate_audio_stems`, `generate_midi`, `convert_audio`, `visualize_music`, `generate_lyrics`, `blend_lyrics`, `get_timestamped_lyrics`, `replace_section`, `create_mashup`, `text_to_sound`, `voice_to_validation_phrase`, `regenerate_validation_phrase`, `generate_voice`, `check_voice`, `generate_persona`, and `boost_style`. Keep `RUNAPI_API_KEY` in the environment or your secret manager; never commit API keys or callback secrets.
 
 ## Links
 

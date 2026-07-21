@@ -228,6 +228,12 @@ class GenerateLyricsResponse(AsyncTaskResponse):
     lyrics = optional([lambda: Lyric])
 
 
+class BlendLyricsResponse(AsyncTaskResponse):
+    """Suno lyrics blending task status response."""
+
+    lyrics = optional([lambda: Lyric])
+
+
 class GetTimestampedLyricsResponse(BaseModel):
     """Suno timestamped-lyrics result."""
 
@@ -348,6 +354,12 @@ class CompletedVisualizeMusicResponse(VisualizeMusicResponse):
 
 class CompletedGenerateLyricsResponse(GenerateLyricsResponse):
     """Narrowed lyrics response once polling observes completion."""
+
+    lyrics = required([lambda: Lyric])
+
+
+class CompletedBlendLyricsResponse(BlendLyricsResponse):
+    """Narrowed lyrics blending response once polling observes completion."""
 
     lyrics = required([lambda: Lyric])
 

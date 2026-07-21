@@ -43,6 +43,7 @@ RSpec.describe RunApi::Suno::Client do
       convert_audio: RunApi::Suno::Resources::ConvertAudio,
       visualize_music: RunApi::Suno::Resources::VisualizeMusic,
       generate_lyrics: RunApi::Suno::Resources::GenerateLyrics,
+      blend_lyrics: RunApi::Suno::Resources::BlendLyrics,
       get_timestamped_lyrics: RunApi::Suno::Resources::GetTimestampedLyrics,
       replace_section: RunApi::Suno::Resources::ReplaceSection,
       create_mashup: RunApi::Suno::Resources::CreateMashup,
