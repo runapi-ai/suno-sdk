@@ -234,7 +234,7 @@ class BlendLyricsResponse(AsyncTaskResponse):
     lyrics = optional([lambda: Lyric])
 
 
-class GetTimestampedLyricsResponse(BaseModel):
+class GetTimestampedLyricsResponse(TaskResponse):
     """Suno timestamped-lyrics result."""
 
     aligned_words = optional([lambda: AlignedWord])
@@ -250,14 +250,14 @@ class ReplaceSectionResponse(AsyncTaskResponse):
     audios = optional([lambda: Audio])
 
 
-class GeneratePersonaResponse(BaseModel):
+class GeneratePersonaResponse(TaskResponse):
     """Suno persona result."""
 
     persona = required(lambda: Persona)
     error = optional(str)
 
 
-class BoostStyleResponse(BaseModel):
+class BoostStyleResponse(TaskResponse):
     """Suno boost-style result."""
 
     style = optional(str)
@@ -285,7 +285,7 @@ class VoiceGenerationResponse(AsyncTaskResponse):
     voice_id = optional(str)
 
 
-class CheckVoiceResponse(BaseModel):
+class CheckVoiceResponse(TaskResponse):
     """Suno check-voice result."""
 
     is_available = optional()

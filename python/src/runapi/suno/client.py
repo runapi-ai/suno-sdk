@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Optional
 
-from runapi.core import ClientOptions, HttpClient, resolve_api_key
+from runapi.core import ProviderClient
 
 from .resources.add_instrumental import AddInstrumental
 from .resources.add_vocals import AddVocals
@@ -30,7 +30,7 @@ from .resources.visualize_music import VisualizeMusic
 from .resources.voice_to_validation_phrase import VoiceToValidationPhrase
 
 
-class SunoClient:
+class SunoClient(ProviderClient):
     """Suno music, sound, lyrics, and voice client.
 
     Example::
@@ -44,9 +44,8 @@ class SunoClient:
     """
 
     def __init__(self, api_key: Optional[str] = None, **options: Any) -> None:
-        resolved_api_key = resolve_api_key(api_key)
-        client_options = ClientOptions(api_key=resolved_api_key, **options)
-        http = client_options.http_client or HttpClient(client_options)
+        super().__init__(api_key, **options)
+        http = self._http
 
         self.text_to_music = TextToMusic(http)
         self.extend_music = ExtendMusic(http)
