@@ -6,6 +6,15 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "required": True
+                },
+                "tags": {
+                    "required": True
+                },
+                "title": {
+                    "required": True
+                },
                 "upload_url": {
                     "required": True
                 },
@@ -17,6 +26,15 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "required": True
+                },
+                "tags": {
+                    "required": True
+                },
+                "title": {
+                    "required": True
+                },
                 "upload_url": {
                     "required": True
                 },
@@ -26,6 +44,15 @@ CONTRACT = {
             },
             "suno-v5.5": {
                 "model": {
+                    "required": True
+                },
+                "negative_tags": {
+                    "required": True
+                },
+                "tags": {
+                    "required": True
+                },
+                "title": {
                     "required": True
                 },
                 "upload_url": {
@@ -47,6 +74,15 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "required": True
+                },
+                "style": {
+                    "required": True
+                },
+                "title": {
+                    "required": True
+                },
                 "upload_url": {
                     "required": True
                 },
@@ -59,6 +95,15 @@ CONTRACT = {
                     "required": True
                 },
                 "model": {
+                    "required": True
+                },
+                "negative_tags": {
+                    "required": True
+                },
+                "style": {
+                    "required": True
+                },
+                "title": {
                     "required": True
                 },
                 "upload_url": {
@@ -86,7 +131,11 @@ CONTRACT = {
     "boost-style": {
         "models": [],
         "fields_by_model": {
-            "_": {}
+            "_": {
+                "description": {
+                    "required": True
+                }
+            }
         }
     },
     "check-voice": {
@@ -102,7 +151,14 @@ CONTRACT = {
     "convert-audio": {
         "models": [],
         "fields_by_model": {
-            "_": {}
+            "_": {
+                "audio_id": {
+                    "required": True
+                },
+                "task_id": {
+                    "required": True
+                }
+            }
         }
     },
     "cover-audio": {
@@ -389,7 +445,8 @@ CONTRACT = {
                     "required": True
                 },
                 "parameter_mode": {
-                    "enum": ["source", "custom"]
+                    "enum": ["source", "custom"],
+                    "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -403,7 +460,8 @@ CONTRACT = {
                     "required": True
                 },
                 "parameter_mode": {
-                    "enum": ["source", "custom"]
+                    "enum": ["source", "custom"],
+                    "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -417,7 +475,8 @@ CONTRACT = {
                     "required": True
                 },
                 "parameter_mode": {
-                    "enum": ["source", "custom"]
+                    "enum": ["source", "custom"],
+                    "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -431,7 +490,8 @@ CONTRACT = {
                     "required": True
                 },
                 "parameter_mode": {
-                    "enum": ["source", "custom"]
+                    "enum": ["source", "custom"],
+                    "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -445,7 +505,8 @@ CONTRACT = {
                     "required": True
                 },
                 "parameter_mode": {
-                    "enum": ["source", "custom"]
+                    "enum": ["source", "custom"],
+                    "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -459,7 +520,8 @@ CONTRACT = {
                     "required": True
                 },
                 "parameter_mode": {
-                    "enum": ["source", "custom"]
+                    "enum": ["source", "custom"],
+                    "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -493,13 +555,30 @@ CONTRACT = {
     "generate-midi": {
         "models": [],
         "fields_by_model": {
-            "_": {}
+            "_": {
+                "task_id": {
+                    "required": True
+                }
+            }
         }
     },
     "generate-persona": {
         "models": [],
         "fields_by_model": {
-            "_": {}
+            "_": {
+                "audio_id": {
+                    "required": True
+                },
+                "description": {
+                    "required": True
+                },
+                "name": {
+                    "required": True
+                },
+                "task_id": {
+                    "required": True
+                }
+            }
         }
     },
     "generate-voice": {
@@ -521,7 +600,14 @@ CONTRACT = {
     "get-timestamped-lyrics": {
         "models": [],
         "fields_by_model": {
-            "_": {}
+            "_": {
+                "audio_id": {
+                    "required": True
+                },
+                "task_id": {
+                    "required": True
+                }
+            }
         }
     },
     "regenerate-validation-phrase": {
@@ -755,7 +841,14 @@ CONTRACT = {
     "visualize-music": {
         "models": [],
         "fields_by_model": {
-            "_": {}
+            "_": {
+                "audio_id": {
+                    "required": True
+                },
+                "task_id": {
+                    "required": True
+                }
+            }
         }
     },
     "voice-to-validation-phrase": {
@@ -772,6 +865,9 @@ CONTRACT = {
                 "vocal_start_seconds": {
                     "required": True,
                     "type": "integer"
+                },
+                "voice_url": {
+                    "required": True
                 }
             }
         }

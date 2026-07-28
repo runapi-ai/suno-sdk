@@ -10,6 +10,15 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "required" => true
+            },
+            "tags" => {
+              "required" => true
+            },
+            "title" => {
+              "required" => true
+            },
             "upload_url" => {
               "required" => true
             },
@@ -21,6 +30,15 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "required" => true
+            },
+            "tags" => {
+              "required" => true
+            },
+            "title" => {
+              "required" => true
+            },
             "upload_url" => {
               "required" => true
             },
@@ -30,6 +48,15 @@ module RunApi
           },
           "suno-v5.5" => {
             "model" => {
+              "required" => true
+            },
+            "negative_tags" => {
+              "required" => true
+            },
+            "tags" => {
+              "required" => true
+            },
+            "title" => {
               "required" => true
             },
             "upload_url" => {
@@ -51,6 +78,15 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "required" => true
+            },
+            "style" => {
+              "required" => true
+            },
+            "title" => {
+              "required" => true
+            },
             "upload_url" => {
               "required" => true
             },
@@ -63,6 +99,15 @@ module RunApi
               "required" => true
             },
             "model" => {
+              "required" => true
+            },
+            "negative_tags" => {
+              "required" => true
+            },
+            "style" => {
+              "required" => true
+            },
+            "title" => {
               "required" => true
             },
             "upload_url" => {
@@ -90,7 +135,11 @@ module RunApi
       "boost-style" => {
         "models" => [],
         "fields_by_model" => {
-          "_" => {}
+          "_" => {
+            "description" => {
+              "required" => true
+            }
+          }
         }
       },
       "check-voice" => {
@@ -106,7 +155,14 @@ module RunApi
       "convert-audio" => {
         "models" => [],
         "fields_by_model" => {
-          "_" => {}
+          "_" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "task_id" => {
+              "required" => true
+            }
+          }
         }
       },
       "cover-audio" => {
@@ -393,7 +449,8 @@ module RunApi
               "required" => true
             },
             "parameter_mode" => {
-              "enum" => ["source", "custom"]
+              "enum" => ["source", "custom"],
+              "required" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -407,7 +464,8 @@ module RunApi
               "required" => true
             },
             "parameter_mode" => {
-              "enum" => ["source", "custom"]
+              "enum" => ["source", "custom"],
+              "required" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -421,7 +479,8 @@ module RunApi
               "required" => true
             },
             "parameter_mode" => {
-              "enum" => ["source", "custom"]
+              "enum" => ["source", "custom"],
+              "required" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -435,7 +494,8 @@ module RunApi
               "required" => true
             },
             "parameter_mode" => {
-              "enum" => ["source", "custom"]
+              "enum" => ["source", "custom"],
+              "required" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -449,7 +509,8 @@ module RunApi
               "required" => true
             },
             "parameter_mode" => {
-              "enum" => ["source", "custom"]
+              "enum" => ["source", "custom"],
+              "required" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -463,7 +524,8 @@ module RunApi
               "required" => true
             },
             "parameter_mode" => {
-              "enum" => ["source", "custom"]
+              "enum" => ["source", "custom"],
+              "required" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -497,13 +559,30 @@ module RunApi
       "generate-midi" => {
         "models" => [],
         "fields_by_model" => {
-          "_" => {}
+          "_" => {
+            "task_id" => {
+              "required" => true
+            }
+          }
         }
       },
       "generate-persona" => {
         "models" => [],
         "fields_by_model" => {
-          "_" => {}
+          "_" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "description" => {
+              "required" => true
+            },
+            "name" => {
+              "required" => true
+            },
+            "task_id" => {
+              "required" => true
+            }
+          }
         }
       },
       "generate-voice" => {
@@ -525,7 +604,14 @@ module RunApi
       "get-timestamped-lyrics" => {
         "models" => [],
         "fields_by_model" => {
-          "_" => {}
+          "_" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "task_id" => {
+              "required" => true
+            }
+          }
         }
       },
       "regenerate-validation-phrase" => {
@@ -759,7 +845,14 @@ module RunApi
       "visualize-music" => {
         "models" => [],
         "fields_by_model" => {
-          "_" => {}
+          "_" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "task_id" => {
+              "required" => true
+            }
+          }
         }
       },
       "voice-to-validation-phrase" => {
@@ -776,6 +869,9 @@ module RunApi
             "vocal_start_seconds" => {
               "required" => true,
               "type" => "integer"
+            },
+            "voice_url" => {
+              "required" => true
             }
           }
         }

@@ -10,6 +10,15 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "required": true
+        },
+        "tags": {
+          "required": true
+        },
+        "title": {
+          "required": true
+        },
         "upload_url": {
           "required": true
         },
@@ -24,6 +33,15 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "required": true
+        },
+        "tags": {
+          "required": true
+        },
+        "title": {
+          "required": true
+        },
         "upload_url": {
           "required": true
         },
@@ -36,6 +54,15 @@ export const contract = {
       },
       "suno-v5.5": {
         "model": {
+          "required": true
+        },
+        "negative_tags": {
+          "required": true
+        },
+        "tags": {
+          "required": true
+        },
+        "title": {
           "required": true
         },
         "upload_url": {
@@ -63,6 +90,15 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "required": true
+        },
+        "style": {
+          "required": true
+        },
+        "title": {
+          "required": true
+        },
         "upload_url": {
           "required": true
         },
@@ -78,6 +114,15 @@ export const contract = {
           "required": true
         },
         "model": {
+          "required": true
+        },
+        "negative_tags": {
+          "required": true
+        },
+        "style": {
+          "required": true
+        },
+        "title": {
           "required": true
         },
         "upload_url": {
@@ -108,7 +153,11 @@ export const contract = {
   "boost-style": {
     "models": [],
     "fields_by_model": {
-      "_": {}
+      "_": {
+        "description": {
+          "required": true
+        }
+      }
     }
   },
   "check-voice": {
@@ -124,7 +173,14 @@ export const contract = {
   "convert-audio": {
     "models": [],
     "fields_by_model": {
-      "_": {}
+      "_": {
+        "audio_id": {
+          "required": true
+        },
+        "task_id": {
+          "required": true
+        }
+      }
     }
   },
   "cover-audio": {
@@ -599,7 +655,8 @@ export const contract = {
           "enum": [
             "source",
             "custom"
-          ]
+          ],
+          "required": true
         },
         "persona_type": {
           "enum": [
@@ -622,7 +679,8 @@ export const contract = {
           "enum": [
             "source",
             "custom"
-          ]
+          ],
+          "required": true
         },
         "persona_type": {
           "enum": [
@@ -645,7 +703,8 @@ export const contract = {
           "enum": [
             "source",
             "custom"
-          ]
+          ],
+          "required": true
         },
         "persona_type": {
           "enum": [
@@ -668,7 +727,8 @@ export const contract = {
           "enum": [
             "source",
             "custom"
-          ]
+          ],
+          "required": true
         },
         "persona_type": {
           "enum": [
@@ -691,7 +751,8 @@ export const contract = {
           "enum": [
             "source",
             "custom"
-          ]
+          ],
+          "required": true
         },
         "persona_type": {
           "enum": [
@@ -714,7 +775,8 @@ export const contract = {
           "enum": [
             "source",
             "custom"
-          ]
+          ],
+          "required": true
         },
         "persona_type": {
           "enum": [
@@ -754,13 +816,30 @@ export const contract = {
   "generate-midi": {
     "models": [],
     "fields_by_model": {
-      "_": {}
+      "_": {
+        "task_id": {
+          "required": true
+        }
+      }
     }
   },
   "generate-persona": {
     "models": [],
     "fields_by_model": {
-      "_": {}
+      "_": {
+        "audio_id": {
+          "required": true
+        },
+        "description": {
+          "required": true
+        },
+        "name": {
+          "required": true
+        },
+        "task_id": {
+          "required": true
+        }
+      }
     }
   },
   "generate-voice": {
@@ -787,7 +866,14 @@ export const contract = {
   "get-timestamped-lyrics": {
     "models": [],
     "fields_by_model": {
-      "_": {}
+      "_": {
+        "audio_id": {
+          "required": true
+        },
+        "task_id": {
+          "required": true
+        }
+      }
     }
   },
   "regenerate-validation-phrase": {
@@ -1277,7 +1363,14 @@ export const contract = {
   "visualize-music": {
     "models": [],
     "fields_by_model": {
-      "_": {}
+      "_": {
+        "audio_id": {
+          "required": true
+        },
+        "task_id": {
+          "required": true
+        }
+      }
     }
   },
   "voice-to-validation-phrase": {
@@ -1305,6 +1398,9 @@ export const contract = {
         "vocal_start_seconds": {
           "required": true,
           "type": "integer"
+        },
+        "voice_url": {
+          "required": true
         }
       }
     }

@@ -251,7 +251,10 @@ class SunoClientTest {
       assertNotNull(createClient.addInstrumental().create(
               AddInstrumentalParams.builder()
                   .model(AddInstrumentalModel.SUNO_V4_5_PLUS)
-                  .uploadUrl("https://cdn.runapi.ai/public/samples/image.jpg")
+                  .uploadUrl("https://file.runapi.ai/source-vocals.mp3")
+                  .title("City Lights")
+                  .tags("acoustic pop")
+                  .negativeTags("heavy metal")
                   .build()
       ));
 
@@ -260,7 +263,10 @@ class SunoClientTest {
       assertNotNull(createWithOptionsClient.addInstrumental().create(
               AddInstrumentalParams.builder()
                   .model(AddInstrumentalModel.SUNO_V4_5_PLUS)
-                  .uploadUrl("https://cdn.runapi.ai/public/samples/image.jpg")
+                  .uploadUrl("https://file.runapi.ai/source-vocals.mp3")
+                  .title("City Lights")
+                  .tags("acoustic pop")
+                  .negativeTags("heavy metal")
                   .build(),
           RequestOptions.none()));
 
@@ -279,7 +285,10 @@ class SunoClientTest {
       CompletedAddInstrumentalResponse runResponse = runClient.addInstrumental().run(
               AddInstrumentalParams.builder()
                   .model(AddInstrumentalModel.SUNO_V4_5_PLUS)
-                  .uploadUrl("https://cdn.runapi.ai/public/samples/image.jpg")
+                  .uploadUrl("https://file.runapi.ai/source-vocals.mp3")
+                  .title("City Lights")
+                  .tags("acoustic pop")
+                  .negativeTags("heavy metal")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
       assertNotNull(runResponse);
@@ -291,7 +300,10 @@ class SunoClientTest {
       assertNotNull(runWithOptionsClient.addInstrumental().run(
               AddInstrumentalParams.builder()
                   .model(AddInstrumentalModel.SUNO_V4_5_PLUS)
-                  .uploadUrl("https://cdn.runapi.ai/public/samples/image.jpg")
+                  .uploadUrl("https://file.runapi.ai/source-vocals.mp3")
+                  .title("City Lights")
+                  .tags("acoustic pop")
+                  .negativeTags("heavy metal")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
     }
@@ -303,8 +315,11 @@ class SunoClientTest {
       assertNotNull(createClient.addVocals().create(
               AddVocalsParams.builder()
                   .model(AddVocalsModel.SUNO_V4_5_PLUS)
-                  .uploadUrl("https://cdn.runapi.ai/public/samples/image.jpg")
-                  .lyrics("sample")
+                  .uploadUrl("https://file.runapi.ai/source-instrumental.mp3")
+                  .lyrics("City lights reflect in the rain.")
+                  .title("City Lights")
+                  .style("acoustic pop")
+                  .negativeTags("heavy metal")
                   .build()
       ));
 
@@ -313,8 +328,11 @@ class SunoClientTest {
       assertNotNull(createWithOptionsClient.addVocals().create(
               AddVocalsParams.builder()
                   .model(AddVocalsModel.SUNO_V4_5_PLUS)
-                  .uploadUrl("https://cdn.runapi.ai/public/samples/image.jpg")
-                  .lyrics("sample")
+                  .uploadUrl("https://file.runapi.ai/source-instrumental.mp3")
+                  .lyrics("City lights reflect in the rain.")
+                  .title("City Lights")
+                  .style("acoustic pop")
+                  .negativeTags("heavy metal")
                   .build(),
           RequestOptions.none()));
 
@@ -333,8 +351,11 @@ class SunoClientTest {
       CompletedAddVocalsResponse runResponse = runClient.addVocals().run(
               AddVocalsParams.builder()
                   .model(AddVocalsModel.SUNO_V4_5_PLUS)
-                  .uploadUrl("https://cdn.runapi.ai/public/samples/image.jpg")
-                  .lyrics("sample")
+                  .uploadUrl("https://file.runapi.ai/source-instrumental.mp3")
+                  .lyrics("City lights reflect in the rain.")
+                  .title("City Lights")
+                  .style("acoustic pop")
+                  .negativeTags("heavy metal")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
       assertNotNull(runResponse);
@@ -346,8 +367,11 @@ class SunoClientTest {
       assertNotNull(runWithOptionsClient.addVocals().run(
               AddVocalsParams.builder()
                   .model(AddVocalsModel.SUNO_V4_5_PLUS)
-                  .uploadUrl("https://cdn.runapi.ai/public/samples/image.jpg")
-                  .lyrics("sample")
+                  .uploadUrl("https://file.runapi.ai/source-instrumental.mp3")
+                  .lyrics("City lights reflect in the rain.")
+                  .title("City Lights")
+                  .style("acoustic pop")
+                  .negativeTags("heavy metal")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
     }
@@ -359,6 +383,7 @@ class SunoClientTest {
 
       BoostStyleResponse response = client.boostStyle().run(
               BoostStyleParams.builder()
+                  .description("An upbeat pop track with electronic beats.")
                   .build()
       );
       assertNotNull(response);
@@ -367,6 +392,7 @@ class SunoClientTest {
       SunoClient clientWithOptions = SunoClient.builder().apiKey("sk-test").transport(transportWithOptions).build();
       assertNotNull(clientWithOptions.boostStyle().run(
               BoostStyleParams.builder()
+                  .description("An upbeat pop track with electronic beats.")
                   .build(),
           RequestOptions.none()));
     }
@@ -398,6 +424,8 @@ class SunoClientTest {
       SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
       assertNotNull(createClient.convertAudio().create(
               ConvertAudioParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build()
       ));
 
@@ -405,6 +433,8 @@ class SunoClientTest {
       SunoClient createWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(createWithOptionsTransport).build();
       assertNotNull(createWithOptionsClient.convertAudio().create(
               ConvertAudioParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build(),
           RequestOptions.none()));
 
@@ -422,6 +452,8 @@ class SunoClientTest {
       SunoClient runClient = SunoClient.builder().apiKey("sk-test").transport(runTransport).build();
       CompletedConvertAudioResponse runResponse = runClient.convertAudio().run(
               ConvertAudioParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
       assertNotNull(runResponse);
@@ -432,6 +464,8 @@ class SunoClientTest {
       SunoClient runWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(runWithOptionsTransport).build();
       assertNotNull(runWithOptionsClient.convertAudio().run(
               ConvertAudioParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
     }
@@ -563,6 +597,8 @@ class SunoClientTest {
       assertNotNull(createClient.extendMusic().create(
               ExtendMusicParams.builder()
                   .model(ExtendMusicModel.SUNO_V4)
+                  .audioUrl("https://file.runapi.ai/source-audio.mp3")
+                  .parameterMode("source")
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build()
       ));
@@ -572,6 +608,8 @@ class SunoClientTest {
       assertNotNull(createWithOptionsClient.extendMusic().create(
               ExtendMusicParams.builder()
                   .model(ExtendMusicModel.SUNO_V4)
+                  .audioUrl("https://file.runapi.ai/source-audio.mp3")
+                  .parameterMode("source")
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build(),
           RequestOptions.none()));
@@ -591,6 +629,8 @@ class SunoClientTest {
       CompletedExtendMusicResponse runResponse = runClient.extendMusic().run(
               ExtendMusicParams.builder()
                   .model(ExtendMusicModel.SUNO_V4)
+                  .audioUrl("https://file.runapi.ai/source-audio.mp3")
+                  .parameterMode("source")
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
@@ -603,6 +643,8 @@ class SunoClientTest {
       assertNotNull(runWithOptionsClient.extendMusic().run(
               ExtendMusicParams.builder()
                   .model(ExtendMusicModel.SUNO_V4)
+                  .audioUrl("https://file.runapi.ai/source-audio.mp3")
+                  .parameterMode("source")
                   .prompt("A small red cube on a plain white table, studio product photo")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
@@ -716,6 +758,7 @@ class SunoClientTest {
       SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
       assertNotNull(createClient.generateMidi().create(
               GenerateMidiParams.builder()
+                  .taskId("tsk_source_music")
                   .build()
       ));
 
@@ -723,6 +766,7 @@ class SunoClientTest {
       SunoClient createWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(createWithOptionsTransport).build();
       assertNotNull(createWithOptionsClient.generateMidi().create(
               GenerateMidiParams.builder()
+                  .taskId("tsk_source_music")
                   .build(),
           RequestOptions.none()));
 
@@ -740,6 +784,7 @@ class SunoClientTest {
       SunoClient runClient = SunoClient.builder().apiKey("sk-test").transport(runTransport).build();
       CompletedGenerateMidiResponse runResponse = runClient.generateMidi().run(
               GenerateMidiParams.builder()
+                  .taskId("tsk_source_music")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
       assertNotNull(runResponse);
@@ -750,6 +795,7 @@ class SunoClientTest {
       SunoClient runWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(runWithOptionsTransport).build();
       assertNotNull(runWithOptionsClient.generateMidi().run(
               GenerateMidiParams.builder()
+                  .taskId("tsk_source_music")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
     }
@@ -761,6 +807,10 @@ class SunoClientTest {
 
       GeneratePersonaResponse response = client.generatePersona().run(
               GeneratePersonaParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
+                  .name("Studio Voice")
+                  .description("A warm and expressive vocal character.")
                   .build()
       );
       assertNotNull(response);
@@ -769,6 +819,10 @@ class SunoClientTest {
       SunoClient clientWithOptions = SunoClient.builder().apiKey("sk-test").transport(transportWithOptions).build();
       assertNotNull(clientWithOptions.generatePersona().run(
               GeneratePersonaParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
+                  .name("Studio Voice")
+                  .description("A warm and expressive vocal character.")
                   .build(),
           RequestOptions.none()));
     }
@@ -832,6 +886,8 @@ class SunoClientTest {
 
       GetTimestampedLyricsResponse response = client.getTimestampedLyrics().run(
               GetTimestampedLyricsParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build()
       );
       assertNotNull(response);
@@ -840,6 +896,8 @@ class SunoClientTest {
       SunoClient clientWithOptions = SunoClient.builder().apiKey("sk-test").transport(transportWithOptions).build();
       assertNotNull(clientWithOptions.getTimestampedLyrics().run(
               GetTimestampedLyricsParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build(),
           RequestOptions.none()));
     }
@@ -1202,6 +1260,8 @@ class SunoClientTest {
       SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
       assertNotNull(createClient.visualizeMusic().create(
               VisualizeMusicParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build()
       ));
 
@@ -1209,6 +1269,8 @@ class SunoClientTest {
       SunoClient createWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(createWithOptionsTransport).build();
       assertNotNull(createWithOptionsClient.visualizeMusic().create(
               VisualizeMusicParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build(),
           RequestOptions.none()));
 
@@ -1226,6 +1288,8 @@ class SunoClientTest {
       SunoClient runClient = SunoClient.builder().apiKey("sk-test").transport(runTransport).build();
       CompletedVisualizeMusicResponse runResponse = runClient.visualizeMusic().run(
               VisualizeMusicParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
       assertNotNull(runResponse);
@@ -1236,6 +1300,8 @@ class SunoClientTest {
       SunoClient runWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(runWithOptionsTransport).build();
       assertNotNull(runWithOptionsClient.visualizeMusic().run(
               VisualizeMusicParams.builder()
+                  .taskId("tsk_source_music")
+                  .audioId("audio_reference")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
     }
@@ -1246,8 +1312,10 @@ class SunoClientTest {
       SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
       assertNotNull(createClient.voiceToValidationPhrase().create(
               VoiceToValidationPhraseParams.builder()
-                  .vocalStartSeconds(1)
-                  .vocalEndSeconds(1)
+                  .voiceUrl("https://file.runapi.ai/source-vocal.mp3")
+                  .vocalStartSeconds(2)
+                  .vocalEndSeconds(12)
+                  .language("en")
                   .build()
       ));
 
@@ -1255,8 +1323,10 @@ class SunoClientTest {
       SunoClient createWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(createWithOptionsTransport).build();
       assertNotNull(createWithOptionsClient.voiceToValidationPhrase().create(
               VoiceToValidationPhraseParams.builder()
-                  .vocalStartSeconds(1)
-                  .vocalEndSeconds(1)
+                  .voiceUrl("https://file.runapi.ai/source-vocal.mp3")
+                  .vocalStartSeconds(2)
+                  .vocalEndSeconds(12)
+                  .language("en")
                   .build(),
           RequestOptions.none()));
 
@@ -1274,8 +1344,10 @@ class SunoClientTest {
       SunoClient runClient = SunoClient.builder().apiKey("sk-test").transport(runTransport).build();
       CompletedVoiceToValidationPhraseResponse runResponse = runClient.voiceToValidationPhrase().run(
               VoiceToValidationPhraseParams.builder()
-                  .vocalStartSeconds(1)
-                  .vocalEndSeconds(1)
+                  .voiceUrl("https://file.runapi.ai/source-vocal.mp3")
+                  .vocalStartSeconds(2)
+                  .vocalEndSeconds(12)
+                  .language("en")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
       assertNotNull(runResponse);
@@ -1286,8 +1358,10 @@ class SunoClientTest {
       SunoClient runWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(runWithOptionsTransport).build();
       assertNotNull(runWithOptionsClient.voiceToValidationPhrase().run(
               VoiceToValidationPhraseParams.builder()
-                  .vocalStartSeconds(1)
-                  .vocalEndSeconds(1)
+                  .voiceUrl("https://file.runapi.ai/source-vocal.mp3")
+                  .vocalStartSeconds(2)
+                  .vocalEndSeconds(12)
+                  .language("en")
                   .build(),
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
     }
