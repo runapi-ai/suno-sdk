@@ -143,6 +143,11 @@ describe('Remaining Resources', () => {
           { word: 'line', success: true, start_time: 0.4, end_time: 0.8, palign: 0 },
         ],
         waveform_data: [0.1, 0.2, 0.3],
+        billing: {
+          reservation: { amount_cents: 5 },
+          settlement: { charged_amount_cents: 5, amount_micro_cents: 5_000_000 },
+          refund: null,
+        },
       });
 
       const getTimestampedLyrics = new GetTimestampedLyrics(mockHttp);
@@ -157,6 +162,7 @@ describe('Remaining Resources', () => {
         { body: { task_id: 'gen-task-123', audio_id: 'audio-123' } }
       );
       expect(result.aligned_words).toHaveLength(2);
+      expect(result.billing?.reservation?.amount_cents).toBe(5);
     });
   });
 
@@ -295,6 +301,11 @@ describe('Remaining Resources', () => {
           description: 'A warm male voice',
           gender: 'm',
         },
+        billing: {
+          reservation: null,
+          settlement: { charged_amount_cents: 10, amount_micro_cents: 10_000_000 },
+          refund: null,
+        },
       });
 
       const generatePersona = new GeneratePersona(mockHttp);
@@ -318,6 +329,7 @@ describe('Remaining Resources', () => {
         }
       );
       expect(result.persona.name).toBe('Warm Voice');
+      expect(result.billing?.settlement?.charged_amount_cents).toBe(10);
     });
   });
 
@@ -325,6 +337,11 @@ describe('Remaining Resources', () => {
     it('should run style generation', async () => {
       vi.mocked(mockHttp.request).mockResolvedValueOnce({
         style: 'Epic Orchestral',
+        billing: {
+          reservation: null,
+          settlement: null,
+          refund: { refunded_at: '2026-07-27T00:00:00.000000Z' },
+        },
       });
 
       const boostStyle = new BoostStyle(mockHttp);
@@ -344,6 +361,7 @@ describe('Remaining Resources', () => {
         }
       );
       expect(result.style).toBe('Epic Orchestral');
+      expect(result.billing?.refund?.refunded_at).toBe('2026-07-27T00:00:00.000000Z');
     });
   });
 
@@ -465,7 +483,14 @@ describe('Remaining Resources', () => {
 
   describe('CheckVoice', () => {
     it('should check custom voice availability', async () => {
-      vi.mocked(mockHttp.request).mockResolvedValueOnce({ is_available: true });
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({
+        is_available: true,
+        billing: {
+          reservation: { amount_cents: 1 },
+          settlement: null,
+          refund: null,
+        },
+      });
 
       const resource = new CheckVoice(mockHttp);
       const result = await resource.run({
@@ -482,6 +507,7 @@ describe('Remaining Resources', () => {
         }
       );
       expect(result.is_available).toBe(true);
+      expect(result.billing?.reservation?.amount_cents).toBe(1);
     });
   });
 });

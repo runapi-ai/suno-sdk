@@ -1,4 +1,4 @@
-import type { AsyncTaskStatus } from '@runapi.ai/core';
+import type { AsyncTaskStatus, TaskBillingResponse, TaskResponse } from '@runapi.ai/core';
 
 /** Suno music generation engine version. V5.5 has highest quality; V4 is the earliest available. */
 export type SunoModel = 'suno-v5.5' | 'suno-v5' | 'suno-v4.5-plus' | 'suno-v4.5-all' | 'suno-v4.5' | 'suno-v4';
@@ -432,7 +432,7 @@ export interface CreateMashupInstrumentalParams extends SunoBaseParams {
 export type CreateMashupParams = CreateMashupPromptParams | CreateMashupLyricsParams | CreateMashupInstrumentalParams;
 
 /** Initial response from task creation with the assigned task ID. */
-export interface TaskCreateResponse {
+export interface TaskCreateResponse extends TaskBillingResponse {
   id: string;
   status?: string;
   [key: string]: unknown;
@@ -470,7 +470,7 @@ export interface SoundAudio {
 }
 
 /** Base response for all Suno async tasks, carrying lifecycle status and generation progress. */
-export interface AsyncTaskResponse {
+export interface AsyncTaskResponse extends TaskResponse {
   id: string;
   status: TaskStatus;
   generation_stage?: GenerationStage;
@@ -603,7 +603,7 @@ export interface AlignedWord {
 }
 
 /** Synchronous response containing word-level timing data and waveform for a track. */
-export interface GetTimestampedLyricsResponse {
+export interface GetTimestampedLyricsResponse extends TaskBillingResponse {
   aligned_words?: AlignedWord[];
   /** Waveform amplitude data for visualization. */
   waveform_data?: number[];
@@ -627,14 +627,14 @@ export interface Persona {
 }
 
 /** Synchronous result of persona creation. */
-export interface GeneratePersonaResponse {
+export interface GeneratePersonaResponse extends TaskBillingResponse {
   persona: Persona;
   error?: string;
   [key: string]: unknown;
 }
 
 /** Synchronous result of style tag generation. `style` contains the generated tags string. */
-export interface BoostStyleResponse {
+export interface BoostStyleResponse extends TaskBillingResponse {
   style: string;
   error?: string;
   [key: string]: unknown;
@@ -660,7 +660,7 @@ export interface VoiceGenerationResponse extends AsyncTaskResponse {
 }
 
 /** Synchronous result indicating whether a custom voice is ready for use. */
-export interface CheckVoiceResponse {
+export interface CheckVoiceResponse extends TaskBillingResponse {
   is_available?: boolean;
   error?: string;
   [key: string]: unknown;

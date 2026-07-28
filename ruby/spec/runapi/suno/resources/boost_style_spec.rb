@@ -11,10 +11,12 @@ RSpec.describe RunApi::Suno::Resources::BoostStyle do
   describe "#run" do
     it "POSTs to the correct endpoint" do
       expect(http).to receive(:request).with(:post, endpoint, body: valid_params)
-        .and_return("style" => "cinematic, orchestral")
+        .and_return("style" => "cinematic, orchestral", "billing" => {"reservation" => nil, "settlement" => nil, "refund" => {"refunded_at" => "2026-07-27T00:00:00.000000Z"}})
 
       result = resource.run(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::BoostStyleResponse)
+      expect(result.billing).to be_a(RunApi::Core::TaskBillingFacts)
+      expect(result.billing.refund.refunded_at).to eq("2026-07-27T00:00:00.000000Z")
     end
 
     it "validates required params" do

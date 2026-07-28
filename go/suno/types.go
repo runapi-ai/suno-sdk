@@ -1,5 +1,7 @@
 package suno
 
+import "github.com/runapi-ai/core-sdk/go/core"
+
 // SunoModel selects the Suno music generation engine version.
 type SunoModel string
 
@@ -333,6 +335,7 @@ type CreateMashupParams struct {
 
 // AsyncTaskResponse carries the task ID, lifecycle status, generation stage, and error for Suno async operations.
 type AsyncTaskResponse struct {
+	core.TaskBillingFacts
 	ID              string          `json:"id"`
 	Status          TaskStatus      `json:"status"`
 	GenerationStage GenerationStage `json:"generation_stage,omitempty"`
@@ -514,6 +517,7 @@ type AlignedWord struct {
 
 // GetTimestampedLyricsResponse contains word-level timing data and waveform for a track.
 type GetTimestampedLyricsResponse struct {
+	core.TaskBillingFacts
 	AlignedWords []AlignedWord `json:"aligned_words,omitempty"`
 	WaveformData []float64     `json:"waveform_data,omitempty"`
 	HootCER      *float64      `json:"hoot_cer,omitempty"`
@@ -535,12 +539,14 @@ type Persona struct {
 
 // GeneratePersonaResponse is the synchronous result of persona creation.
 type GeneratePersonaResponse struct {
+	core.TaskBillingFacts
 	Persona *Persona `json:"persona,omitempty"`
 	Error   string   `json:"error,omitempty"`
 }
 
 // BoostStyleResponse is the synchronous result of style tag generation.
 type BoostStyleResponse struct {
+	core.TaskBillingFacts
 	Style string `json:"style,omitempty"`
 	Error string `json:"error,omitempty"`
 }
@@ -569,6 +575,7 @@ type VoiceGenerationResponse struct {
 
 // CheckVoiceResponse indicates whether a custom voice is ready for use.
 type CheckVoiceResponse struct {
+	core.TaskBillingFacts
 	IsAvailable *bool  `json:"is_available,omitempty"`
 	Error       string `json:"error,omitempty"`
 }
