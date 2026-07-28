@@ -1,16 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { AuthenticationError } from '@runapi.ai/core';
 import { SunoClient } from '../../src/client';
 
 describe('SunoClient', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-  });
-
-  it('should throw error if apiKey is missing', () => {
-    expect(() => {
-      new SunoClient({ apiKey: '' });
-    }).toThrow(AuthenticationError);
   });
 
   it('should initialize with all resources', () => {

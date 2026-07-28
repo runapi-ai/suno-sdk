@@ -383,9 +383,9 @@ func TestGenerateVoiceCreateWrapsPayload(t *testing.T) {
 }
 
 func TestCheckVoiceRunWrapsPayload(t *testing.T) {
-	httpClient := &stubHTTPClient{}
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"is_available":true,"billing":{"reservation":{"amount_cents":10}}}`)}
 	client := NewClientWithHTTP(httpClient)
-	_, err := client.CheckVoice.Run(context.Background(), CheckVoiceParams{TaskID: "voice-task-1"})
+	response, err := client.CheckVoice.Run(context.Background(), CheckVoiceParams{TaskID: "voice-task-1"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -398,5 +398,32 @@ func TestCheckVoiceRunWrapsPayload(t *testing.T) {
 	}
 	if body["task_id"] != "voice-task-1" {
 		t.Fatalf("expected check voice payload, got %#v", body)
+	}
+	if response.Billing == nil || response.Billing.Reservation == nil {
+		t.Fatalf("expected billing facts: %#v", response.Billing)
+	}
+}
+
+func TestSynchronousHelpersDecodeBillingFacts(t *testing.T) {
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"aligned_words":[],"billing":{"reservation":{"amount_cents":10}}}`)}
+	client := NewClientWithHTTP(httpClient)
+
+	timestamped, err := client.GetTimestampedLyrics.Run(context.Background(), GetTimestampedLyricsParams{TaskID: "task-1", AudioID: "audio-1"})
+	if err != nil || timestamped.Billing == nil || timestamped.Billing.Reservation == nil {
+		t.Fatalf("expected timestamped lyrics billing facts, response=%#v err=%v", timestamped, err)
+	}
+
+	httpClient.response = json.RawMessage(`{"persona":{"id":"persona-1"},"billing":{"reservation":{"amount_cents":10}}}`)
+	persona, err := client.GeneratePersona.Run(context.Background(), GeneratePersonaParams{
+		TaskID: "task-1", AudioID: "audio-1", Name: "Lo-fi persona", Description: "Warm lo-fi vocals",
+	})
+	if err != nil || persona.Billing == nil || persona.Billing.Reservation == nil {
+		t.Fatalf("expected persona billing facts, response=%#v err=%v", persona, err)
+	}
+
+	httpClient.response = json.RawMessage(`{"style":"lo-fi","billing":{"reservation":{"amount_cents":10}}}`)
+	style, err := client.BoostStyle.Run(context.Background(), BoostStyleParams{Description: "A chill lo-fi beat"})
+	if err != nil || style.Billing == nil || style.Billing.Reservation == nil {
+		t.Fatalf("expected style billing facts, response=%#v err=%v", style, err)
 	}
 }
