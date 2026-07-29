@@ -2,7 +2,7 @@
 
 The Suno Go SDK is the language-specific package for Suno on RunAPI. Use this package for song generation, lyrics, vocals, extension, and audio transformation workflows when your application needs request bodies, task status lookup, and consistent RunAPI errors in Go.
 
-This README is the Go package guide inside the public `suno-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/suno; for API reference, use https://runapi.ai/docs#suno; for SDK docs, use https://runapi.ai/docs#sdk-suno.
+This README is the Go package guide inside the public `suno-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/suno; for API reference, use https://runapi.ai/docs/api/suno/text-to-music; for SDK docs, use https://runapi.ai/docs/resources/sdks.
 
 ## Install
 
@@ -21,7 +21,7 @@ import (
 
 client, err := suno.NewClient()
 task, err := client.TextToMusic.Create(context.Background(), suno.TextToMusicParams{
-  // Pass the Suno JSON request body from https://runapi.ai/docs#suno.
+  // Pass the Suno JSON request body from https://runapi.ai/docs/api/suno/text-to-music.
 })
 status, err := client.TextToMusic.Get(context.Background(), task.ID)
 ```
@@ -37,8 +37,8 @@ Use the public Go module with `github.com/runapi-ai/core-sdk/go` options when bu
 ## Links
 
 - Model page: https://runapi.ai/models/suno
-- SDK docs: https://runapi.ai/docs#sdk-suno
-- Product docs: https://runapi.ai/docs#suno
+- SDK docs: https://runapi.ai/docs/resources/sdks
+- Product docs: https://runapi.ai/docs/api/suno/text-to-music
 - Pricing and rate limits: https://runapi.ai/models/suno/v4
 - Provider comparison: https://runapi.ai/providers/suno
 - Full catalog: https://runapi.ai/models

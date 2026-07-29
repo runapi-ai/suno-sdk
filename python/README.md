@@ -2,7 +2,7 @@
 
 The Suno Python SDK is the language-specific package for Suno on RunAPI. Use this package for song generation, lyrics, vocals, extension, and audio transformation workflows when your application needs request bodies, task status lookup, and consistent RunAPI errors in Python.
 
-This README is the Python package guide inside the public `suno-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/suno; for API reference, use https://runapi.ai/docs#suno; for SDK docs, use https://runapi.ai/docs#sdk-suno.
+This README is the Python package guide inside the public `suno-sdk` repository. For the repository overview, start at `../README.md`; for model details, use https://runapi.ai/models/suno; for API reference, use https://runapi.ai/docs/api/suno/text-to-music; for SDK docs, use https://runapi.ai/docs/resources/sdks.
 
 ## Install
 
@@ -59,8 +59,8 @@ Pass parameters as keyword arguments and catch the `runapi.suno` error classes w
 ## Links
 
 - Model page: https://runapi.ai/models/suno
-- SDK docs: https://runapi.ai/docs#sdk-suno
-- Product docs: https://runapi.ai/docs#suno
+- SDK docs: https://runapi.ai/docs/resources/sdks
+- Product docs: https://runapi.ai/docs/api/suno/text-to-music
 - Pricing and rate limits: https://runapi.ai/models/suno/v4
 - Provider comparison: https://runapi.ai/providers/suno
 - Full catalog: https://runapi.ai/models

@@ -128,8 +128,8 @@ console.log(pair?.extracted_audio.audio_url, pair?.remaining_audio.audio_url);
 ## Public links
 
 - Model page: https://runapi.ai/models/suno
-- SDK docs: https://runapi.ai/docs#sdk-suno
-- Product docs: https://runapi.ai/docs#suno
+- SDK docs: https://runapi.ai/docs/resources/sdks
+- Product docs: https://runapi.ai/docs/api/suno/text-to-music
 - SDK repository: https://github.com/runapi-ai/suno-sdk
 - PHP package repository: https://github.com/runapi-ai/suno-php
 - Skill repository: https://github.com/runapi-ai/suno
