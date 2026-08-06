@@ -1,5 +1,8 @@
 from .add_instrumental import AddInstrumental
 from .add_vocals import AddVocals
+from .add_samples import AddSamples
+from .remaster_audio import RemasterAudio
+from .stitch_audio import StitchAudio
 from .boost_style import BoostStyle
 from .blend_lyrics import BlendLyrics
 from .check_voice import CheckVoice
@@ -28,6 +31,9 @@ __all__ = [
     "CoverAudio",
     "AddInstrumental",
     "AddVocals",
+    "AddSamples",
+    "RemasterAudio",
+    "StitchAudio",
     "SeparateAudioStems",
     "GenerateMidi",
     "ConvertAudio",

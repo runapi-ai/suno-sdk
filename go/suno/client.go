@@ -19,6 +19,9 @@ import (
 const (
 	textToMusicPath                = "/api/v1/suno/text_to_music"
 	extendMusicPath                = "/api/v1/suno/extend_music"
+	stitchAudioPath                = "/api/v1/suno/stitch_audio"
+	remasterAudioPath              = "/api/v1/suno/remaster_audio"
+	addSamplesPath                 = "/api/v1/suno/add_samples"
 	generateArtworkPath            = "/api/v1/suno/generate_artwork"
 	coverAudioPath                 = "/api/v1/suno/cover_audio"
 	addInstrumentalPath            = "/api/v1/suno/add_instrumental"
@@ -47,6 +50,9 @@ type Client struct {
 	base.Base
 	TextToMusic                *TextToMusic
 	ExtendMusic                *ExtendMusic
+	StitchAudio                *StitchAudio
+	RemasterAudio              *RemasterAudio
+	AddSamples                 *AddSamples
 	GenerateArtwork            *GenerateArtwork
 	CoverAudio                 *CoverAudio
 	AddInstrumental            *AddInstrumental
@@ -88,6 +94,9 @@ func NewClientWithHTTP(httpClient core.HTTPClient) *Client {
 		Base:                       base.New(httpClient),
 		TextToMusic:                &TextToMusic{http: httpClient},
 		ExtendMusic:                &ExtendMusic{http: httpClient},
+		StitchAudio:                &StitchAudio{http: httpClient},
+		RemasterAudio:              &RemasterAudio{http: httpClient},
+		AddSamples:                 &AddSamples{http: httpClient},
 		GenerateArtwork:            &GenerateArtwork{http: httpClient},
 		CoverAudio:                 &CoverAudio{http: httpClient},
 		AddInstrumental:            &AddInstrumental{http: httpClient},
@@ -116,6 +125,61 @@ type TextToMusic struct{ http core.HTTPClient }
 
 // ExtendMusic continues an existing track from a specified timestamp, inheriting or overriding its settings.
 type ExtendMusic struct{ http core.HTTPClient }
+type StitchAudio struct{ http core.HTTPClient }
+type RemasterAudio struct{ http core.HTTPClient }
+type AddSamples struct{ http core.HTTPClient }
+
+func (r *StitchAudio) Create(ctx context.Context, params StitchAudioParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["stitch-audio"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, stitchAudioPath, body, requestOptions)
+}
+func (r *StitchAudio) Get(ctx context.Context, id string, opts ...option.RequestOption) (*TextToMusicResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[TextToMusicResponse](ctx, r.http, core.ResourcePath(stitchAudioPath, id), requestOptions)
+}
+func (r *StitchAudio) Run(ctx context.Context, p StitchAudioParams, opts ...option.RequestOption) (*TextToMusicResponse, error) {
+	_, po := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, p, opts...) }, func(ctx context.Context, id string) (*TextToMusicResponse, error) { return r.Get(ctx, id, opts...) }, po)
+}
+func (r *RemasterAudio) Create(ctx context.Context, params RemasterAudioParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["remaster-audio"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, remasterAudioPath, body, requestOptions)
+}
+func (r *RemasterAudio) Get(ctx context.Context, id string, opts ...option.RequestOption) (*TextToMusicResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[TextToMusicResponse](ctx, r.http, core.ResourcePath(remasterAudioPath, id), requestOptions)
+}
+func (r *RemasterAudio) Run(ctx context.Context, p RemasterAudioParams, opts ...option.RequestOption) (*TextToMusicResponse, error) {
+	_, po := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, p, opts...) }, func(ctx context.Context, id string) (*TextToMusicResponse, error) { return r.Get(ctx, id, opts...) }, po)
+}
+func (r *AddSamples) Create(ctx context.Context, params AddSamplesParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["add-samples"], body); err != nil {
+		return nil, err
+	}
+	if params.EndSeconds <= params.StartSeconds {
+		return nil, errors.New("end_seconds must be greater than start_seconds")
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, addSamplesPath, body, requestOptions)
+}
+func (r *AddSamples) Get(ctx context.Context, id string, opts ...option.RequestOption) (*TextToMusicResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[TextToMusicResponse](ctx, r.http, core.ResourcePath(addSamplesPath, id), requestOptions)
+}
+func (r *AddSamples) Run(ctx context.Context, p AddSamplesParams, opts ...option.RequestOption) (*TextToMusicResponse, error) {
+	_, po := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, p, opts...) }, func(ctx context.Context, id string) (*TextToMusicResponse, error) { return r.Get(ctx, id, opts...) }, po)
+}
 
 // GenerateArtwork creates cover artwork for an existing music task.
 type GenerateArtwork struct{ http core.HTTPClient }

@@ -2,6 +2,26 @@ package suno
 
 import "github.com/runapi-ai/core-sdk/go/core"
 
+type StitchAudioParams struct {
+	Model        SunoModel `json:"model"`
+	SourceTaskID string    `json:"source_task_id"`
+	AudioID      string    `json:"audio_id"`
+	CallbackURL  string    `json:"callback_url,omitempty"`
+}
+type RemasterAudioParams struct {
+	Model        SunoModel `json:"model"`
+	SourceTaskID string    `json:"source_task_id"`
+	AudioID      string    `json:"audio_id"`
+	CallbackURL  string    `json:"callback_url,omitempty"`
+}
+type AddSamplesParams struct {
+	Model        SunoModel `json:"model"`
+	AudioURL     string    `json:"audio_url"`
+	StartSeconds float64   `json:"start_seconds"`
+	EndSeconds   float64   `json:"end_seconds"`
+	CallbackURL  string    `json:"callback_url,omitempty"`
+}
+
 // SunoModel selects the Suno music generation engine version.
 type SunoModel string
 

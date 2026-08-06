@@ -8,6 +8,9 @@ from runapi.core import ProviderClient
 
 from .resources.add_instrumental import AddInstrumental
 from .resources.add_vocals import AddVocals
+from .resources.add_samples import AddSamples
+from .resources.remaster_audio import RemasterAudio
+from .resources.stitch_audio import StitchAudio
 from .resources.boost_style import BoostStyle
 from .resources.blend_lyrics import BlendLyrics
 from .resources.check_voice import CheckVoice
@@ -53,6 +56,9 @@ class SunoClient(ProviderClient):
         self.cover_audio = CoverAudio(http)
         self.add_instrumental = AddInstrumental(http)
         self.add_vocals = AddVocals(http)
+        self.add_samples = AddSamples(http)
+        self.remaster_audio = RemasterAudio(http)
+        self.stitch_audio = StitchAudio(http)
         self.separate_audio_stems = SeparateAudioStems(http)
         self.generate_midi = GenerateMidi(http)
         self.convert_audio = ConvertAudio(http)

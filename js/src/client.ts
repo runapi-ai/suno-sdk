@@ -1,6 +1,9 @@
 import { BaseClient, type ClientOptions } from '@runapi.ai/core';
 import { TextToMusic } from './resources/text-to-music';
 import { ExtendMusic } from './resources/extend-music';
+import { StitchAudio } from './resources/stitch-audio';
+import { RemasterAudio } from './resources/remaster-audio';
+import { AddSamples } from './resources/add-samples';
 import { GenerateArtwork } from './resources/generate-artwork';
 import { CoverAudio } from './resources/cover-audio';
 import { AddInstrumental } from './resources/add-instrumental';
@@ -44,6 +47,9 @@ export class SunoClient extends BaseClient {
   public readonly textToMusic: TextToMusic;
   /** Continues an existing track from a specified timestamp, inheriting or overriding its settings. */
   public readonly extendMusic: ExtendMusic;
+  public readonly stitchAudio: StitchAudio;
+  public readonly remasterAudio: RemasterAudio;
+  public readonly addSamples: AddSamples;
   /** Creates cover artwork for an existing music task. */
   public readonly generateArtwork: GenerateArtwork;
   /** Re-records vocals over an uploaded audio file with a new style or voice. */
@@ -89,6 +95,9 @@ export class SunoClient extends BaseClient {
     super(options);
     this.textToMusic = new TextToMusic(this.http);
     this.extendMusic = new ExtendMusic(this.http);
+    this.stitchAudio = new StitchAudio(this.http);
+    this.remasterAudio = new RemasterAudio(this.http);
+    this.addSamples = new AddSamples(this.http);
     this.generateArtwork = new GenerateArtwork(this.http);
     this.coverAudio = new CoverAudio(this.http);
     this.addInstrumental = new AddInstrumental(this.http);

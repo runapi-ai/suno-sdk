@@ -6,6 +6,9 @@ import ai.runapi.core.http.HttpTransport;
 import java.net.URI;
 import ai.runapi.suno.resources.AddInstrumentalResource;
 import ai.runapi.suno.resources.AddVocalsResource;
+import ai.runapi.suno.resources.AddSamplesResource;
+import ai.runapi.suno.resources.RemasterAudioResource;
+import ai.runapi.suno.resources.StitchAudioResource;
 import ai.runapi.suno.resources.BoostStyleResource;
 import ai.runapi.suno.resources.BlendLyricsResource;
 import ai.runapi.suno.resources.CheckVoiceResource;
@@ -38,6 +41,9 @@ public final class SunoClient extends BaseClient {
   private final CoverAudioResource coverAudio;
   private final CreateMashupResource createMashup;
   private final ExtendMusicResource extendMusic;
+  private final AddSamplesResource addSamples;
+  private final RemasterAudioResource remasterAudio;
+  private final StitchAudioResource stitchAudio;
   private final GenerateArtworkResource generateArtwork;
   private final GenerateLyricsResource generateLyrics;
   private final GenerateMidiResource generateMidi;
@@ -63,6 +69,9 @@ public final class SunoClient extends BaseClient {
     this.coverAudio = new CoverAudioResource(transport(), options());
     this.createMashup = new CreateMashupResource(transport(), options());
     this.extendMusic = new ExtendMusicResource(transport(), options());
+    this.addSamples = new AddSamplesResource(transport(), options());
+    this.remasterAudio = new RemasterAudioResource(transport(), options());
+    this.stitchAudio = new StitchAudioResource(transport(), options());
     this.generateArtwork = new GenerateArtworkResource(transport(), options());
     this.generateLyrics = new GenerateLyricsResource(transport(), options());
     this.generateMidi = new GenerateMidiResource(transport(), options());
@@ -127,6 +136,9 @@ public final class SunoClient extends BaseClient {
   public ExtendMusicResource extendMusic() {
     return extendMusic;
   }
+  public AddSamplesResource addSamples() { return addSamples; }
+  public RemasterAudioResource remasterAudio() { return remasterAudio; }
+  public StitchAudioResource stitchAudio() { return stitchAudio; }
 
   /** Generate Artwork operations. */
   public GenerateArtworkResource generateArtwork() {

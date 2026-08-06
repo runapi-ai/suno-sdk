@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "runapi-suno"
-version = "0.3.1"
+version = "0.3.2"
 description = "RunAPI Suno SDK for text-to-music, lyric generation and blending, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows in JavaScript, Python, Ruby, Go, Java, and PHP"
 readme = "README.md"
 requires-python = ">=3.9"
 license = "Apache-2.0"
 authors = [{ name = "RunAPI", email = "contact@runapi.ai" }]
 keywords = ["runapi", "runapi-ai", "suno", "api", "sdk", "typescript", "python", "ruby", "golang", "java", "maven", "gradle", "music-generation", "audio-generation", "music-api", "suno-ai-api"]
-dependencies = ["runapi-core>=0.3.2"]
+dependencies = ["runapi-core>=0.3.6"]
 
 [project.urls]
 Homepage = "https://runapi.ai/models/suno"
@@ -19,7 +19,7 @@ Documentation = "https://runapi.ai/docs/resources/sdks"
 Source = "https://github.com/runapi-ai/suno-sdk"
 Issues = "https://github.com/runapi-ai/suno-sdk/issues"
 Changelog = "https://github.com/runapi-ai/suno-sdk/blob/main/CHANGELOG.md"
-"Release Notes" = "https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.3.1"
+"Release Notes" = "https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.3.2"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/runapi"]

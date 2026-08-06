@@ -68,6 +68,91 @@ module RunApi
           }
         }
       },
+      "add-samples" => {
+        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "fields_by_model" => {
+          "suno-v4" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          },
+          "suno-v4.5" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          },
+          "suno-v4.5-plus" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          },
+          "suno-v5" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          },
+          "suno-v5.5" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          }
+        }
+      },
       "add-vocals" => {
         "models" => ["suno-v4.5-plus", "suno-v5"],
         "fields_by_model" => {
@@ -624,6 +709,66 @@ module RunApi
           }
         }
       },
+      "remaster-audio" => {
+        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "fields_by_model" => {
+          "suno-v4" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          },
+          "suno-v4.5" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          },
+          "suno-v4.5-plus" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          },
+          "suno-v5" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          },
+          "suno-v5.5" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          }
+        }
+      },
       "replace-section" => {
         "models" => [],
         "fields_by_model" => {
@@ -676,6 +821,66 @@ module RunApi
           },
           "required" => ["stem_name"]
         }]
+      },
+      "stitch-audio" => {
+        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "fields_by_model" => {
+          "suno-v4" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          },
+          "suno-v4.5" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          },
+          "suno-v4.5-plus" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          },
+          "suno-v5" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          },
+          "suno-v5.5" => {
+            "audio_id" => {
+              "required" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          }
+        }
       },
       "text-to-music" => {
         "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],

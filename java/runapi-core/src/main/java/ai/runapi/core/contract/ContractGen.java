@@ -37,6 +37,7 @@ public final class ContractGen {
     addActions13(contract);
     addActions14(contract);
     addActions15(contract);
+    addActions16(contract);
     return Collections.unmodifiableMap(contract);
   }
 
@@ -1328,6 +1329,83 @@ contract.put("openai-tts/text-to-speech", new ContractAction(
                     {"text", field(required(), max(Double.valueOf(4096.0)), length())},
             })},
           })));
+contract.put("pixverse/edit-video", new ContractAction(
+    list("pixverse-v6"),
+          fieldsByModel(new Object[][] {
+            {"pixverse-v6", fields(new Object[][] {
+                    {"aspect_ratio", field(required(), enumValues("16:9", "4:3", "1:1", "3:4", "9:16", "2:3", "3:2", "21:9"))},
+                    {"callback_url", field()},
+                    {"duration_seconds", field(required(), min(Double.valueOf(1.0)), max(Double.valueOf(15.0)))},
+                    {"enable_audio", field()},
+                    {"model", field(required())},
+                    {"output_resolution", field(required(), enumValues("360p", "540p", "720p", "1080p"))},
+                    {"prompt", field(required(), min(Double.valueOf(3.0)), max(Double.valueOf(5000.0)), length())},
+                    {"reference_image_urls", field(required(), minItems(1), maxItems(7))},
+                    {"seed", field(min(Double.valueOf(0.0)), max(Double.valueOf(2147483647.0)))},
+            })},
+          })));
+  }
+
+  private static void addActions8(Map<String, ContractAction> contract) {
+contract.put("pixverse/extend-video", new ContractAction(
+    list("pixverse-v6"),
+          fieldsByModel(new Object[][] {
+            {"pixverse-v6", fields(new Object[][] {
+                    {"callback_url", field()},
+                    {"duration_seconds", field(required(), min(Double.valueOf(1.0)), max(Double.valueOf(15.0)))},
+                    {"enable_audio", field()},
+                    {"model", field(required())},
+                    {"output_resolution", field(required(), enumValues("360p", "540p", "720p", "1080p"))},
+                    {"prompt", field(required(), min(Double.valueOf(3.0)), max(Double.valueOf(5000.0)), length())},
+                    {"seed", field(min(Double.valueOf(0.0)), max(Double.valueOf(2147483647.0)))},
+                    {"source_task_id", field(required())},
+            })},
+          })));
+contract.put("pixverse/image-to-video", new ContractAction(
+    list("pixverse-v6"),
+          fieldsByModel(new Object[][] {
+            {"pixverse-v6", fields(new Object[][] {
+                    {"callback_url", field()},
+                    {"duration_seconds", field(required(), min(Double.valueOf(1.0)), max(Double.valueOf(15.0)))},
+                    {"enable_audio", field(enumValues(true, false))},
+                    {"enable_multi_clip", field()},
+                    {"first_frame_image_url", field(required())},
+                    {"model", field(required())},
+                    {"output_resolution", field(required(), enumValues("360p", "540p", "720p", "1080p"))},
+                    {"prompt", field(required(), min(Double.valueOf(3.0)), max(Double.valueOf(5000.0)), length())},
+                    {"seed", field(min(Double.valueOf(0.0)), max(Double.valueOf(2147483647.0)))},
+            })},
+          })));
+contract.put("pixverse/text-to-video", new ContractAction(
+    list("pixverse-v6"),
+          fieldsByModel(new Object[][] {
+            {"pixverse-v6", fields(new Object[][] {
+                    {"aspect_ratio", field(required(), enumValues("16:9", "4:3", "1:1", "3:4", "9:16", "2:3", "3:2", "21:9"))},
+                    {"callback_url", field()},
+                    {"duration_seconds", field(required(), min(Double.valueOf(1.0)), max(Double.valueOf(15.0)))},
+                    {"enable_audio", field(enumValues(true, false))},
+                    {"enable_multi_clip", field()},
+                    {"model", field(required())},
+                    {"output_resolution", field(required(), enumValues("360p", "540p", "720p", "1080p"))},
+                    {"prompt", field(required(), min(Double.valueOf(3.0)), max(Double.valueOf(5000.0)), length())},
+                    {"seed", field(min(Double.valueOf(0.0)), max(Double.valueOf(2147483647.0)))},
+            })},
+          })));
+contract.put("pixverse/transition-video", new ContractAction(
+    list("pixverse-v6"),
+          fieldsByModel(new Object[][] {
+            {"pixverse-v6", fields(new Object[][] {
+                    {"callback_url", field()},
+                    {"duration_seconds", field(required(), min(Double.valueOf(1.0)), max(Double.valueOf(15.0)))},
+                    {"enable_audio", field()},
+                    {"first_frame_image_url", field(required())},
+                    {"last_frame_image_url", field(required())},
+                    {"model", field(required())},
+                    {"output_resolution", field(required(), enumValues("360p", "540p", "720p", "1080p"))},
+                    {"prompt", field(required(), min(Double.valueOf(3.0)), max(Double.valueOf(5000.0)), length())},
+                    {"seed", field(min(Double.valueOf(0.0)), max(Double.valueOf(2147483647.0)))},
+            })},
+          })));
 contract.put("producer/text-to-music", new ContractAction(
     list("fuzz-0.8", "fuzz-1.0", "fuzz-1.0-pro", "fuzz-1.1", "fuzz-1.1-pro", "fuzz-2.0", "fuzz-2.0-pro", "fuzz-2.0-raw"),
           fieldsByModel(new Object[][] {
@@ -1406,9 +1484,6 @@ contract.put("producer/text-to-music", new ContractAction(
 {"fuzz-2.0-pro", rules(rule(conditions(new Object[][] {{"vocal_mode", "exact_lyrics"}}), list("lyrics"), list()), rule(conditions(new Object[][] {{"vocal_mode", "instrumental"}}), list(), list("lyrics")))},
 {"fuzz-2.0-raw", rules(rule(conditions(new Object[][] {{"vocal_mode", "exact_lyrics"}}), list("lyrics"), list()), rule(conditions(new Object[][] {{"vocal_mode", "instrumental"}}), list(), list("lyrics")))},
           })));
-  }
-
-  private static void addActions8(Map<String, ContractAction> contract) {
 contract.put("qwen-2/edit-image", new ContractAction(
     list("qwen-2-edit-image"),
           fieldsByModel(new Object[][] {
@@ -1449,6 +1524,9 @@ contract.put("qwen-image/edit-image", new ContractAction(
                     {"source_image_url", field(required())},
             })},
           })));
+  }
+
+  private static void addActions9(Map<String, ContractAction> contract) {
 contract.put("qwen-image/remix-image", new ContractAction(
     list("qwen-image-remix-image"),
           fieldsByModel(new Object[][] {
@@ -1506,9 +1584,6 @@ contract.put("runway-aleph/edit-video", new ContractAction(
                     {"watermark", field()},
             })},
           })));
-  }
-
-  private static void addActions9(Map<String, ContractAction> contract) {
 contract.put("runway/extend-video", new ContractAction(
     list("runway"),
           fieldsByModel(new Object[][] {
@@ -1536,7 +1611,7 @@ contract.put("runway/text-to-video", new ContractAction(
             })},
           })));
 contract.put("seedance/text-to-video", new ContractAction(
-    list("seedance-1.5-pro", "seedance-2-mini", "seedance-2.0", "seedance-2.0-fast", "seedance-v1-lite", "seedance-v1-pro", "seedance-v1-pro-fast"),
+    list("seedance-1.5-pro", "seedance-2-mini", "seedance-2.0", "seedance-2.0-fast", "seedance-v1-pro", "seedance-v1-pro-fast"),
           fieldsByModel(new Object[][] {
             {"seedance-1.5-pro", fields(new Object[][] {
                     {"aspect_ratio", field(enumValues("1:1", "4:3", "3:4", "16:9", "9:16", "21:9"))},
@@ -1598,19 +1673,6 @@ contract.put("seedance/text-to-video", new ContractAction(
                     {"reference_video_urls", field(maxItems(3))},
                     {"web_search", field()},
             })},
-            {"seedance-v1-lite", fields(new Object[][] {
-                    {"aspect_ratio", field(enumValues("1:1", "4:3", "3:4", "16:9", "9:16", "9:21"))},
-                    {"callback_url", field()},
-                    {"duration_seconds", field(required(), enumValues(Integer.valueOf(5), Integer.valueOf(10)))},
-                    {"enable_safety_checker", field()},
-                    {"first_frame_image_url", field()},
-                    {"last_frame_image_url", field()},
-                    {"lock_camera", field()},
-                    {"model", field()},
-                    {"output_resolution", field(enumValues("480p", "720p", "1080p"))},
-                    {"prompt", field()},
-                    {"seed", field()},
-            })},
             {"seedance-v1-pro", fields(new Object[][] {
                     {"aspect_ratio", field(enumValues("1:1", "4:3", "3:4", "16:9", "9:16", "21:9"))},
                     {"callback_url", field()},
@@ -1639,10 +1701,12 @@ contract.put("seedance/text-to-video", new ContractAction(
 {"seedance-2-mini", rules(rule(conditions(new Object[][] {{"model", "seedance-2-mini"}}), list(), list("source_image_urls", "lock_camera", "seed", "enable_safety_checker")))},
 {"seedance-2.0", rules(rule(conditions(new Object[][] {{"model", "seedance-2.0"}}), list(), list("source_image_urls", "lock_camera", "seed")))},
 {"seedance-2.0-fast", rules(rule(conditions(new Object[][] {{"model", "seedance-2.0-fast"}}), list(), list("source_image_urls", "lock_camera", "seed")))},
-{"seedance-v1-lite", rules(rule(conditions(new Object[][] {{"model", "seedance-v1-lite"}}), list(), list("source_image_urls", "reference_image_urls", "reference_video_urls", "reference_audio_urls", "web_search", "generate_audio")))},
 {"seedance-v1-pro", rules(rule(conditions(new Object[][] {{"model", "seedance-v1-pro"}}), list(), list("source_image_urls", "last_frame_image_url", "reference_image_urls", "reference_video_urls", "reference_audio_urls", "web_search", "generate_audio")))},
 {"seedance-v1-pro-fast", rules(rule(conditions(new Object[][] {{"model", "seedance-v1-pro-fast"}}), list(), list("aspect_ratio", "source_image_urls", "lock_camera", "last_frame_image_url", "reference_image_urls", "reference_video_urls", "reference_audio_urls", "web_search", "generate_audio")))},
           })));
+  }
+
+  private static void addActions10(Map<String, ContractAction> contract) {
 contract.put("seedream/edit-image", new ContractAction(
     list("seedream-4.5-edit", "seedream-5-lite-edit", "seedream-5-pro-edit", "seedream-v4-edit"),
           fieldsByModel(new Object[][] {
@@ -1701,9 +1765,6 @@ contract.put("seedream/edit-image", new ContractAction(
 {"seedream-5-pro-edit", rules(rule(conditions(new Object[][] {{"model", "seedream-5-pro-edit"}}), list(), list("output_resolution", "output_count", "seed")))},
 {"seedream-v4-edit", rules(rule(conditions(new Object[][] {{"model", "seedream-v4-edit"}}), list(), list("output_format")))},
           })));
-  }
-
-  private static void addActions10(Map<String, ContractAction> contract) {
 contract.put("seedream/text-to-image", new ContractAction(
     list("seedream-4.5-text-to-image", "seedream-5-lite-text-to-image", "seedream-5-pro-text-to-image", "seedream-v4-text-to-image"),
           fieldsByModel(new Object[][] {
@@ -1798,6 +1859,45 @@ contract.put("suno/add-instrumental", new ContractAction(
                     {"weirdness_constraint", field()},
             })},
           })));
+contract.put("suno/add-samples", new ContractAction(
+    list("suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"),
+          fieldsByModel(new Object[][] {
+            {"suno-v4", fields(new Object[][] {
+                    {"audio_url", field(required())},
+                    {"callback_url", field()},
+                    {"end_seconds", field(required(), min(Double.valueOf(0.0)))},
+                    {"model", field(required())},
+                    {"start_seconds", field(required(), min(Double.valueOf(0.0)))},
+            })},
+            {"suno-v4.5", fields(new Object[][] {
+                    {"audio_url", field(required())},
+                    {"callback_url", field()},
+                    {"end_seconds", field(required(), min(Double.valueOf(0.0)))},
+                    {"model", field(required())},
+                    {"start_seconds", field(required(), min(Double.valueOf(0.0)))},
+            })},
+            {"suno-v4.5-plus", fields(new Object[][] {
+                    {"audio_url", field(required())},
+                    {"callback_url", field()},
+                    {"end_seconds", field(required(), min(Double.valueOf(0.0)))},
+                    {"model", field(required())},
+                    {"start_seconds", field(required(), min(Double.valueOf(0.0)))},
+            })},
+            {"suno-v5", fields(new Object[][] {
+                    {"audio_url", field(required())},
+                    {"callback_url", field()},
+                    {"end_seconds", field(required(), min(Double.valueOf(0.0)))},
+                    {"model", field(required())},
+                    {"start_seconds", field(required(), min(Double.valueOf(0.0)))},
+            })},
+            {"suno-v5.5", fields(new Object[][] {
+                    {"audio_url", field(required())},
+                    {"callback_url", field()},
+                    {"end_seconds", field(required(), min(Double.valueOf(0.0)))},
+                    {"model", field(required())},
+                    {"start_seconds", field(required(), min(Double.valueOf(0.0)))},
+            })},
+          })));
 contract.put("suno/add-vocals", new ContractAction(
     list("suno-v4.5-plus", "suno-v5"),
           fieldsByModel(new Object[][] {
@@ -1851,6 +1951,9 @@ contract.put("suno/check-voice", new ContractAction(
                     {"task_id", field(required())},
             })},
           })));
+  }
+
+  private static void addActions11(Map<String, ContractAction> contract) {
 contract.put("suno/convert-audio", new ContractAction(
     list(),
           fieldsByModel(new Object[][] {
@@ -1974,9 +2077,6 @@ contract.put("suno/cover-audio", new ContractAction(
 {"suno-v5", rules(rule(conditions(new Object[][] {{"vocal_mode", "auto_lyrics"}}), list("prompt"), list("lyrics", "style", "title")), rule(conditions(new Object[][] {{"vocal_mode", "exact_lyrics"}}), list("lyrics", "style", "title"), list("prompt")), rule(conditions(new Object[][] {{"vocal_mode", "instrumental"}}), list("style", "title"), list("prompt", "lyrics")))},
 {"suno-v5.5", rules(rule(conditions(new Object[][] {{"vocal_mode", "auto_lyrics"}}), list("prompt"), list("lyrics", "style", "title")), rule(conditions(new Object[][] {{"vocal_mode", "exact_lyrics"}}), list("lyrics", "style", "title"), list("prompt")), rule(conditions(new Object[][] {{"vocal_mode", "instrumental"}}), list("style", "title"), list("prompt", "lyrics")))},
           })));
-  }
-
-  private static void addActions11(Map<String, ContractAction> contract) {
 contract.put("suno/create-mashup", new ContractAction(
     list("suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"),
           fieldsByModel(new Object[][] {
@@ -2085,6 +2185,9 @@ contract.put("suno/create-mashup", new ContractAction(
 {"suno-v5", rules(rule(conditions(new Object[][] {{"vocal_mode", "auto_lyrics"}}), list("prompt"), list("lyrics", "style", "title")), rule(conditions(new Object[][] {{"vocal_mode", "exact_lyrics"}}), list("lyrics", "style", "title"), list("prompt")), rule(conditions(new Object[][] {{"vocal_mode", "instrumental"}}), list("style", "title"), list("prompt", "lyrics")))},
 {"suno-v5.5", rules(rule(conditions(new Object[][] {{"vocal_mode", "auto_lyrics"}}), list("prompt"), list("lyrics", "style", "title")), rule(conditions(new Object[][] {{"vocal_mode", "exact_lyrics"}}), list("lyrics", "style", "title"), list("prompt")), rule(conditions(new Object[][] {{"vocal_mode", "instrumental"}}), list("style", "title"), list("prompt", "lyrics")))},
           })));
+  }
+
+  private static void addActions12(Map<String, ContractAction> contract) {
 contract.put("suno/extend-music", new ContractAction(
     list("suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"),
           fieldsByModel(new Object[][] {
@@ -2255,9 +2358,6 @@ contract.put("suno/generate-persona", new ContractAction(
                     {"task_id", field(required())},
             })},
           })));
-  }
-
-  private static void addActions12(Map<String, ContractAction> contract) {
 contract.put("suno/generate-voice", new ContractAction(
     list(),
           fieldsByModel(new Object[][] {
@@ -2285,6 +2385,43 @@ contract.put("suno/regenerate-validation-phrase", new ContractAction(
             {"_", fields(new Object[][] {
                     {"callback_url", field()},
                     {"task_id", field(required())},
+            })},
+          })));
+  }
+
+  private static void addActions13(Map<String, ContractAction> contract) {
+contract.put("suno/remaster-audio", new ContractAction(
+    list("suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"),
+          fieldsByModel(new Object[][] {
+            {"suno-v4", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
+            {"suno-v4.5", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
+            {"suno-v4.5-plus", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
+            {"suno-v5", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
+            {"suno-v5.5", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
             })},
           })));
 contract.put("suno/replace-section", new ContractAction(
@@ -2318,6 +2455,40 @@ contract.put("suno/separate-audio-stems", new ContractAction(
           }),
           rulesByModel(new Object[][] {
 {"_", rules(rule(conditions(new Object[][] {{"type", "split_stem_advanced"}}), list("stem_name"), list()))},
+          })));
+contract.put("suno/stitch-audio", new ContractAction(
+    list("suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"),
+          fieldsByModel(new Object[][] {
+            {"suno-v4", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
+            {"suno-v4.5", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
+            {"suno-v4.5-plus", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
+            {"suno-v5", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
+            {"suno-v5.5", fields(new Object[][] {
+                    {"audio_id", field(required())},
+                    {"callback_url", field()},
+                    {"model", field(required())},
+                    {"source_task_id", field(required())},
+            })},
           })));
 contract.put("suno/text-to-music", new ContractAction(
     list("suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"),
@@ -2474,7 +2645,7 @@ contract.put("suno/visualize-music", new ContractAction(
           })));
   }
 
-  private static void addActions13(Map<String, ContractAction> contract) {
+  private static void addActions14(Map<String, ContractAction> contract) {
 contract.put("suno/voice-to-validation-phrase", new ContractAction(
     list(),
           fieldsByModel(new Object[][] {
@@ -2617,7 +2788,7 @@ contract.put("wan/animate", new ContractAction(
           })));
   }
 
-  private static void addActions14(Map<String, ContractAction> contract) {
+  private static void addActions15(Map<String, ContractAction> contract) {
 contract.put("wan/edit-video", new ContractAction(
     list("wan-2.6-edit-video", "wan-2.6-flash-edit-video", "wan-2.7-edit-video"),
           fieldsByModel(new Object[][] {
@@ -2853,7 +3024,7 @@ contract.put("wan/text-to-image", new ContractAction(
           })));
   }
 
-  private static void addActions15(Map<String, ContractAction> contract) {
+  private static void addActions16(Map<String, ContractAction> contract) {
 contract.put("wan/text-to-video", new ContractAction(
     list("wan-2.2-a14b-text-to-video-turbo", "wan-2.5-text-to-video", "wan-2.6-text-to-video", "wan-2.7-r2v", "wan-2.7-text-to-video"),
           fieldsByModel(new Object[][] {

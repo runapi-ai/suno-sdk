@@ -60,8 +60,8 @@ const audioUrl = result.audios[0].audio_url;
 ## Routing
 
 - Model page: https://runapi.ai/models/suno
-- Product docs: https://runapi.ai/docs#suno
-- SDK docs: https://runapi.ai/docs#sdk-suno
+- Product docs: https://runapi.ai/docs/api/suno/text-to-music
+- SDK docs: https://runapi.ai/docs/resources/sdks
 - SDK repository: https://github.com/runapi-ai/suno-sdk
 - Pricing and rate limits: https://runapi.ai/models/suno/v4
 - Provider comparison: https://runapi.ai/providers/suno

@@ -89,6 +89,80 @@ func TestAddVocalsCreateUsesLyricsPayload(t *testing.T) {
 	}
 }
 
+func TestAudioActionsCreateUsePublicRequestShapes(t *testing.T) {
+	tests := []struct {
+		name string
+		path string
+		call func(*Client) error
+		want map[string]any
+	}{
+		{
+			name: "stitch",
+			path: "/api/v1/suno/stitch_audio",
+			call: func(client *Client) error {
+				_, err := client.StitchAudio.Create(context.Background(), StitchAudioParams{
+					Model: ModelV5, SourceTaskID: "task-source", AudioID: "audio-source",
+				})
+				return err
+			},
+			want: map[string]any{"model": string(ModelV5), "source_task_id": "task-source", "audio_id": "audio-source"},
+		},
+		{
+			name: "remaster",
+			path: "/api/v1/suno/remaster_audio",
+			call: func(client *Client) error {
+				_, err := client.RemasterAudio.Create(context.Background(), RemasterAudioParams{
+					Model: ModelV5, SourceTaskID: "task-source", AudioID: "audio-source",
+				})
+				return err
+			},
+			want: map[string]any{"model": string(ModelV5), "source_task_id": "task-source", "audio_id": "audio-source"},
+		},
+		{
+			name: "samples",
+			path: "/api/v1/suno/add_samples",
+			call: func(client *Client) error {
+				_, err := client.AddSamples.Create(context.Background(), AddSamplesParams{
+					Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", StartSeconds: 5, EndSeconds: 20,
+				})
+				return err
+			},
+			want: map[string]any{"model": string(ModelV5), "audio_url": "https://file.runapi.ai/source.mp3", "start_seconds": float64(5), "end_seconds": float64(20)},
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			httpClient := &stubHTTPClient{}
+			if err := tt.call(NewClientWithHTTP(httpClient)); err != nil {
+				t.Fatal(err)
+			}
+			if httpClient.method != "POST" || httpClient.path != tt.path {
+				t.Fatalf("unexpected request: %s %s", httpClient.method, httpClient.path)
+			}
+			body, ok := httpClient.body.(map[string]any)
+			if !ok {
+				t.Fatalf("expected flat body map, got %T", httpClient.body)
+			}
+			for key, want := range tt.want {
+				if body[key] != want {
+					t.Fatalf("expected %s=%v, got %#v", key, want, body)
+				}
+			}
+		})
+	}
+}
+
+func TestAddSamplesRejectsInvalidWindow(t *testing.T) {
+	client := NewClientWithHTTP(&stubHTTPClient{})
+	_, err := client.AddSamples.Create(context.Background(), AddSamplesParams{
+		Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", StartSeconds: 20, EndSeconds: 20,
+	})
+	if err == nil || err.Error() != "end_seconds must be greater than start_seconds" {
+		t.Fatalf("expected invalid window error, got %v", err)
+	}
+}
+
 func TestBlendLyricsCreateUsesLyricsPair(t *testing.T) {
 	httpClient := &stubHTTPClient{}
 	client := NewClientWithHTTP(httpClient)

@@ -64,6 +64,91 @@ CONTRACT = {
             }
         }
     },
+    "add-samples": {
+        "models": ["suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "fields_by_model": {
+            "suno-v4": {
+                "audio_url": {
+                    "required": True
+                },
+                "end_seconds": {
+                    "required": True,
+                    "min": 0
+                },
+                "model": {
+                    "required": True
+                },
+                "start_seconds": {
+                    "required": True,
+                    "min": 0
+                }
+            },
+            "suno-v4.5": {
+                "audio_url": {
+                    "required": True
+                },
+                "end_seconds": {
+                    "required": True,
+                    "min": 0
+                },
+                "model": {
+                    "required": True
+                },
+                "start_seconds": {
+                    "required": True,
+                    "min": 0
+                }
+            },
+            "suno-v4.5-plus": {
+                "audio_url": {
+                    "required": True
+                },
+                "end_seconds": {
+                    "required": True,
+                    "min": 0
+                },
+                "model": {
+                    "required": True
+                },
+                "start_seconds": {
+                    "required": True,
+                    "min": 0
+                }
+            },
+            "suno-v5": {
+                "audio_url": {
+                    "required": True
+                },
+                "end_seconds": {
+                    "required": True,
+                    "min": 0
+                },
+                "model": {
+                    "required": True
+                },
+                "start_seconds": {
+                    "required": True,
+                    "min": 0
+                }
+            },
+            "suno-v5.5": {
+                "audio_url": {
+                    "required": True
+                },
+                "end_seconds": {
+                    "required": True,
+                    "min": 0
+                },
+                "model": {
+                    "required": True
+                },
+                "start_seconds": {
+                    "required": True,
+                    "min": 0
+                }
+            }
+        }
+    },
     "add-vocals": {
         "models": ["suno-v4.5-plus", "suno-v5"],
         "fields_by_model": {
@@ -620,6 +705,66 @@ CONTRACT = {
             }
         }
     },
+    "remaster-audio": {
+        "models": ["suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "fields_by_model": {
+            "suno-v4": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            },
+            "suno-v4.5": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            },
+            "suno-v4.5-plus": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            },
+            "suno-v5": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            },
+            "suno-v5.5": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            }
+        }
+    },
     "replace-section": {
         "models": [],
         "fields_by_model": {
@@ -672,6 +817,66 @@ CONTRACT = {
             },
             "required": ["stem_name"]
         }]
+    },
+    "stitch-audio": {
+        "models": ["suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "fields_by_model": {
+            "suno-v4": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            },
+            "suno-v4.5": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            },
+            "suno-v4.5-plus": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            },
+            "suno-v5": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            },
+            "suno-v5.5": {
+                "audio_id": {
+                    "required": True
+                },
+                "model": {
+                    "required": True
+                },
+                "source_task_id": {
+                    "required": True
+                }
+            }
+        }
     },
     "text-to-music": {
         "models": ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],

@@ -75,6 +75,9 @@ def test_exposes_all_resource_accessors():
         "cover_audio": R.CoverAudio,
         "add_instrumental": R.AddInstrumental,
         "add_vocals": R.AddVocals,
+        "stitch_audio": R.StitchAudio,
+        "remaster_audio": R.RemasterAudio,
+        "add_samples": R.AddSamples,
         "separate_audio_stems": R.SeparateAudioStems,
         "generate_midi": R.GenerateMidi,
         "convert_audio": R.ConvertAudio,
@@ -92,7 +95,7 @@ def test_exposes_all_resource_accessors():
         "generate_persona": R.GeneratePersona,
         "boost_style": R.BoostStyle,
     }
-    assert len(expected) == 22
+    assert len(expected) == 25
     for name, cls in expected.items():
         assert isinstance(getattr(client, name), cls), name
 
@@ -132,6 +135,33 @@ def test_blend_lyrics_posts_flat_lyrics_pair():
     assert fake.calls == [
         ("post", "/api/v1/suno/blend_lyrics", {"lyrics_a": "First verse", "lyrics_b": "Second verse"}),
     ]
+
+
+def test_audio_actions_post_public_request_shapes():
+    fake = FakeHttp()
+    client = SunoClient(api_key="k", http_client=fake)
+
+    client.stitch_audio.create(model="suno-v5", source_task_id="source", audio_id="audio")
+    client.remaster_audio.create(model="suno-v5", source_task_id="source", audio_id="audio")
+    client.add_samples.create(
+        model="suno-v5", audio_url="https://file.runapi.ai/source.mp3", start_seconds=5, end_seconds=20
+    )
+
+    assert fake.calls == [
+        ("post", "/api/v1/suno/stitch_audio", {"model": "suno-v5", "source_task_id": "source", "audio_id": "audio"}),
+        ("post", "/api/v1/suno/remaster_audio", {"model": "suno-v5", "source_task_id": "source", "audio_id": "audio"}),
+        ("post", "/api/v1/suno/add_samples", {
+            "model": "suno-v5", "audio_url": "https://file.runapi.ai/source.mp3", "start_seconds": 5, "end_seconds": 20,
+        }),
+    ]
+
+
+def test_add_samples_rejects_invalid_window():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="end_seconds must be greater than start_seconds"):
+        client.add_samples.create(
+            model="suno-v5", audio_url="https://file.runapi.ai/source.mp3", start_seconds=20, end_seconds=20
+        )
 
 
 def test_blend_lyrics_requires_both_lyrics_texts():

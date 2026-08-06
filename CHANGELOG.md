@@ -1,5 +1,11 @@
 # Changelog
 
+## [js/v0.3.3](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.3.3), [ruby/v0.3.3](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.3.3), [go/v0.3.3](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.3.3), [python/v0.3.2](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.3.2), [java/v0.2.2](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.2.2) - 2026-08-06
+
+### Added
+- Add typed clients for stitching audio, remastering audio, and adding samples from a selected time range.
+
+
 ## [js/v0.3.2](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.3.2), [ruby/v0.3.2](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.3.2), [go/v0.3.2](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.3.2), [python/v0.3.1](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.3.1), [java/v0.2.1](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.2.1) - 2026-07-28
 
 ### Fixed

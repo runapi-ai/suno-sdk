@@ -20,12 +20,15 @@ import ai.runapi.suno.types.AddInstrumentalResponse;
 import ai.runapi.suno.types.AddVocalsModel;
 import ai.runapi.suno.types.AddVocalsParams;
 import ai.runapi.suno.types.AddVocalsResponse;
+import ai.runapi.suno.types.AudioActionParams;
+import ai.runapi.suno.types.AudioActionResponse;
 import ai.runapi.suno.types.BoostStyleParams;
 import ai.runapi.suno.types.BoostStyleResponse;
 import ai.runapi.suno.types.CheckVoiceParams;
 import ai.runapi.suno.types.CheckVoiceResponse;
 import ai.runapi.suno.types.CompletedAddInstrumentalResponse;
 import ai.runapi.suno.types.CompletedAddVocalsResponse;
+import ai.runapi.suno.types.CompletedAudioActionResponse;
 import ai.runapi.suno.types.CompletedConvertAudioResponse;
 import ai.runapi.suno.types.CompletedCoverAudioResponse;
 import ai.runapi.suno.types.CompletedCreateMashupResponse;
@@ -89,6 +92,70 @@ import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 class SunoClientTest {
+  @Test
+  void audioActionsSendPublicRequestShapes() throws Exception {
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"task\",\"status\":\"processing\"}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    client.addSamples().create(AudioActionParams.builder()
+        .model("suno-v5")
+        .audioUrl("https://file.runapi.ai/source.mp3")
+        .startSeconds(5)
+        .endSeconds(20)
+        .build());
+
+    assertEquals("/api/v1/suno/add_samples", transport.request.getPath());
+    JsonNode body = bodyJson(transport.request);
+    assertEquals("suno-v5", body.get("model").asText());
+    assertEquals(5.0, body.get("start_seconds").asDouble());
+    assertEquals(20.0, body.get("end_seconds").asDouble());
+  }
+
+  @Test
+  void audioActionsExposeCreateGetAndRunWithRequestOptions() {
+    AudioActionParams sourceTaskParams = AudioActionParams.builder()
+        .model("suno-v5")
+        .sourceTaskId("task_source")
+        .audioId("audio_source")
+        .build();
+
+    CapturingTransport createTransport = new CapturingTransport("{\"id\":\"task_stitch\",\"status\":\"processing\"}");
+    SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
+    assertNotNull(createClient.stitchAudio().create(sourceTaskParams, RequestOptions.none()));
+
+    CapturingTransport getTransport = new CapturingTransport(
+        "{\"id\":\"task_remaster\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated\"}]}");
+    SunoClient getClient = SunoClient.builder().apiKey("sk-test").transport(getTransport).build();
+    AudioActionResponse getResponse = getClient.remasterAudio().get("task_remaster", RequestOptions.none());
+    assertEquals("completed", getResponse.getStatus().value());
+
+    SequenceTransport runTransport = new SequenceTransport(
+        "{\"id\":\"task_samples\",\"status\":\"processing\"}",
+        "{\"id\":\"task_samples\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/generated\"}]}");
+    SunoClient runClient = SunoClient.builder().apiKey("sk-test").transport(runTransport).build();
+    CompletedAudioActionResponse runResponse = runClient.addSamples().run(
+        AudioActionParams.builder()
+            .model("suno-v5")
+            .audioUrl("https://file.runapi.ai/source.mp3")
+            .startSeconds(5)
+            .endSeconds(20)
+            .build(),
+        RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
+    assertEquals("completed", runResponse.getStatus().value());
+    assertNotNull(runResponse.getAudios());
+  }
+
+  @Test
+  void addSamplesRejectsInvalidWindow() {
+    ValidationException error = assertThrows(ValidationException.class, () -> AudioActionParams.builder()
+        .model("suno-v5")
+        .audioUrl("https://file.runapi.ai/source.mp3")
+        .startSeconds(20)
+        .endSeconds(20)
+        .build());
+    assertEquals("end_seconds must be greater than start_seconds", error.getMessage());
+  }
+
   @Test
   void builderCreatesClientAndUniversalResources() {
     SunoClient client = SunoClient.builder().apiKey("sk-test").build();
