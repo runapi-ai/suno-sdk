@@ -3,7 +3,7 @@
   "runapi": {
     "slug": "suno"
   },
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "RunAPI Suno SDK for text-to-music, lyric generation and blending, cover audio, music extension, stem separation, voice validation phrase, custom voice, and related audio workflows in JavaScript, Python, Ruby, Go, Java, and PHP",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -31,7 +31,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@runapi.ai/core": "^0.3.2"
+    "@runapi.ai/core": "^0.3.3"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

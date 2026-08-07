@@ -1288,6 +1288,8 @@ export const contract = {
     "fields_by_model": {
       "suno-v4": {
         "duration_seconds": {
+          "min": 10,
+          "max": 360,
           "type": "integer"
         },
         "model": {
@@ -1316,6 +1318,8 @@ export const contract = {
       },
       "suno-v4.5": {
         "duration_seconds": {
+          "min": 10,
+          "max": 360,
           "type": "integer"
         },
         "model": {
@@ -1344,6 +1348,8 @@ export const contract = {
       },
       "suno-v4.5-all": {
         "duration_seconds": {
+          "min": 10,
+          "max": 360,
           "type": "integer"
         },
         "model": {
@@ -1372,6 +1378,8 @@ export const contract = {
       },
       "suno-v4.5-plus": {
         "duration_seconds": {
+          "min": 10,
+          "max": 360,
           "type": "integer"
         },
         "model": {
@@ -1400,6 +1408,8 @@ export const contract = {
       },
       "suno-v5": {
         "duration_seconds": {
+          "min": 10,
+          "max": 360,
           "type": "integer"
         },
         "model": {
@@ -1428,6 +1438,8 @@ export const contract = {
       },
       "suno-v5.5": {
         "duration_seconds": {
+          "min": 10,
+          "max": 360,
           "type": "integer"
         },
         "model": {
@@ -1466,7 +1478,10 @@ export const contract = {
         "forbidden": [
           "lyrics",
           "style",
-          "title"
+          "title",
+          "negative_tags",
+          "vocal_gender",
+          "duration_seconds"
         ]
       },
       {
@@ -1492,7 +1507,48 @@ export const contract = {
         ],
         "forbidden": [
           "prompt",
-          "lyrics"
+          "lyrics",
+          "vocal_gender"
+        ]
+      },
+      {
+        "when": {
+          "model": "suno-v4"
+        },
+        "forbidden": [
+          "duration_seconds"
+        ]
+      },
+      {
+        "when": {
+          "model": "suno-v4.5"
+        },
+        "forbidden": [
+          "duration_seconds"
+        ]
+      },
+      {
+        "when": {
+          "model": "suno-v4.5-all"
+        },
+        "forbidden": [
+          "duration_seconds"
+        ]
+      },
+      {
+        "when": {
+          "model": "suno-v4.5-plus"
+        },
+        "forbidden": [
+          "duration_seconds"
+        ]
+      },
+      {
+        "when": {
+          "model": "suno-v5"
+        },
+        "forbidden": [
+          "duration_seconds"
         ]
       }
     ]

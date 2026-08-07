@@ -887,6 +887,8 @@ module RunApi
         "fields_by_model" => {
           "suno-v4" => {
             "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
               "type" => "integer"
             },
             "model" => {
@@ -905,6 +907,8 @@ module RunApi
           },
           "suno-v4.5" => {
             "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
               "type" => "integer"
             },
             "model" => {
@@ -923,6 +927,8 @@ module RunApi
           },
           "suno-v4.5-all" => {
             "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
               "type" => "integer"
             },
             "model" => {
@@ -941,6 +947,8 @@ module RunApi
           },
           "suno-v4.5-plus" => {
             "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
               "type" => "integer"
             },
             "model" => {
@@ -959,6 +967,8 @@ module RunApi
           },
           "suno-v5" => {
             "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
               "type" => "integer"
             },
             "model" => {
@@ -977,6 +987,8 @@ module RunApi
           },
           "suno-v5.5" => {
             "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
               "type" => "integer"
             },
             "model" => {
@@ -999,7 +1011,7 @@ module RunApi
             "vocal_mode" => "auto_lyrics"
           },
           "required" => ["prompt"],
-          "forbidden" => ["lyrics", "style", "title"]
+          "forbidden" => ["lyrics", "style", "title", "negative_tags", "vocal_gender", "duration_seconds"]
         }, {
           "when" => {
             "vocal_mode" => "exact_lyrics"
@@ -1011,7 +1023,32 @@ module RunApi
             "vocal_mode" => "instrumental"
           },
           "required" => ["style", "title"],
-          "forbidden" => ["prompt", "lyrics"]
+          "forbidden" => ["prompt", "lyrics", "vocal_gender"]
+        }, {
+          "when" => {
+            "model" => "suno-v4"
+          },
+          "forbidden" => ["duration_seconds"]
+        }, {
+          "when" => {
+            "model" => "suno-v4.5"
+          },
+          "forbidden" => ["duration_seconds"]
+        }, {
+          "when" => {
+            "model" => "suno-v4.5-all"
+          },
+          "forbidden" => ["duration_seconds"]
+        }, {
+          "when" => {
+            "model" => "suno-v4.5-plus"
+          },
+          "forbidden" => ["duration_seconds"]
+        }, {
+          "when" => {
+            "model" => "suno-v5"
+          },
+          "forbidden" => ["duration_seconds"]
         }]
       },
       "text-to-sound" => {

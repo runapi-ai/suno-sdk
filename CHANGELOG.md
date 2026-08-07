@@ -1,5 +1,11 @@
 # Changelog
 
+## [js/v0.3.4](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.3.4), [ruby/v0.3.4](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.3.4), [go/v0.3.4](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.3.4), [python/v0.3.3](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.3.3) - 2026-08-07
+
+### Fixed
+- Validate the 10 to 360 second custom duration range and reject controls that the selected vocal mode or model cannot honor.
+
+
 ## [js/v0.3.3](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.3.3), [ruby/v0.3.3](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.3.3), [go/v0.3.3](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.3.3), [python/v0.3.2](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.3.2), [java/v0.2.2](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.2.2) - 2026-08-06
 
 ### Added
