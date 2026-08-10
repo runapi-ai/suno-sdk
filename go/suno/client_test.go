@@ -163,6 +163,40 @@ func TestAddSamplesRejectsInvalidWindow(t *testing.T) {
 	}
 }
 
+func TestInspireMusicCreateUsesCallerAudioURLs(t *testing.T) {
+	httpClient := &stubHTTPClient{}
+	client := NewClientWithHTTP(httpClient)
+	audioURLs := []string{
+		"https://file.runapi.ai/inspiration-one.mp3",
+		"https://file.runapi.ai/inspiration-two.mp3",
+	}
+	_, err := client.InspireMusic.Create(context.Background(), InspireMusicParams{
+		Model: ModelV5, AudioURLs: audioURLs,
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.method != "POST" || httpClient.path != "/api/v1/suno/inspire_music" {
+		t.Fatalf("unexpected request: %s %s", httpClient.method, httpClient.path)
+	}
+	body, ok := httpClient.body.(map[string]any)
+	if !ok {
+		t.Fatalf("expected flat body map, got %T", httpClient.body)
+	}
+	bodyURLs, ok := body["audio_urls"].([]any)
+	if !ok || len(bodyURLs) != len(audioURLs) {
+		t.Fatalf("expected caller audio URLs, got %#v", body)
+	}
+	for index, expected := range audioURLs {
+		if bodyURLs[index] != expected {
+			t.Fatalf("expected audio URL %q at index %d, got %#v", expected, index, bodyURLs)
+		}
+	}
+	if _, ok := body["audio_id"]; ok {
+		t.Fatalf("did not expect audio_id, got %#v", body)
+	}
+}
+
 func TestBlendLyricsCreateUsesLyricsPair(t *testing.T) {
 	httpClient := &stubHTTPClient{}
 	client := NewClientWithHTTP(httpClient)

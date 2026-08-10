@@ -7,6 +7,7 @@ import java.net.URI;
 import ai.runapi.suno.resources.AddInstrumentalResource;
 import ai.runapi.suno.resources.AddVocalsResource;
 import ai.runapi.suno.resources.AddSamplesResource;
+import ai.runapi.suno.resources.InspireMusicResource;
 import ai.runapi.suno.resources.RemasterAudioResource;
 import ai.runapi.suno.resources.StitchAudioResource;
 import ai.runapi.suno.resources.BoostStyleResource;
@@ -42,6 +43,7 @@ public final class SunoClient extends BaseClient {
   private final CreateMashupResource createMashup;
   private final ExtendMusicResource extendMusic;
   private final AddSamplesResource addSamples;
+  private final InspireMusicResource inspireMusic;
   private final RemasterAudioResource remasterAudio;
   private final StitchAudioResource stitchAudio;
   private final GenerateArtworkResource generateArtwork;
@@ -70,6 +72,7 @@ public final class SunoClient extends BaseClient {
     this.createMashup = new CreateMashupResource(transport(), options());
     this.extendMusic = new ExtendMusicResource(transport(), options());
     this.addSamples = new AddSamplesResource(transport(), options());
+    this.inspireMusic = new InspireMusicResource(transport(), options());
     this.remasterAudio = new RemasterAudioResource(transport(), options());
     this.stitchAudio = new StitchAudioResource(transport(), options());
     this.generateArtwork = new GenerateArtworkResource(transport(), options());
@@ -137,6 +140,7 @@ public final class SunoClient extends BaseClient {
     return extendMusic;
   }
   public AddSamplesResource addSamples() { return addSamples; }
+  public InspireMusicResource inspireMusic() { return inspireMusic; }
   public RemasterAudioResource remasterAudio() { return remasterAudio; }
   public StitchAudioResource stitchAudio() { return stitchAudio; }
 

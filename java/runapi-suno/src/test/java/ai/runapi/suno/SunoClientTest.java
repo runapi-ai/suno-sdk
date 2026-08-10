@@ -1,6 +1,7 @@
 package ai.runapi.suno;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -22,6 +23,7 @@ import ai.runapi.suno.types.AddVocalsParams;
 import ai.runapi.suno.types.AddVocalsResponse;
 import ai.runapi.suno.types.AudioActionParams;
 import ai.runapi.suno.types.AudioActionResponse;
+import ai.runapi.suno.types.InspireMusicParams;
 import ai.runapi.suno.types.BoostStyleParams;
 import ai.runapi.suno.types.BoostStyleResponse;
 import ai.runapi.suno.types.CheckVoiceParams;
@@ -88,6 +90,7 @@ import ai.runapi.suno.types.VoiceToValidationPhraseResponse;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.ByteArrayOutputStream;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
@@ -109,6 +112,25 @@ class SunoClientTest {
     assertEquals("suno-v5", body.get("model").asText());
     assertEquals(5.0, body.get("start_seconds").asDouble());
     assertEquals(20.0, body.get("end_seconds").asDouble());
+  }
+
+  @Test
+  void inspireMusicSendsCallerAudioUrlsWithoutAudioId() throws Exception {
+    CapturingTransport transport = new CapturingTransport("{\"id\":\"task\",\"status\":\"processing\"}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    client.inspireMusic().create(InspireMusicParams.builder()
+        .model("suno-v5")
+        .audioUrls(Arrays.asList(
+            "https://file.runapi.ai/inspiration-one.mp3",
+            "https://file.runapi.ai/inspiration-two.mp3"))
+        .build());
+
+    assertEquals("/api/v1/suno/inspire_music", transport.request.getPath());
+    JsonNode body = bodyJson(transport.request);
+    assertEquals(2, body.get("audio_urls").size());
+    assertEquals("https://file.runapi.ai/inspiration-one.mp3", body.get("audio_urls").get(0).asText());
+    assertFalse(body.has("audio_id"));
   }
 
   @Test

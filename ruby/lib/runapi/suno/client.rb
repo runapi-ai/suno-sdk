@@ -16,7 +16,7 @@ module RunApi
       attr_reader :text_to_music
       # @return [Resources::ExtendMusic] continues an existing track from a specified timestamp
       attr_reader :extend_music
-      attr_reader :stitch_audio, :remaster_audio, :add_samples
+      attr_reader :stitch_audio, :remaster_audio, :add_samples, :inspire_music
       # @return [Resources::GenerateArtwork] creates cover artwork for an existing music task
       attr_reader :generate_artwork
       # @return [Resources::CoverAudio] re-records vocals over an uploaded audio file with a new style or voice
@@ -66,6 +66,7 @@ module RunApi
         @stitch_audio = Resources::StitchAudio.new(http)
         @remaster_audio = Resources::RemasterAudio.new(http)
         @add_samples = Resources::AddSamples.new(http)
+        @inspire_music = Resources::InspireMusic.new(http)
         @generate_artwork = Resources::GenerateArtwork.new(http)
         @cover_audio = Resources::CoverAudio.new(http)
         @add_instrumental = Resources::AddInstrumental.new(http)

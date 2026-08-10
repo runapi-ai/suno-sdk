@@ -22,6 +22,7 @@ const (
 	stitchAudioPath                = "/api/v1/suno/stitch_audio"
 	remasterAudioPath              = "/api/v1/suno/remaster_audio"
 	addSamplesPath                 = "/api/v1/suno/add_samples"
+	inspireMusicPath               = "/api/v1/suno/inspire_music"
 	generateArtworkPath            = "/api/v1/suno/generate_artwork"
 	coverAudioPath                 = "/api/v1/suno/cover_audio"
 	addInstrumentalPath            = "/api/v1/suno/add_instrumental"
@@ -53,6 +54,7 @@ type Client struct {
 	StitchAudio                *StitchAudio
 	RemasterAudio              *RemasterAudio
 	AddSamples                 *AddSamples
+	InspireMusic               *InspireMusic
 	GenerateArtwork            *GenerateArtwork
 	CoverAudio                 *CoverAudio
 	AddInstrumental            *AddInstrumental
@@ -97,6 +99,7 @@ func NewClientWithHTTP(httpClient core.HTTPClient) *Client {
 		StitchAudio:                &StitchAudio{http: httpClient},
 		RemasterAudio:              &RemasterAudio{http: httpClient},
 		AddSamples:                 &AddSamples{http: httpClient},
+		InspireMusic:               &InspireMusic{http: httpClient},
 		GenerateArtwork:            &GenerateArtwork{http: httpClient},
 		CoverAudio:                 &CoverAudio{http: httpClient},
 		AddInstrumental:            &AddInstrumental{http: httpClient},
@@ -128,6 +131,7 @@ type ExtendMusic struct{ http core.HTTPClient }
 type StitchAudio struct{ http core.HTTPClient }
 type RemasterAudio struct{ http core.HTTPClient }
 type AddSamples struct{ http core.HTTPClient }
+type InspireMusic struct{ http core.HTTPClient }
 
 func (r *StitchAudio) Create(ctx context.Context, params StitchAudioParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
@@ -177,6 +181,22 @@ func (r *AddSamples) Get(ctx context.Context, id string, opts ...option.RequestO
 	return core.GetJSON[TextToMusicResponse](ctx, r.http, core.ResourcePath(addSamplesPath, id), requestOptions)
 }
 func (r *AddSamples) Run(ctx context.Context, p AddSamplesParams, opts ...option.RequestOption) (*TextToMusicResponse, error) {
+	_, po := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, p, opts...) }, func(ctx context.Context, id string) (*TextToMusicResponse, error) { return r.Get(ctx, id, opts...) }, po)
+}
+func (r *InspireMusic) Create(ctx context.Context, params InspireMusicParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["inspire-music"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, inspireMusicPath, body, requestOptions)
+}
+func (r *InspireMusic) Get(ctx context.Context, id string, opts ...option.RequestOption) (*TextToMusicResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[TextToMusicResponse](ctx, r.http, core.ResourcePath(inspireMusicPath, id), requestOptions)
+}
+func (r *InspireMusic) Run(ctx context.Context, p InspireMusicParams, opts ...option.RequestOption) (*TextToMusicResponse, error) {
 	_, po := option.ResolveRequestOptions(opts...)
 	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, p, opts...) }, func(ctx context.Context, id string) (*TextToMusicResponse, error) { return r.Get(ctx, id, opts...) }, po)
 }

@@ -21,6 +21,11 @@ type AddSamplesParams struct {
 	EndSeconds   float64   `json:"end_seconds"`
 	CallbackURL  string    `json:"callback_url,omitempty"`
 }
+type InspireMusicParams struct {
+	Model       SunoModel `json:"model" help:"required; model slug"`
+	AudioURLs   []string  `json:"audio_urls" help:"required; one to four audio URLs that guide the new music"`
+	CallbackURL string    `json:"callback_url,omitempty" help:"optional; webhook URL for async notifications"`
+}
 
 // SunoModel selects the Suno music generation engine version.
 type SunoModel string

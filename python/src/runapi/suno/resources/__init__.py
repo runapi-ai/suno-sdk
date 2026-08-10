@@ -1,6 +1,7 @@
 from .add_instrumental import AddInstrumental
 from .add_vocals import AddVocals
 from .add_samples import AddSamples
+from .inspire_music import InspireMusic
 from .remaster_audio import RemasterAudio
 from .stitch_audio import StitchAudio
 from .boost_style import BoostStyle
@@ -32,6 +33,7 @@ __all__ = [
     "AddInstrumental",
     "AddVocals",
     "AddSamples",
+    "InspireMusic",
     "RemasterAudio",
     "StitchAudio",
     "SeparateAudioStems",

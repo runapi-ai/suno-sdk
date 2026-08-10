@@ -967,6 +967,67 @@ export const contract = {
       }
     }
   },
+  "inspire-music": {
+    "models": [
+      "suno-v4",
+      "suno-v4.5",
+      "suno-v4.5-plus",
+      "suno-v5",
+      "suno-v5.5"
+    ],
+    "fields_by_model": {
+      "suno-v4": {
+        "audio_urls": {
+          "required": true,
+          "min_items": 1,
+          "max_items": 4
+        },
+        "model": {
+          "required": true
+        }
+      },
+      "suno-v4.5": {
+        "audio_urls": {
+          "required": true,
+          "min_items": 1,
+          "max_items": 4
+        },
+        "model": {
+          "required": true
+        }
+      },
+      "suno-v4.5-plus": {
+        "audio_urls": {
+          "required": true,
+          "min_items": 1,
+          "max_items": 4
+        },
+        "model": {
+          "required": true
+        }
+      },
+      "suno-v5": {
+        "audio_urls": {
+          "required": true,
+          "min_items": 1,
+          "max_items": 4
+        },
+        "model": {
+          "required": true
+        }
+      },
+      "suno-v5.5": {
+        "audio_urls": {
+          "required": true,
+          "min_items": 1,
+          "max_items": 4
+        },
+        "model": {
+          "required": true
+        }
+      }
+    }
+  },
   "regenerate-validation-phrase": {
     "models": [],
     "fields_by_model": {

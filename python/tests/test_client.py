@@ -78,6 +78,7 @@ def test_exposes_all_resource_accessors():
         "stitch_audio": R.StitchAudio,
         "remaster_audio": R.RemasterAudio,
         "add_samples": R.AddSamples,
+        "inspire_music": R.InspireMusic,
         "separate_audio_stems": R.SeparateAudioStems,
         "generate_midi": R.GenerateMidi,
         "convert_audio": R.ConvertAudio,
@@ -95,7 +96,7 @@ def test_exposes_all_resource_accessors():
         "generate_persona": R.GeneratePersona,
         "boost_style": R.BoostStyle,
     }
-    assert len(expected) == 25
+    assert len(expected) == 26
     for name, cls in expected.items():
         assert isinstance(getattr(client, name), cls), name
 
@@ -146,12 +147,20 @@ def test_audio_actions_post_public_request_shapes():
     client.add_samples.create(
         model="suno-v5", audio_url="https://file.runapi.ai/source.mp3", start_seconds=5, end_seconds=20
     )
+    client.inspire_music.create(
+        model="suno-v5",
+        audio_urls=["https://file.runapi.ai/inspiration-one.mp3", "https://file.runapi.ai/inspiration-two.mp3"],
+    )
 
     assert fake.calls == [
         ("post", "/api/v1/suno/stitch_audio", {"model": "suno-v5", "source_task_id": "source", "audio_id": "audio"}),
         ("post", "/api/v1/suno/remaster_audio", {"model": "suno-v5", "source_task_id": "source", "audio_id": "audio"}),
         ("post", "/api/v1/suno/add_samples", {
             "model": "suno-v5", "audio_url": "https://file.runapi.ai/source.mp3", "start_seconds": 5, "end_seconds": 20,
+        }),
+        ("post", "/api/v1/suno/inspire_music", {
+            "model": "suno-v5",
+            "audio_urls": ["https://file.runapi.ai/inspiration-one.mp3", "https://file.runapi.ai/inspiration-two.mp3"],
         }),
     ]
 

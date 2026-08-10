@@ -4,6 +4,7 @@ import { ExtendMusic } from './resources/extend-music';
 import { StitchAudio } from './resources/stitch-audio';
 import { RemasterAudio } from './resources/remaster-audio';
 import { AddSamples } from './resources/add-samples';
+import { InspireMusic } from './resources/inspire-music';
 import { GenerateArtwork } from './resources/generate-artwork';
 import { CoverAudio } from './resources/cover-audio';
 import { AddInstrumental } from './resources/add-instrumental';
@@ -50,6 +51,8 @@ export class SunoClient extends BaseClient {
   public readonly stitchAudio: StitchAudio;
   public readonly remasterAudio: RemasterAudio;
   public readonly addSamples: AddSamples;
+  /** Creates new music guided by one to four reference audio URLs. */
+  public readonly inspireMusic: InspireMusic;
   /** Creates cover artwork for an existing music task. */
   public readonly generateArtwork: GenerateArtwork;
   /** Re-records vocals over an uploaded audio file with a new style or voice. */
@@ -98,6 +101,7 @@ export class SunoClient extends BaseClient {
     this.stitchAudio = new StitchAudio(this.http);
     this.remasterAudio = new RemasterAudio(this.http);
     this.addSamples = new AddSamples(this.http);
+    this.inspireMusic = new InspireMusic(this.http);
     this.generateArtwork = new GenerateArtwork(this.http);
     this.coverAudio = new CoverAudio(this.http);
     this.addInstrumental = new AddInstrumental(this.http);

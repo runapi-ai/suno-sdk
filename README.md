@@ -39,7 +39,7 @@ Gradle:
 
 ```kotlin
 dependencies {
-  implementation("ai.runapi:runapi-suno:0.2.2")
+  implementation("ai.runapi:runapi-suno:0.3.0")
 }
 ```
 
@@ -49,7 +49,7 @@ Maven:
 <dependency>
   <groupId>ai.runapi</groupId>
   <artifactId>runapi-suno</artifactId>
-  <version>0.2.2</version>
+  <version>0.3.0</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ Use the Java BOM when installing multiple RunAPI Java modules:
 
 ```kotlin
 dependencies {
-  implementation(platform("ai.runapi:runapi-bom:0.3.0"))
+  implementation(platform("ai.runapi:runapi-bom:0.4.0"))
   implementation("ai.runapi:runapi-suno")
 }
 ```
@@ -70,6 +70,7 @@ The PHP package is published from the split Composer repository as `runapi-ai/su
 - Install only the language package your app needs while keeping one model-specific repository for docs and releases.
 - Use `create` for submit-only jobs, `get` for status lookup, and `run` for submit-and-poll scripts.
 - Combine two caller-authored lyrics texts through the typed `blendLyrics` / `blend_lyrics` resource for each language.
+- Create new music from one to four reference audio URLs through the typed `inspireMusic` / `inspire_music` resource.
 - Upload local files, URL files, or base64 files through shared RunAPI file helpers.
 - Handle validation, authentication, rate limits, insufficient credits, task failures, and polling timeouts through RunAPI SDK errors.
 

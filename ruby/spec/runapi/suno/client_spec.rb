@@ -37,6 +37,7 @@ RSpec.describe RunApi::Suno::Client do
       stitch_audio: RunApi::Suno::Resources::StitchAudio,
       remaster_audio: RunApi::Suno::Resources::RemasterAudio,
       add_samples: RunApi::Suno::Resources::AddSamples,
+      inspire_music: RunApi::Suno::Resources::InspireMusic,
       separate_audio_stems: RunApi::Suno::Resources::SeparateAudioStems,
       generate_midi: RunApi::Suno::Resources::GenerateMidi,
       convert_audio: RunApi::Suno::Resources::ConvertAudio,

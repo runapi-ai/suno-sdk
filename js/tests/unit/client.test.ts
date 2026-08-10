@@ -23,6 +23,7 @@ describe('SunoClient', () => {
     expect(client.getTimestampedLyrics).toBeDefined();
     expect(client.replaceSection).toBeDefined();
     expect(client.generatePersona).toBeDefined();
+    expect(client.inspireMusic).toBeDefined();
     expect(client.boostStyle).toBeDefined();
   });
 

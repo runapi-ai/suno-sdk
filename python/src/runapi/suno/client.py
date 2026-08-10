@@ -9,6 +9,7 @@ from runapi.core import ProviderClient
 from .resources.add_instrumental import AddInstrumental
 from .resources.add_vocals import AddVocals
 from .resources.add_samples import AddSamples
+from .resources.inspire_music import InspireMusic
 from .resources.remaster_audio import RemasterAudio
 from .resources.stitch_audio import StitchAudio
 from .resources.boost_style import BoostStyle
@@ -57,6 +58,7 @@ class SunoClient(ProviderClient):
         self.add_instrumental = AddInstrumental(http)
         self.add_vocals = AddVocals(http)
         self.add_samples = AddSamples(http)
+        self.inspire_music = InspireMusic(http)
         self.remaster_audio = RemasterAudio(http)
         self.stitch_audio = StitchAudio(http)
         self.separate_audio_stems = SeparateAudioStems(http)

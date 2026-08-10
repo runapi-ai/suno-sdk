@@ -5,21 +5,31 @@ require "spec_helper"
 RSpec.describe "Suno audio action resources" do
   let(:http) { instance_double(RunApi::Core::HttpClient) }
 
-  it "posts the public stitch, remaster, and sample request shapes" do
+  it "posts the public stitch, remaster, sample, and inspiration request shapes" do
     owned = {model: "suno-v5", source_task_id: "source", audio_id: "audio"}
     samples = {
       model: "suno-v5", audio_url: "https://file.runapi.ai/source.mp3",
       start_seconds: 5, end_seconds: 20
+    }
+    inspiration = {
+      model: "suno-v5",
+      audio_urls: [
+        "https://file.runapi.ai/inspiration-one.mp3",
+        "https://file.runapi.ai/inspiration-two.mp3"
+      ]
     }
     allow(http).to receive(:request).and_return("id" => "task", "status" => "processing")
 
     RunApi::Suno::Resources::StitchAudio.new(http).create(**owned)
     RunApi::Suno::Resources::RemasterAudio.new(http).create(**owned)
     RunApi::Suno::Resources::AddSamples.new(http).create(**samples)
+    RunApi::Suno::Resources::InspireMusic.new(http).create(**inspiration)
 
     expect(http).to have_received(:request).with(:post, "/api/v1/suno/stitch_audio", body: owned)
     expect(http).to have_received(:request).with(:post, "/api/v1/suno/remaster_audio", body: owned)
     expect(http).to have_received(:request).with(:post, "/api/v1/suno/add_samples", body: samples)
+    expect(http).to have_received(:request).with(:post, "/api/v1/suno/inspire_music", body: inspiration)
+    expect(inspiration).not_to have_key(:audio_id)
   end
 
   it "rejects an invalid samples window before the request" do
