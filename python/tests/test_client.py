@@ -318,10 +318,9 @@ def test_replace_section_time_ordering():
         )
 
 
-@pytest.mark.parametrize("start_time,end_time", [(10.0, 15.0), (10.0, 71.0)])
-def test_replace_section_duration_limits(start_time, end_time):
+def test_replace_section_rejects_duration_shorter_than_ten_seconds():
     client = SunoClient(api_key="k", http_client=FakeHttp())
-    with pytest.raises(ValidationError, match="replacement duration must be between 6 and 60 seconds"):
+    with pytest.raises(ValidationError, match="replacement duration must be at least 10 seconds"):
         client.replace_section.create(
             task_id="t",
             audio_id="a",
@@ -329,8 +328,57 @@ def test_replace_section_duration_limits(start_time, end_time):
             full_lyrics="[Verse] x",
             tags="y",
             title="z",
-            infill_start_time=start_time,
-            infill_end_time=end_time,
+            infill_start_time=10.0,
+            infill_end_time=19.999,
+        )
+
+
+def test_replace_section_accepts_duration_longer_than_sixty_seconds():
+    fake = FakeHttp({"id": "section_1", "status": "processing"})
+    client = SunoClient(api_key="k", http_client=fake)
+    client.replace_section.create(
+        task_id="t",
+        audio_id="a",
+        lyrics="x",
+        full_lyrics="[Verse] x",
+        tags="y",
+        title="z",
+        infill_start_time=10.0,
+        infill_end_time=71.0,
+    )
+
+    assert fake.calls[0][1] == "/api/v1/suno/replace_section"
+
+
+def test_replace_section_accepts_decimal_duration_of_exactly_ten_seconds():
+    fake = FakeHttp({"id": "section_1", "status": "processing"})
+    client = SunoClient(api_key="k", http_client=fake)
+    client.replace_section.create(
+        task_id="t",
+        audio_id="a",
+        lyrics="x",
+        full_lyrics="[Verse] x",
+        tags="y",
+        title="z",
+        infill_start_time=6.016,
+        infill_end_time=16.016,
+    )
+
+    assert fake.calls[0][1] == "/api/v1/suno/replace_section"
+
+
+def test_replace_section_rejects_non_finite_times():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="infill_end_time must be a finite number"):
+        client.replace_section.create(
+            task_id="t",
+            audio_id="a",
+            lyrics="x",
+            full_lyrics="[Verse] x",
+            tags="y",
+            title="z",
+            infill_start_time=0.0,
+            infill_end_time=float("inf"),
         )
 
 

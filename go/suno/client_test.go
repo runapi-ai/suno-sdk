@@ -3,6 +3,7 @@ package suno
 import (
 	"context"
 	"encoding/json"
+	"math"
 	"strings"
 	"testing"
 
@@ -388,14 +389,8 @@ func TestReplaceSectionCreateRejectsInvalidTimeWindow(t *testing.T) {
 		{
 			name:      "duration too short",
 			startTime: 10,
-			endTime:   15,
-			message:   "replacement duration must be between 6 and 60 seconds",
-		},
-		{
-			name:      "duration too long",
-			startTime: 10,
-			endTime:   71,
-			message:   "replacement duration must be between 6 and 60 seconds",
+			endTime:   19.999,
+			message:   "replacement duration must be at least 10 seconds",
 		},
 	}
 
@@ -420,6 +415,62 @@ func TestReplaceSectionCreateRejectsInvalidTimeWindow(t *testing.T) {
 				t.Fatalf("did not expect HTTP request, got %s", httpClient.path)
 			}
 		})
+	}
+}
+
+func TestReplaceSectionCreateAcceptsDurationLongerThanSixtySeconds(t *testing.T) {
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"id":"task-1","status":"processing"}`)}
+	client := NewClientWithHTTP(httpClient)
+	_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
+		TaskID:          "task-1",
+		AudioID:         "audio-1",
+		Lyrics:          "[Verse] replacement",
+		FullLyrics:      "[Verse] replacement\n[Chorus] return",
+		Tags:            "Rock",
+		Title:           "Song",
+		InfillStartTime: 10,
+		InfillEndTime:   71,
+	})
+	if err != nil {
+		t.Fatalf("expected duration longer than sixty seconds to be accepted, got %v", err)
+	}
+	if httpClient.path != replaceSectionPath {
+		t.Fatalf("expected request to %s, got %s", replaceSectionPath, httpClient.path)
+	}
+}
+
+func TestReplaceSectionCreateAcceptsDecimalDurationOfExactlyTenSeconds(t *testing.T) {
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"id":"task-1","status":"processing"}`)}
+	client := NewClientWithHTTP(httpClient)
+	_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
+		TaskID:          "task-1",
+		AudioID:         "audio-1",
+		Lyrics:          "[Verse] replacement",
+		FullLyrics:      "[Verse] replacement\n[Chorus] return",
+		Tags:            "Rock",
+		Title:           "Song",
+		InfillStartTime: 6.016,
+		InfillEndTime:   16.016,
+	})
+	if err != nil {
+		t.Fatalf("expected decimal duration of exactly ten seconds to be accepted, got %v", err)
+	}
+}
+
+func TestReplaceSectionCreateRejectsNonFiniteTimes(t *testing.T) {
+	client := NewClientWithHTTP(&stubHTTPClient{})
+	_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
+		TaskID:          "task-1",
+		AudioID:         "audio-1",
+		Lyrics:          "[Verse] replacement",
+		FullLyrics:      "[Verse] replacement\n[Chorus] return",
+		Tags:            "Rock",
+		Title:           "Song",
+		InfillStartTime: 0,
+		InfillEndTime:   math.Inf(1),
+	})
+	if err == nil || err.Error() != "infill_end_time must be a finite number" {
+		t.Fatalf("expected finite-number validation error, got %v", err)
 	}
 }
 

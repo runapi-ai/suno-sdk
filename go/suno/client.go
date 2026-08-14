@@ -10,6 +10,7 @@ package suno
 import (
 	"context"
 	"errors"
+	"math"
 
 	"github.com/runapi-ai/core-sdk/go/base"
 	"github.com/runapi-ai/core-sdk/go/core"
@@ -504,6 +505,12 @@ func (r *GetTimestampedLyrics) Run(ctx context.Context, params GetTimestampedLyr
 // Create submits a section-replacement task and returns immediately with a task id.
 func (r *ReplaceSection) Create(ctx context.Context, params ReplaceSectionParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	if math.IsNaN(params.InfillStartTime) || math.IsInf(params.InfillStartTime, 0) {
+		return nil, errors.New("infill_start_time must be a finite number")
+	}
+	if math.IsNaN(params.InfillEndTime) || math.IsInf(params.InfillEndTime, 0) {
+		return nil, errors.New("infill_end_time must be a finite number")
+	}
 	body := core.CompactParams(params)
 	if err := core.ValidateParams(contractSchema["replace-section"], body); err != nil {
 		return nil, err
@@ -532,19 +539,19 @@ func validateReplaceSection(body map[string]any) error {
 	}
 
 	startTime, ok := numberValue(body["infill_start_time"])
-	if !ok {
-		return errors.New("infill_start_time must be a number")
+	if !ok || math.IsNaN(startTime) || math.IsInf(startTime, 0) {
+		return errors.New("infill_start_time must be a finite number")
 	}
 	endTime, ok := numberValue(body["infill_end_time"])
-	if !ok {
-		return errors.New("infill_end_time must be a number")
+	if !ok || math.IsNaN(endTime) || math.IsInf(endTime, 0) {
+		return errors.New("infill_end_time must be a finite number")
 	}
 	if endTime <= startTime {
 		return errors.New("infill_end_time must be greater than infill_start_time")
 	}
 	duration := endTime - startTime
-	if duration < 6 || duration > 60 {
-		return errors.New("replacement duration must be between 6 and 60 seconds")
+	if duration+1e-9 < 10 {
+		return errors.New("replacement duration must be at least 10 seconds")
 	}
 
 	return nil

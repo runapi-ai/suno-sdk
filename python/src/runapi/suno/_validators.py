@@ -7,6 +7,7 @@ message strings. Resources call these from their ``_validate_params`` hook.
 
 from __future__ import annotations
 
+import math
 from numbers import Real
 from typing import Any, Dict, Sequence
 
@@ -153,15 +154,15 @@ def validate_replace_section(params: Dict[str, Any]) -> None:
     end_time = _number_param(params, "infill_end_time")
     if end_time <= start_time:
         raise ValidationError("infill_end_time must be greater than infill_start_time")
-    if not 6 <= end_time - start_time <= 60:
-        raise ValidationError("replacement duration must be between 6 and 60 seconds")
+    if end_time - start_time + 1e-9 < 10:
+        raise ValidationError("replacement duration must be at least 10 seconds")
 
 
 def _number_param(params: Dict[str, Any], key: str) -> float:
     value = _param(params, key)
-    if isinstance(value, Real) and not isinstance(value, bool):
+    if isinstance(value, Real) and not isinstance(value, bool) and math.isfinite(value):
         return float(value)
-    raise ValidationError(f"{key} must be a number")
+    raise ValidationError(f"{key} must be a finite number")
 
 
 def validate_replace_section_source(params: Dict[str, Any]) -> None:

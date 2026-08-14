@@ -44,14 +44,30 @@ RSpec.describe RunApi::Suno::Resources::ReplaceSection do
       expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /infill_end_time must be greater than infill_start_time/)
     end
 
-    it "rejects replacement duration shorter than six seconds" do
-      params = valid_params.merge(infill_start_time: 10, infill_end_time: 15)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /replacement duration must be between 6 and 60 seconds/)
+    it "rejects replacement duration shorter than ten seconds" do
+      params = valid_params.merge(infill_start_time: 10, infill_end_time: 19.999)
+      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /replacement duration must be at least 10 seconds/)
     end
 
-    it "rejects replacement duration longer than sixty seconds" do
+    it "accepts replacement duration longer than sixty seconds" do
       params = valid_params.merge(infill_start_time: 10, infill_end_time: 71)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /replacement duration must be between 6 and 60 seconds/)
+      expect(http).to receive(:request).with(:post, endpoint, body: params)
+        .and_return("id" => "task-1", "status" => "processing")
+
+      expect(resource.create(**params)).to be_a(RunApi::Suno::Types::ReplaceSectionResponse)
+    end
+
+    it "accepts a decimal replacement window of exactly ten seconds" do
+      params = valid_params.merge(infill_start_time: 6.016, infill_end_time: 16.016)
+      expect(http).to receive(:request).with(:post, endpoint, body: params)
+        .and_return("id" => "task-1", "status" => "processing")
+
+      expect(resource.create(**params)).to be_a(RunApi::Suno::Types::ReplaceSectionResponse)
+    end
+
+    it "rejects non-finite replacement times" do
+      params = valid_params.merge(infill_end_time: Float::INFINITY)
+      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /infill_end_time must be a finite number/)
     end
   end
 

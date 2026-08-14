@@ -88,13 +88,19 @@ public final class ReplaceSectionParams {
     if (infillStartTime == null || infillEndTime == null) {
       return;
     }
+    if (!Double.isFinite(infillStartTime)) {
+      throw new IllegalArgumentException("infill_start_time must be a finite number");
+    }
+    if (!Double.isFinite(infillEndTime)) {
+      throw new IllegalArgumentException("infill_end_time must be a finite number");
+    }
     if (infillEndTime <= infillStartTime) {
       throw new IllegalArgumentException("infill_end_time must be greater than infill_start_time");
     }
 
     double duration = infillEndTime - infillStartTime;
-    if (duration < 6 || duration > 60) {
-      throw new IllegalArgumentException("replacement duration must be between 6 and 60 seconds");
+    if (duration + 1e-9 < 10) {
+      throw new IllegalArgumentException("replacement duration must be at least 10 seconds");
     }
   }
 
@@ -174,7 +180,7 @@ public final class ReplaceSectionParams {
       return this;
     }
 
-    /** Sets the infill start time. The replacement window must be 6-60 seconds. */
+    /** Sets the infill start time. The replacement duration must be at least 10 seconds. */
     public Builder infillStartTime(double value) {
       this.infillStartTime = value;
       return this;

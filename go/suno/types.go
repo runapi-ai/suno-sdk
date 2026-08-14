@@ -262,7 +262,7 @@ type GetTimestampedLyricsParams struct {
 
 // ReplaceSectionParams configures replacing a time range within a track with new lyrics and style.
 // Provide either TaskID + AudioID for an existing generated track, or UploadURL + Model
-// for uploaded audio. InfillStartTime and InfillEndTime define a 6-60 second section window.
+// for uploaded audio. InfillStartTime and InfillEndTime define a section window of at least 10 seconds.
 type ReplaceSectionParams struct {
 	TaskID          string    `json:"task_id,omitempty" help:"required with audio_id; source task ID; do not combine with upload_url/model"`
 	AudioID         string    `json:"audio_id,omitempty" help:"required with task_id; audio ID within the task; do not combine with upload_url/model"`
@@ -271,7 +271,7 @@ type ReplaceSectionParams struct {
 	Lyrics          string    `json:"lyrics" help:"required; replacement section lyrics"`
 	Tags            string    `json:"tags" help:"required; style/genre tags"`
 	Title           string    `json:"title" help:"required; song title"`
-	InfillStartTime float64   `json:"infill_start_time" help:"required; section start time in seconds; replacement window must be 6-60 seconds"`
+	InfillStartTime float64   `json:"infill_start_time" help:"required; section start time in seconds; replacement duration must be at least 10 seconds"`
 	InfillEndTime   float64   `json:"infill_end_time" help:"required; section end time in seconds; must be greater than infill_start_time"`
 	CallbackURL     string    `json:"callback_url,omitempty" help:"optional; webhook URL"`
 	NegativeTags    string    `json:"negative_tags,omitempty" help:"optional; styles to avoid"`

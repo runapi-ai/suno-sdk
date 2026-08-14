@@ -264,7 +264,7 @@ interface ReplaceSectionBaseParams {
   /** Style/genre tags for the replacement section. */
   tags: string;
   title: string;
-  /** Section start time in seconds. The replacement window must be 6-60 seconds. */
+  /** Section start time in seconds. The replacement duration must be at least 10 seconds. */
   infill_start_time: number;
   /** Section end time in seconds; must be greater than infill_start_time. */
   infill_end_time: number;

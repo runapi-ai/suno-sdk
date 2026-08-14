@@ -82,9 +82,9 @@ module RunApi
         end
 
         duration = end_time - start_time
-        return if duration.between?(6, 60)
+        return if duration + 1e-9 >= 10
 
-        raise Core::ValidationError, "replacement duration must be between 6 and 60 seconds"
+        raise Core::ValidationError, "replacement duration must be at least 10 seconds"
       end
 
       def validate_create_mashup!(params, resource)
@@ -169,9 +169,9 @@ module RunApi
 
       def replace_section_time!(params, resource, key)
         value = param(resource, params, key)
-        return value.to_f if value.is_a?(Numeric)
+        return value.to_f if value.is_a?(Numeric) && value.finite?
 
-        raise Core::ValidationError, "#{key} must be a number"
+        raise Core::ValidationError, "#{key} must be a finite number"
       end
 
       def require_all!(resource, params, *keys)

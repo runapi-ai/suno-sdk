@@ -255,8 +255,7 @@ describe('Remaining Resources', () => {
 
     it.each([
       [30.0, 25.0, 'infill_end_time must be greater than infill_start_time'],
-      [30.0, 35.0, 'replacement duration must be between 6 and 60 seconds'],
-      [30.0, 91.0, 'replacement duration must be between 6 and 60 seconds'],
+      [30.0, 39.999, 'replacement duration must be at least 10 seconds'],
     ])('should reject invalid section replacement time window', async (startTime, endTime, message) => {
       const replaceSection = new ReplaceSection(mockHttp);
 
@@ -270,6 +269,58 @@ describe('Remaining Resources', () => {
         infill_start_time: startTime,
         infill_end_time: endTime,
       })).rejects.toThrow(message);
+      expect(mockHttp.request).not.toHaveBeenCalled();
+    });
+
+    it('should accept section replacement duration longer than sixty seconds', async () => {
+      const replaceSection = new ReplaceSection(mockHttp);
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({id: 'section-123', status: 'processing'});
+
+      await replaceSection.create({
+        task_id: 'gen-task-123',
+        audio_id: 'audio-456',
+        lyrics: 'Guitar solo',
+        full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
+        tags: 'Rock',
+        title: 'Epic Solo',
+        infill_start_time: 30.0,
+        infill_end_time: 91.0,
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledWith('POST', '/api/v1/suno/replace_section', expect.any(Object));
+    });
+
+    it('should accept a decimal section replacement duration of exactly ten seconds', async () => {
+      const replaceSection = new ReplaceSection(mockHttp);
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({id: 'section-123', status: 'processing'});
+
+      await replaceSection.create({
+        task_id: 'gen-task-123',
+        audio_id: 'audio-456',
+        lyrics: 'Guitar solo',
+        full_lyrics: '[Verse] Guitar solo',
+        tags: 'Rock',
+        title: 'Epic Solo',
+        infill_start_time: 6.016,
+        infill_end_time: 16.016,
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledOnce();
+    });
+
+    it('should reject non-finite section replacement times', async () => {
+      const replaceSection = new ReplaceSection(mockHttp);
+
+      await expect(replaceSection.create({
+        task_id: 'gen-task-123',
+        audio_id: 'audio-456',
+        lyrics: 'Guitar solo',
+        full_lyrics: '[Verse] Guitar solo',
+        tags: 'Rock',
+        title: 'Epic Solo',
+        infill_start_time: 0,
+        infill_end_time: Number.POSITIVE_INFINITY,
+      })).rejects.toThrow('infill_end_time must be a finite number');
       expect(mockHttp.request).not.toHaveBeenCalled();
     });
 

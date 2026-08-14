@@ -1,6 +1,7 @@
 package ai.runapi.suno;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -1124,11 +1125,11 @@ class SunoClientTest {
               .tags("sample")
               .title("sample")
               .infillStartTime(10)
-              .infillEndTime(15)
+              .infillEndTime(19.999)
               .build());
 
-      assertThrows(IllegalArgumentException.class, () ->
-          ReplaceSectionParams.builder()
+      assertDoesNotThrow(() ->
+          assertNotNull(ReplaceSectionParams.builder()
               .taskId("sample")
               .audioId("sample")
               .lyrics("sample")
@@ -1137,7 +1138,32 @@ class SunoClientTest {
               .title("sample")
               .infillStartTime(10)
               .infillEndTime(71)
+              .build()));
+
+      assertDoesNotThrow(() ->
+          assertNotNull(ReplaceSectionParams.builder()
+              .taskId("sample")
+              .audioId("sample")
+              .lyrics("sample")
+              .fullLyrics("sample")
+              .tags("sample")
+              .title("sample")
+              .infillStartTime(6.016)
+              .infillEndTime(16.016)
+              .build()));
+
+      IllegalArgumentException nonFiniteError = assertThrows(IllegalArgumentException.class, () ->
+          ReplaceSectionParams.builder()
+              .taskId("sample")
+              .audioId("sample")
+              .lyrics("sample")
+              .fullLyrics("sample")
+              .tags("sample")
+              .title("sample")
+              .infillStartTime(0)
+              .infillEndTime(Double.POSITIVE_INFINITY)
               .build());
+      assertEquals("infill_end_time must be a finite number", nonFiniteError.getMessage());
 
       CapturingTransport getTransport = new CapturingTransport("{\"id\":\"task_replace_section\",\"status\":\"completed\",\"track\":{\"url\":\"https://file.runapi.ai/generated\"}}");
       SunoClient getClient = SunoClient.builder().apiKey("sk-test").transport(getTransport).build();

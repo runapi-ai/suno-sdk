@@ -59,19 +59,19 @@ function validateReplaceSection(body: Record<string, unknown>): void {
 
   const startTime = body.infill_start_time;
   const endTime = body.infill_end_time;
-  if (typeof startTime !== 'number' || Number.isNaN(startTime)) {
-    throw new ValidationError('infill_start_time must be a number');
+  if (typeof startTime !== 'number' || !Number.isFinite(startTime)) {
+    throw new ValidationError('infill_start_time must be a finite number');
   }
-  if (typeof endTime !== 'number' || Number.isNaN(endTime)) {
-    throw new ValidationError('infill_end_time must be a number');
+  if (typeof endTime !== 'number' || !Number.isFinite(endTime)) {
+    throw new ValidationError('infill_end_time must be a finite number');
   }
   if (endTime <= startTime) {
     throw new ValidationError('infill_end_time must be greater than infill_start_time');
   }
 
   const duration = endTime - startTime;
-  if (duration < 6 || duration > 60) {
-    throw new ValidationError('replacement duration must be between 6 and 60 seconds');
+  if (duration + 1e-9 < 10) {
+    throw new ValidationError('replacement duration must be at least 10 seconds');
   }
 }
 
