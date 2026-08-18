@@ -948,6 +948,10 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 3000,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
                 },
@@ -967,6 +971,10 @@ CONTRACT = {
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 3000,
+                    "length": True
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
@@ -988,6 +996,10 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 3000,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
                 },
@@ -1007,6 +1019,10 @@ CONTRACT = {
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 3000,
+                    "length": True
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
@@ -1028,6 +1044,10 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 3000,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
                 },
@@ -1047,6 +1067,10 @@ CONTRACT = {
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 3000,
+                    "length": True
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]

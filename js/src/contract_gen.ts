@@ -1362,6 +1362,10 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 3000,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
@@ -1391,6 +1395,10 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 3000,
+          "length": true
         },
         "vocal_gender": {
           "enum": [
@@ -1422,6 +1430,10 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 3000,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
@@ -1451,6 +1463,10 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 3000,
+          "length": true
         },
         "vocal_gender": {
           "enum": [
@@ -1482,6 +1498,10 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 3000,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
@@ -1511,6 +1531,10 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 3000,
+          "length": true
         },
         "vocal_gender": {
           "enum": [

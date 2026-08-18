@@ -1,5 +1,11 @@
 # Changelog
 
+## [js/v0.4.2](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.2), [ruby/v0.4.2](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.4.2), [go/v0.4.2](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.4.2), [python/v0.4.2](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.4.2) - 2026-08-18
+
+### Fixed
+- Reject text-to-music auto_lyrics prompts longer than 3000 characters before creating a task.
+
+
 ## [js/v0.4.1](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.1), [ruby/v0.4.1](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.4.1), [go/v0.4.1](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.4.1), [python/v0.4.1](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.4.1), [java/v0.3.1](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.3.1) - 2026-08-14
 
 ### Fixed
