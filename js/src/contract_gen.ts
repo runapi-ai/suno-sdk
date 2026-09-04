@@ -7,17 +7,29 @@ export const contract = {
     ],
     "fields_by_model": {
       "suno-v4.5-plus": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "model": {
           "required": true
         },
         "negative_tags": {
           "required": true
         },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
         "tags": {
-          "required": true
+          "required": true,
+          "max": 1000,
+          "length": true
         },
         "title": {
-          "required": true
+          "required": true,
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -27,20 +39,36 @@ export const contract = {
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "model": {
           "required": true
         },
         "negative_tags": {
           "required": true
         },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
         "tags": {
-          "required": true
+          "required": true,
+          "max": 1000,
+          "length": true
         },
         "title": {
-          "required": true
+          "required": true,
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -50,20 +78,36 @@ export const contract = {
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "model": {
           "required": true
         },
         "negative_tags": {
           "required": true
         },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
         "tags": {
-          "required": true
+          "required": true,
+          "max": 1000,
+          "length": true
         },
         "title": {
-          "required": true
+          "required": true,
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -73,6 +117,10 @@ export const contract = {
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       }
     }
@@ -175,8 +223,14 @@ export const contract = {
     ],
     "fields_by_model": {
       "suno-v4.5-plus": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "lyrics": {
-          "required": true
+          "required": true,
+          "max": 5000,
+          "length": true
         },
         "model": {
           "required": true
@@ -185,10 +239,18 @@ export const contract = {
           "required": true
         },
         "style": {
-          "required": true
+          "required": true,
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
         },
         "title": {
-          "required": true
+          "required": true,
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -198,11 +260,21 @@ export const contract = {
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "lyrics": {
-          "required": true
+          "required": true,
+          "max": 5000,
+          "length": true
         },
         "model": {
           "required": true
@@ -211,10 +283,18 @@ export const contract = {
           "required": true
         },
         "style": {
-          "required": true
+          "required": true,
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
         },
         "title": {
-          "required": true
+          "required": true,
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -224,6 +304,10 @@ export const contract = {
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       }
     }
@@ -285,6 +369,14 @@ export const contract = {
     ],
     "fields_by_model": {
       "suno-v4": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -293,6 +385,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -310,9 +418,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -321,6 +441,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -338,9 +474,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5-all": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -349,6 +497,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -366,9 +530,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5-plus": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -377,6 +553,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -394,9 +586,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -405,6 +609,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -422,9 +642,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -433,6 +665,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url": {
           "required": true
@@ -450,6 +698,10 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       }
     },
@@ -506,6 +758,14 @@ export const contract = {
     ],
     "fields_by_model": {
       "suno-v4": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -514,6 +774,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url_list": {
           "required": true,
@@ -533,9 +809,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -544,6 +832,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url_list": {
           "required": true,
@@ -563,9 +867,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5-all": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -574,6 +890,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url_list": {
           "required": true,
@@ -593,9 +925,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5-plus": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -604,6 +948,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url_list": {
           "required": true,
@@ -623,9 +983,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -634,6 +1006,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url_list": {
           "required": true,
@@ -653,9 +1041,21 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -664,6 +1064,22 @@ export const contract = {
             "style",
             "voice"
           ]
+        },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
         },
         "upload_url_list": {
           "required": true,
@@ -683,6 +1099,10 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       }
     },
@@ -739,6 +1159,14 @@ export const contract = {
     ],
     "fields_by_model": {
       "suno-v4": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -755,14 +1183,42 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -779,14 +1235,42 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5-all": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -803,14 +1287,42 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5-plus": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -827,14 +1339,42 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -851,14 +1391,42 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
+        },
         "model": {
           "required": true
         },
@@ -875,11 +1443,31 @@ export const contract = {
             "voice"
           ]
         },
+        "prompt": {
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
+          "length": true
+        },
         "vocal_gender": {
           "enum": [
             "male",
             "female"
           ]
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       }
     }
@@ -1109,7 +1697,9 @@ export const contract = {
     "fields_by_model": {
       "_": {
         "full_lyrics": {
-          "required": true
+          "required": true,
+          "max": 5000,
+          "length": true
         },
         "infill_end_time": {
           "required": true
@@ -1118,7 +1708,9 @@ export const contract = {
           "required": true
         },
         "lyrics": {
-          "required": true
+          "required": true,
+          "max": 5000,
+          "length": true
         },
         "model": {
           "enum": [
@@ -1131,10 +1723,14 @@ export const contract = {
           ]
         },
         "tags": {
-          "required": true
+          "required": true,
+          "max": 1000,
+          "length": true
         },
         "title": {
-          "required": true
+          "required": true,
+          "max": 80,
+          "length": true
         }
       }
     }
@@ -1348,10 +1944,18 @@ export const contract = {
     ],
     "fields_by_model": {
       "suno-v4": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "duration_seconds": {
           "min": 10,
           "max": 360,
           "type": "integer"
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
         },
         "model": {
           "required": true
@@ -1363,7 +1967,19 @@ export const contract = {
           ]
         },
         "prompt": {
-          "max": 3000,
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
           "length": true
         },
         "vocal_gender": {
@@ -1379,13 +1995,25 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "duration_seconds": {
           "min": 10,
           "max": 360,
           "type": "integer"
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
         },
         "model": {
           "required": true
@@ -1397,7 +2025,19 @@ export const contract = {
           ]
         },
         "prompt": {
-          "max": 3000,
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
           "length": true
         },
         "vocal_gender": {
@@ -1413,13 +2053,25 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5-all": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "duration_seconds": {
           "min": 10,
           "max": 360,
           "type": "integer"
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
         },
         "model": {
           "required": true
@@ -1431,7 +2083,19 @@ export const contract = {
           ]
         },
         "prompt": {
-          "max": 3000,
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
           "length": true
         },
         "vocal_gender": {
@@ -1447,13 +2111,25 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v4.5-plus": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "duration_seconds": {
           "min": 10,
           "max": 360,
           "type": "integer"
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
         },
         "model": {
           "required": true
@@ -1465,7 +2141,19 @@ export const contract = {
           ]
         },
         "prompt": {
-          "max": 3000,
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
           "length": true
         },
         "vocal_gender": {
@@ -1481,13 +2169,25 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "duration_seconds": {
           "min": 10,
           "max": 360,
           "type": "integer"
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
         },
         "model": {
           "required": true
@@ -1499,7 +2199,19 @@ export const contract = {
           ]
         },
         "prompt": {
-          "max": 3000,
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
           "length": true
         },
         "vocal_gender": {
@@ -1515,13 +2227,25 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       },
       "suno-v5.5": {
+        "audio_weight": {
+          "min": 0,
+          "max": 1
+        },
         "duration_seconds": {
           "min": 10,
           "max": 360,
           "type": "integer"
+        },
+        "lyrics": {
+          "max": 5000,
+          "length": true
         },
         "model": {
           "required": true
@@ -1533,7 +2257,19 @@ export const contract = {
           ]
         },
         "prompt": {
-          "max": 3000,
+          "max": 5000,
+          "length": true
+        },
+        "style": {
+          "max": 1000,
+          "length": true
+        },
+        "style_weight": {
+          "min": 0,
+          "max": 1
+        },
+        "title": {
+          "max": 80,
           "length": true
         },
         "vocal_gender": {
@@ -1549,6 +2285,10 @@ export const contract = {
             "instrumental"
           ],
           "required": true
+        },
+        "weirdness_constraint": {
+          "min": 0,
+          "max": 1
         }
       }
     },

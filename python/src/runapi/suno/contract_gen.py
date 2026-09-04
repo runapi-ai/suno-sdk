@@ -3,63 +3,111 @@ CONTRACT = {
         "models": ["suno-v4.5-plus", "suno-v5", "suno-v5.5"],
         "fields_by_model": {
             "suno-v4.5-plus": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "model": {
                     "required": True
                 },
                 "negative_tags": {
                     "required": True
                 },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "tags": {
-                    "required": True
+                    "required": True,
+                    "max": 1000,
+                    "length": True
                 },
                 "title": {
-                    "required": True
+                    "required": True,
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "model": {
                     "required": True
                 },
                 "negative_tags": {
                     "required": True
                 },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "tags": {
-                    "required": True
+                    "required": True,
+                    "max": 1000,
+                    "length": True
                 },
                 "title": {
-                    "required": True
+                    "required": True,
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "model": {
                     "required": True
                 },
                 "negative_tags": {
                     "required": True
                 },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "tags": {
-                    "required": True
+                    "required": True,
+                    "max": 1000,
+                    "length": True
                 },
                 "title": {
-                    "required": True
+                    "required": True,
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             }
         }
@@ -153,8 +201,14 @@ CONTRACT = {
         "models": ["suno-v4.5-plus", "suno-v5"],
         "fields_by_model": {
             "suno-v4.5-plus": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "lyrics": {
-                    "required": True
+                    "required": True,
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "required": True
@@ -163,21 +217,39 @@ CONTRACT = {
                     "required": True
                 },
                 "style": {
-                    "required": True
+                    "required": True,
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
                 },
                 "title": {
-                    "required": True
+                    "required": True,
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "lyrics": {
-                    "required": True
+                    "required": True,
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "required": True
@@ -186,16 +258,28 @@ CONTRACT = {
                     "required": True
                 },
                 "style": {
-                    "required": True
+                    "required": True,
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
                 },
                 "title": {
-                    "required": True
+                    "required": True,
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
                 },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             }
         }
@@ -250,11 +334,35 @@ CONTRACT = {
         "models": ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
         "fields_by_model": {
             "suno-v4": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
@@ -265,14 +373,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
@@ -283,14 +419,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5-all": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
@@ -301,14 +465,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5-plus": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
@@ -319,14 +511,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
@@ -337,14 +557,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url": {
                     "required": True
@@ -355,6 +603,10 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             }
         },
@@ -382,11 +634,35 @@ CONTRACT = {
         "models": ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
         "fields_by_model": {
             "suno-v4": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url_list": {
                     "required": True,
@@ -399,14 +675,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url_list": {
                     "required": True,
@@ -419,14 +723,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5-all": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url_list": {
                     "required": True,
@@ -439,14 +771,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5-plus": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url_list": {
                     "required": True,
@@ -459,14 +819,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url_list": {
                     "required": True,
@@ -479,14 +867,42 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
+                },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
                 },
                 "upload_url_list": {
                     "required": True,
@@ -499,6 +915,10 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             }
         },
@@ -526,6 +946,14 @@ CONTRACT = {
         "models": ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
         "fields_by_model": {
             "suno-v4": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
@@ -536,11 +964,39 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
@@ -551,11 +1007,39 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5-all": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
@@ -566,11 +1050,39 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5-plus": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
@@ -581,11 +1093,39 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
@@ -596,11 +1136,39 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
+                },
                 "model": {
                     "required": True
                 },
@@ -611,8 +1179,28 @@ CONTRACT = {
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
+                "prompt": {
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
+                    "length": True
+                },
                 "vocal_gender": {
                     "enum": ["male", "female"]
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             }
         }
@@ -825,7 +1413,9 @@ CONTRACT = {
         "fields_by_model": {
             "_": {
                 "full_lyrics": {
-                    "required": True
+                    "required": True,
+                    "max": 5000,
+                    "length": True
                 },
                 "infill_end_time": {
                     "required": True
@@ -834,16 +1424,22 @@ CONTRACT = {
                     "required": True
                 },
                 "lyrics": {
-                    "required": True
+                    "required": True,
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "enum": ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"]
                 },
                 "tags": {
-                    "required": True
+                    "required": True,
+                    "max": 1000,
+                    "length": True
                 },
                 "title": {
-                    "required": True
+                    "required": True,
+                    "max": 80,
+                    "length": True
                 }
             }
         }
@@ -937,10 +1533,18 @@ CONTRACT = {
         "models": ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
         "fields_by_model": {
             "suno-v4": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "duration_seconds": {
                     "min": 10,
                     "max": 360,
                     "type": "integer"
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "required": True
@@ -949,7 +1553,19 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "prompt": {
-                    "max": 3000,
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
                     "length": True
                 },
                 "vocal_gender": {
@@ -958,13 +1574,25 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "duration_seconds": {
                     "min": 10,
                     "max": 360,
                     "type": "integer"
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "required": True
@@ -973,7 +1601,19 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "prompt": {
-                    "max": 3000,
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
                     "length": True
                 },
                 "vocal_gender": {
@@ -982,13 +1622,25 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5-all": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "duration_seconds": {
                     "min": 10,
                     "max": 360,
                     "type": "integer"
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "required": True
@@ -997,7 +1649,19 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "prompt": {
-                    "max": 3000,
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
                     "length": True
                 },
                 "vocal_gender": {
@@ -1006,13 +1670,25 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v4.5-plus": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "duration_seconds": {
                     "min": 10,
                     "max": 360,
                     "type": "integer"
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "required": True
@@ -1021,7 +1697,19 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "prompt": {
-                    "max": 3000,
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
                     "length": True
                 },
                 "vocal_gender": {
@@ -1030,13 +1718,25 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "duration_seconds": {
                     "min": 10,
                     "max": 360,
                     "type": "integer"
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "required": True
@@ -1045,7 +1745,19 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "prompt": {
-                    "max": 3000,
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
                     "length": True
                 },
                 "vocal_gender": {
@@ -1054,13 +1766,25 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             },
             "suno-v5.5": {
+                "audio_weight": {
+                    "min": 0,
+                    "max": 1
+                },
                 "duration_seconds": {
                     "min": 10,
                     "max": 360,
                     "type": "integer"
+                },
+                "lyrics": {
+                    "max": 5000,
+                    "length": True
                 },
                 "model": {
                     "required": True
@@ -1069,7 +1793,19 @@ CONTRACT = {
                     "enum": ["style", "voice"]
                 },
                 "prompt": {
-                    "max": 3000,
+                    "max": 5000,
+                    "length": True
+                },
+                "style": {
+                    "max": 1000,
+                    "length": True
+                },
+                "style_weight": {
+                    "min": 0,
+                    "max": 1
+                },
+                "title": {
+                    "max": 80,
                     "length": True
                 },
                 "vocal_gender": {
@@ -1078,6 +1814,10 @@ CONTRACT = {
                 "vocal_mode": {
                     "enum": ["auto_lyrics", "exact_lyrics", "instrumental"],
                     "required": True
+                },
+                "weirdness_constraint": {
+                    "min": 0,
+                    "max": 1
                 }
             }
         },
