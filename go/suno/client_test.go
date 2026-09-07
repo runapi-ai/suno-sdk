@@ -124,11 +124,11 @@ func TestAudioActionsCreateUsePublicRequestShapes(t *testing.T) {
 			path: "/api/v1/suno/add_samples",
 			call: func(client *Client) error {
 				_, err := client.AddSamples.Create(context.Background(), AddSamplesParams{
-					Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", StartSeconds: 5, EndSeconds: 20,
+					Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", Prompt: "Add a crisp handclap sample to the chorus", StartSeconds: 5, EndSeconds: 20,
 				})
 				return err
 			},
-			want: map[string]any{"model": string(ModelV5), "audio_url": "https://file.runapi.ai/source.mp3", "start_seconds": float64(5), "end_seconds": float64(20)},
+			want: map[string]any{"model": string(ModelV5), "audio_url": "https://file.runapi.ai/source.mp3", "prompt": "Add a crisp handclap sample to the chorus", "start_seconds": float64(5), "end_seconds": float64(20)},
 		},
 	}
 

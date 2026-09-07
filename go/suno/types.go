@@ -17,6 +17,7 @@ type RemasterAudioParams struct {
 type AddSamplesParams struct {
 	Model        SunoModel `json:"model"`
 	AudioURL     string    `json:"audio_url"`
+	Prompt       string    `json:"prompt,omitempty" help:"optional; description of the sample to add"`
 	StartSeconds float64   `json:"start_seconds"`
 	EndSeconds   float64   `json:"end_seconds"`
 	CallbackURL  string    `json:"callback_url,omitempty"`

@@ -9,7 +9,7 @@ RSpec.describe "Suno audio action resources" do
     owned = {model: "suno-v5", source_task_id: "source", audio_id: "audio"}
     samples = {
       model: "suno-v5", audio_url: "https://file.runapi.ai/source.mp3",
-      start_seconds: 5, end_seconds: 20
+      prompt: "Add a crisp handclap sample to the chorus", start_seconds: 5, end_seconds: 20
     }
     inspiration = {
       model: "suno-v5",

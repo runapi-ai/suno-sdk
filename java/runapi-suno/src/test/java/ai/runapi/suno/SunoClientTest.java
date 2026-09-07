@@ -104,6 +104,7 @@ class SunoClientTest {
     client.addSamples().create(AudioActionParams.builder()
         .model("suno-v5")
         .audioUrl("https://file.runapi.ai/source.mp3")
+        .prompt("Add a crisp handclap sample to the chorus")
         .startSeconds(5)
         .endSeconds(20)
         .build());
@@ -111,6 +112,7 @@ class SunoClientTest {
     assertEquals("/api/v1/suno/add_samples", transport.request.getPath());
     JsonNode body = bodyJson(transport.request);
     assertEquals("suno-v5", body.get("model").asText());
+    assertEquals("Add a crisp handclap sample to the chorus", body.get("prompt").asText());
     assertEquals(5.0, body.get("start_seconds").asDouble());
     assertEquals(20.0, body.get("end_seconds").asDouble());
   }

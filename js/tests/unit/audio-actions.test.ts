@@ -16,7 +16,7 @@ describe('audio actions', () => {
     const owned = { model: 'suno-v5', source_task_id: 'source', audio_id: 'audio' };
     const samples = {
       model: 'suno-v5', audio_url: 'https://file.runapi.ai/source.mp3',
-      start_seconds: 5, end_seconds: 20,
+      prompt: 'Add a crisp handclap sample to the chorus', start_seconds: 5, end_seconds: 20,
     };
     const inspiration = {
       model: 'suno-v5',

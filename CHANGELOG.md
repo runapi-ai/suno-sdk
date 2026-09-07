@@ -1,5 +1,11 @@
 # Changelog
 
+## [js/v0.4.4](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.4), [go/v0.4.4](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.4.4), [java/v0.3.2](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.3.2) - 2026-09-07
+
+### Fixed
+- Add optional prompt input for Suno add samples requests.
+
+
 ## [js/v0.4.3](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.3), [ruby/v0.4.3](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.4.3), [go/v0.4.3](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.4.3), [python/v0.4.3](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.4.3) - 2026-09-04
 
 ### Changed

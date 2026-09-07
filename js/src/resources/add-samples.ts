@@ -4,7 +4,7 @@ import { pollUntilComplete } from '@runapi.ai/core/internal';
 import { contract } from '../contract_gen';
 import type { TextToMusicResponse, TaskCreateResponse } from '../types';
 const ENDPOINT = '/api/v1/suno/add_samples';
-export interface AddSamplesParams { model: string; audio_url: string; start_seconds: number; end_seconds: number; callback_url?: string }
+export interface AddSamplesParams { model: string; audio_url: string; prompt?: string; start_seconds: number; end_seconds: number; callback_url?: string }
 export class AddSamples {
   constructor(private readonly http: HttpClient) {}
   async create(params: AddSamplesParams, options?: RequestOptions): Promise<TaskCreateResponse> {

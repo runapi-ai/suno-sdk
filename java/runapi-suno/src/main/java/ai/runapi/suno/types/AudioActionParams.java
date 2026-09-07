@@ -25,6 +25,7 @@ public final class AudioActionParams {
     public Builder sourceTaskId(String value) { values.put("source_task_id", value); return this; }
     public Builder audioId(String value) { values.put("audio_id", value); return this; }
     public Builder audioUrl(String value) { values.put("audio_url", value); return this; }
+    public Builder prompt(String value) { values.put("prompt", value); return this; }
     public Builder startSeconds(double value) { values.put("start_seconds", value); return this; }
     public Builder endSeconds(double value) { values.put("end_seconds", value); return this; }
     public Builder callbackUrl(String value) { values.put("callback_url", value); return this; }

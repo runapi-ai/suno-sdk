@@ -145,7 +145,7 @@ def test_audio_actions_post_public_request_shapes():
     client.stitch_audio.create(model="suno-v5", source_task_id="source", audio_id="audio")
     client.remaster_audio.create(model="suno-v5", source_task_id="source", audio_id="audio")
     client.add_samples.create(
-        model="suno-v5", audio_url="https://file.runapi.ai/source.mp3", start_seconds=5, end_seconds=20
+        model="suno-v5", audio_url="https://file.runapi.ai/source.mp3", prompt="Add a crisp handclap sample to the chorus", start_seconds=5, end_seconds=20
     )
     client.inspire_music.create(
         model="suno-v5",
@@ -156,7 +156,7 @@ def test_audio_actions_post_public_request_shapes():
         ("post", "/api/v1/suno/stitch_audio", {"model": "suno-v5", "source_task_id": "source", "audio_id": "audio"}),
         ("post", "/api/v1/suno/remaster_audio", {"model": "suno-v5", "source_task_id": "source", "audio_id": "audio"}),
         ("post", "/api/v1/suno/add_samples", {
-            "model": "suno-v5", "audio_url": "https://file.runapi.ai/source.mp3", "start_seconds": 5, "end_seconds": 20,
+            "model": "suno-v5", "audio_url": "https://file.runapi.ai/source.mp3", "prompt": "Add a crisp handclap sample to the chorus", "start_seconds": 5, "end_seconds": 20,
         }),
         ("post", "/api/v1/suno/inspire_music", {
             "model": "suno-v5",
