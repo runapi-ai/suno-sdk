@@ -1,5 +1,11 @@
 # Changelog
 
+## [js/v0.4.5](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.5) - 2026-09-09
+
+### Added
+- Allow Style Persona IDs in auto-lyrics requests for text-to-music, cover-audio, and create-mashup operations.
+
+
 ## [js/v0.4.4](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.4), [go/v0.4.4](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.4.4), [java/v0.3.2](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.3.2) - 2026-09-07
 
 ### Fixed

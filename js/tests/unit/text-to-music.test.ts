@@ -38,6 +38,34 @@ describe('TextToMusic', () => {
       expect(result).toEqual(mockResponse);
     });
 
+    it('should accept a Style Persona in auto-lyrics mode', async () => {
+      const mockResponse: TaskCreateResponse = { id: 'task-persona' };
+      vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
+
+      const textToMusic = new TextToMusic(mockHttp);
+      await textToMusic.create({
+        vocal_mode: 'auto_lyrics',
+        prompt: 'A warm acoustic pop song',
+        model: 'suno-v5',
+        persona_id: 'persona-style',
+        persona_type: 'style',
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledWith(
+        'POST',
+        '/api/v1/suno/text_to_music',
+        {
+          body: {
+            vocal_mode: 'auto_lyrics',
+            prompt: 'A warm acoustic pop song',
+            model: 'suno-v5',
+            persona_id: 'persona-style',
+            persona_type: 'style',
+          },
+        }
+      );
+    });
+
     it('should send correct request with exact lyrics', async () => {
       const mockResponse: TaskCreateResponse = { id: 'task-456' };
       vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);

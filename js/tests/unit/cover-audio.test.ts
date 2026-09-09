@@ -47,4 +47,34 @@ describe('CoverAudio', () => {
     expect(result).toEqual(mockResponse);
   });
 
+  it('should accept a Style Persona in auto-lyrics mode', async () => {
+    const mockResponse: TaskCreateResponse = { id: 'cover-persona' };
+    vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
+
+    const coverAudio = new CoverAudio(mockHttp);
+    await coverAudio.create({
+      upload_url: 'https://cdn.runapi.ai/public/samples/source.mp3',
+      vocal_mode: 'auto_lyrics',
+      prompt: 'Rework this track as acoustic pop',
+      model: 'suno-v5',
+      persona_id: 'persona-style',
+      persona_type: 'style',
+    });
+
+    expect(mockHttp.request).toHaveBeenCalledWith(
+      'POST',
+      '/api/v1/suno/cover_audio',
+      {
+        body: {
+          upload_url: 'https://cdn.runapi.ai/public/samples/source.mp3',
+          vocal_mode: 'auto_lyrics',
+          prompt: 'Rework this track as acoustic pop',
+          model: 'suno-v5',
+          persona_id: 'persona-style',
+          persona_type: 'style',
+        },
+      }
+    );
+  });
+
 });

@@ -47,4 +47,40 @@ describe('CreateMashup', () => {
     expect(result).toEqual(mockResponse);
   });
 
+  it('should accept a Style Persona in auto-lyrics mode', async () => {
+    const mockResponse: TaskCreateResponse = { id: 'mashup-persona' };
+    vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);
+
+    const createMashup = new CreateMashup(mockHttp);
+    await createMashup.create({
+      upload_url_list: [
+        'https://cdn.runapi.ai/public/samples/audio.mp3',
+        'https://cdn.runapi.ai/public/samples/audio-2.mp3',
+      ],
+      vocal_mode: 'auto_lyrics',
+      prompt: 'Blend both tracks into acoustic pop',
+      model: 'suno-v5',
+      persona_id: 'persona-style',
+      persona_type: 'style',
+    });
+
+    expect(mockHttp.request).toHaveBeenCalledWith(
+      'POST',
+      '/api/v1/suno/create_mashup',
+      {
+        body: {
+          upload_url_list: [
+            'https://cdn.runapi.ai/public/samples/audio.mp3',
+            'https://cdn.runapi.ai/public/samples/audio-2.mp3',
+          ],
+          vocal_mode: 'auto_lyrics',
+          prompt: 'Blend both tracks into acoustic pop',
+          model: 'suno-v5',
+          persona_id: 'persona-style',
+          persona_type: 'style',
+        },
+      }
+    );
+  });
+
 });
