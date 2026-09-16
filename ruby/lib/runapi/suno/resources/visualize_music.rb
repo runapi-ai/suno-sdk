@@ -4,6 +4,8 @@ module RunApi
   module Suno
     module Resources
       # Generates a music visualization video from an existing track.
+      #
+      # @deprecated Use {RunApi::Suno::Resources::MusicVisualizations} instead.
       class VisualizeMusic
         include RunApi::Core::ResourceHelpers
 

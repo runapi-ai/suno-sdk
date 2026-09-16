@@ -13,6 +13,24 @@ describe('TextToMusic', () => {
   });
 
   describe('create', () => {
+    it('should send a canonical Voice handle', async () => {
+      vi.mocked(mockHttp.request).mockResolvedValueOnce({ id: 'task-voice' });
+
+      const textToMusic = new TextToMusic(mockHttp);
+      await textToMusic.create({
+        vocal_mode: 'exact_lyrics',
+        lyrics: '[Verse] hello',
+        style: 'acoustic pop',
+        title: 'Hello',
+        model: 'suno-v5.5',
+        voice_id: 'res_voice_handle',
+      });
+
+      expect(mockHttp.request).toHaveBeenCalledWith('POST', '/api/v1/suno/text_to_music', {
+        body: expect.objectContaining({ voice_id: 'res_voice_handle' }),
+      });
+    });
+
     it('should send correct request for simple mode', async () => {
       const mockResponse: TaskCreateResponse = { id: 'task-123' };
       vi.mocked(mockHttp.request).mockResolvedValueOnce(mockResponse);

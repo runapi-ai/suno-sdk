@@ -4,6 +4,8 @@ module RunApi
   module Suno
     module Resources
       # Generates style/genre tags from a text description for use in style fields. Synchronous (run only).
+      #
+      # @deprecated Use {RunApi::Suno::Resources::StyleExpansions} instead.
       class BoostStyle
         include RunApi::Core::ResourceHelpers
 

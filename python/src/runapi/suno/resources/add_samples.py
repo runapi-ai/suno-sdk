@@ -2,6 +2,12 @@ from .audio_actions import AudioAction
 from runapi.core.errors import ValidationError
 
 class AddSamples(AudioAction):
+    """Add a sample of an uploaded audio file to new music.
+
+    .. deprecated::
+        Use :class:`MusicFromSample`.
+    """
+
     ENDPOINT = "/api/v1/suno/add_samples"
     ACTION = "add-samples"
 

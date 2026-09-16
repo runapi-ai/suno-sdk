@@ -11,7 +11,11 @@ from ..types import CompletedConvertAudioResponse, ConvertAudioResponse
 
 
 class ConvertAudio(Resource):
-    """Convert a track to a WAV file."""
+    """Convert a track to a WAV file.
+
+    .. deprecated::
+        Use :class:`AudioExports`.
+    """
 
     ENDPOINT = "/api/v1/suno/convert_audio"
 

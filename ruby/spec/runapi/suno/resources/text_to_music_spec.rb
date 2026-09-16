@@ -34,6 +34,14 @@ RSpec.describe RunApi::Suno::Resources::TextToMusic do
       expect(result.id).to eq("task-2")
     end
 
+    it "POSTs a canonical Voice handle" do
+      params = {vocal_mode: "exact_lyrics", lyrics: "[Verse] a song", style: "pop", title: "Song", model: "suno-v5.5", voice_id: "res_voice_handle"}
+      expect(http).to receive(:request).with(:post, endpoint, body: params)
+        .and_return("id" => "task-voice", "status" => "processing")
+
+      expect(resource.create(**params).id).to eq("task-voice")
+    end
+
     it "rejects provider persona_type values" do
       expect do
         resource.create(**valid_params.merge(persona_type: "style_persona"))

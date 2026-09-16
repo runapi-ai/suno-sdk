@@ -133,6 +133,34 @@ module RunApi
         require_param!(resource, params, :description)
       end
 
+      def validate_personas!(params, resource)
+        resource.send(:validate_contract!, CONTRACT["personas"], params)
+      end
+
+      def validate_voices!(params, resource)
+        resource.send(:validate_contract!, CONTRACT["voices"], params)
+      end
+
+      def validate_style_expansions!(params, resource)
+        resource.send(:validate_contract!, CONTRACT["style-expansions"], params)
+      end
+
+      def validate_timestamped_lyrics!(params, resource)
+        resource.send(:validate_contract!, CONTRACT["timestamped-lyrics"], params)
+      end
+
+      def validate_audio_exports!(params, resource)
+        resource.send(:validate_contract!, CONTRACT["audio-exports"], params)
+      end
+
+      def validate_music_visualizations!(params, resource)
+        resource.send(:validate_contract!, CONTRACT["music-visualizations"], params)
+      end
+
+      def validate_music_from_sample!(params, resource)
+        resource.send(:validate_contract!, CONTRACT["music-from-sample"], params)
+      end
+
       def validate_extend_music_prompt_shape!(params, resource)
         return unless truthy_presence?(param(resource, params, :lyrics))
 

@@ -6,7 +6,10 @@ import ai.runapi.core.http.HttpTransport;
 import ai.runapi.suno.types.CheckVoiceParams;
 import ai.runapi.suno.types.CheckVoiceResponse;
 
-/** Check Voice operations. */
+/** Check Voice operations.
+ *
+ * @deprecated Use {@link VoicesResource#get(String)} instead.
+ */
 public final class CheckVoiceResource extends SunoResource {
   /** API endpoint path for check voice operations. */
   public static final String ENDPOINT = "/api/v1/suno/check_voice";

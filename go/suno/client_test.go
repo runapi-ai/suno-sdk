@@ -61,6 +61,26 @@ func TestCreateMashupCreateWrapsPayload(t *testing.T) {
 	}
 }
 
+func TestTextToMusicCreateAcceptsCanonicalVoiceHandle(t *testing.T) {
+	httpClient := &stubHTTPClient{}
+	client := NewClientWithHTTP(httpClient)
+	_, err := client.TextToMusic.Create(context.Background(), TextToMusicParams{
+		SunoBaseParams: SunoBaseParams{Model: ModelV55},
+		VocalMode:   VocalModeExactLyrics,
+		Lyrics:      "[Verse] hello",
+		Style:       "acoustic pop",
+		Title:       "Hello",
+		VoiceID:     "res_voice_handle",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	body := httpClient.body.(map[string]any)
+	if body["voice_id"] != "res_voice_handle" {
+		t.Fatalf("expected canonical voice_id, got %#v", body)
+	}
+}
+
 func TestAddVocalsCreateUsesLyricsPayload(t *testing.T) {
 	httpClient := &stubHTTPClient{}
 	client := NewClientWithHTTP(httpClient)
@@ -584,5 +604,150 @@ func TestSynchronousHelpersDecodeBillingFacts(t *testing.T) {
 	style, err := client.BoostStyle.Run(context.Background(), BoostStyleParams{Description: "A chill lo-fi beat"})
 	if err != nil || style.Billing == nil || style.Billing.Reservation == nil {
 		t.Fatalf("expected style billing facts, response=%#v err=%v", style, err)
+	}
+}
+
+func TestPersonasCreatePostsCanonicalResourcePayload(t *testing.T) {
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"persona":{"id":"res_abc","name":"Lo-fi persona","description":"Warm vocals"},"billing":{"reservation":{"amount_cents":10}}}`)}
+	client := NewClientWithHTTP(httpClient)
+
+	created, err := client.Personas.Create(context.Background(), PersonaParams{
+		SourceTaskID:  "task-1",
+		SourceAudioID: "audio-1",
+		Name:          "Lo-fi persona",
+		Description:   "Warm vocals",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.method != "POST" || httpClient.path != "/api/v1/personas" {
+		t.Fatalf("unexpected request: %s %s", httpClient.method, httpClient.path)
+	}
+	body, ok := httpClient.body.(map[string]any)
+	if !ok {
+		t.Fatalf("expected flat body map, got %T", httpClient.body)
+	}
+	if body["source_task_id"] != "task-1" || body["source_audio_id"] != "audio-1" || body["name"] != "Lo-fi persona" {
+		t.Fatalf("expected canonical persona payload, got %#v", body)
+	}
+	if _, ok := body["task_id"]; ok {
+		t.Fatalf("canonical persona payload must not carry the legacy task_id, got %#v", body)
+	}
+	if created.Terminal == nil || created.Terminal.Persona == nil || created.Terminal.Persona.ID != "res_abc" {
+		t.Fatalf("expected decoded persona resource, got %#v", created)
+	}
+}
+
+func TestPersonasGetReadsResourceEnvelope(t *testing.T) {
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"persona":{"id":"res_abc","name":"Lo-fi persona"},"status":"available","billing":{}}`)}
+	client := NewClientWithHTTP(httpClient)
+
+	persona, err := client.Personas.Get(context.Background(), "res_abc")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.method != "GET" || httpClient.path != "/api/v1/personas/res_abc" {
+		t.Fatalf("unexpected request: %s %s", httpClient.method, httpClient.path)
+	}
+	if persona.Status != ResourceStatusAvailable {
+		t.Fatalf("expected resolved persona resource, got %#v", persona)
+	}
+}
+
+func TestVoicesRunPostsRecordingAndGetReportsStatus(t *testing.T) {
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"voice":{"id":"res_voice","name":"Studio Voice"},"billing":{"reservation":{"amount_cents":10}}}`)}
+	client := NewClientWithHTTP(httpClient)
+
+	created, err := client.Voices.Run(context.Background(), VoiceParams{
+		SourceAudioURL: "https://files.example.test/voice.mp3",
+		Name:           "Studio Voice",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.method != "POST" || httpClient.path != "/api/v1/voices" {
+		t.Fatalf("unexpected request: %s %s", httpClient.method, httpClient.path)
+	}
+	body := httpClient.body.(map[string]any)
+	if body["source_audio_url"] != "https://files.example.test/voice.mp3" {
+		t.Fatalf("expected canonical voice payload, got %#v", body)
+	}
+	if created.Voice == nil || created.Voice.ID != "res_voice" {
+		t.Fatalf("expected decoded voice resource, got %#v", created)
+	}
+
+	httpClient.response = json.RawMessage(`{"voice":{"id":"res_voice"},"status":"available","billing":{}}`)
+	voice, err := client.Voices.Get(context.Background(), "res_voice")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.path != "/api/v1/voices/res_voice" || voice.Status != ResourceStatusAvailable {
+		t.Fatalf("expected voice status, got %s %#v", httpClient.path, voice)
+	}
+}
+
+func TestCanonicalSynchronousHelpersPostCanonicalPaths(t *testing.T) {
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"style":"lo-fi","billing":{"reservation":{"amount_cents":10}}}`)}
+	client := NewClientWithHTTP(httpClient)
+
+	style, err := client.StyleExpansions.Run(context.Background(), StyleExpansionParams{Description: "A chill lo-fi beat"})
+	if err != nil || style.Billing == nil {
+		t.Fatalf("expected style expansion billing facts, response=%#v err=%v", style, err)
+	}
+	if httpClient.path != "/api/v1/style_expansions" {
+		t.Fatalf("unexpected style expansion path: %s", httpClient.path)
+	}
+
+	httpClient.response = json.RawMessage(`{"aligned_words":[],"billing":{"reservation":{"amount_cents":10}}}`)
+	lyrics, err := client.TimestampedLyrics.Run(context.Background(), TimestampedLyricsParams{SourceAudioID: "audio-1"})
+	if err != nil || lyrics.Billing == nil {
+		t.Fatalf("expected timestamped lyrics billing facts, response=%#v err=%v", lyrics, err)
+	}
+	if httpClient.path != "/api/v1/timestamped_lyrics" {
+		t.Fatalf("unexpected timestamped lyrics path: %s", httpClient.path)
+	}
+	body := httpClient.body.(map[string]any)
+	if body["source_audio_id"] != "audio-1" {
+		t.Fatalf("expected canonical audio reference, got %#v", body)
+	}
+	if _, ok := body["audio_id"]; ok {
+		t.Fatalf("canonical audio reference must not carry the legacy audio_id, got %#v", body)
+	}
+}
+
+func TestCanonicalAudioOperationsUseResourcePaths(t *testing.T) {
+	httpClient := &stubHTTPClient{}
+	client := NewClientWithHTTP(httpClient)
+
+	if _, err := client.AudioExports.Create(context.Background(), AudioExportParams{SourceAudioID: "audio-1"}); err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.method != "POST" || httpClient.path != "/api/v1/audio_exports" {
+		t.Fatalf("unexpected export request: %s %s", httpClient.method, httpClient.path)
+	}
+
+	httpClient.response = json.RawMessage(`{"wav_url":"https://files.runapi.ai/export.wav","billing":{"settlement":{"charged_amount_cents":4,"amount_micro_cents":40000}}}`)
+	export, err := client.AudioExports.Get(context.Background(), "task-1")
+	if err != nil || export.WavURL == "" {
+		t.Fatalf("expected completed export, response=%#v err=%v", export, err)
+	}
+	if httpClient.path != "/api/v1/audio_exports/task-1" {
+		t.Fatalf("unexpected export path: %s", httpClient.path)
+	}
+
+	if _, err := client.MusicVisualizations.Create(context.Background(), MusicVisualizationParams{SourceAudioID: "audio-1", Author: "Studio"}); err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.path != "/api/v1/music_visualizations" {
+		t.Fatalf("unexpected visualization path: %s", httpClient.path)
+	}
+
+	if _, err := client.MusicFromSample.Create(context.Background(), MusicFromSampleParams{
+		Model: ModelV45Plus, AudioURL: "https://files.example.test/sample.mp3", StartSeconds: 0, EndSeconds: 10,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if httpClient.path != "/api/v1/music_from_sample" {
+		t.Fatalf("unexpected music-from-sample path: %s", httpClient.path)
 	}
 }

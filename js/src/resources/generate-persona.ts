@@ -4,7 +4,10 @@ import type { GeneratePersonaParams, GeneratePersonaResponse } from '../types';
 
 const ENDPOINT = '/api/v1/suno/generate_persona';
 
-/** Creates a reusable style or voice persona from an existing track's vocals. Synchronous (run only). */
+/**
+ * Creates a reusable style or voice persona from an existing track's vocals. Synchronous (run only).
+ * @deprecated Use {@link Personas}, which returns a RunAPI-owned persona resource.
+ */
 export class GeneratePersona {
   constructor(private readonly http: HttpClient) {}
 

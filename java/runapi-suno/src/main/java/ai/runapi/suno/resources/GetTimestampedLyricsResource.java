@@ -6,7 +6,10 @@ import ai.runapi.core.http.HttpTransport;
 import ai.runapi.suno.types.GetTimestampedLyricsParams;
 import ai.runapi.suno.types.GetTimestampedLyricsResponse;
 
-/** Get Timestamped Lyrics operations. */
+/** Get Timestamped Lyrics operations.
+ *
+ * @deprecated Use {@link TimestampedLyricsResource} instead.
+ */
 public final class GetTimestampedLyricsResource extends SunoResource {
   /** API endpoint path for get timestamped lyrics operations. */
   public static final String ENDPOINT = "/api/v1/suno/get_timestamped_lyrics";

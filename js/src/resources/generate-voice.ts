@@ -10,7 +10,10 @@ import type {
 
 const ENDPOINT = '/api/v1/suno/generate_voice';
 
-/** Step 3 of voice cloning: trains a custom voice from the user's recording of the validation phrase. */
+/**
+ * Step 3 of voice cloning: trains a custom voice from the user's recording of the validation phrase.
+ * @deprecated Use {@link Voices}, which creates a RunAPI-owned voice resource from a recording directly.
+ */
 export class GenerateVoice {
   constructor(private readonly http: HttpClient) {}
 

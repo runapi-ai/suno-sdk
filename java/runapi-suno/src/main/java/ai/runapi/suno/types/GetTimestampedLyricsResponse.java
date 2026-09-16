@@ -3,6 +3,7 @@ package ai.runapi.suno.types;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ai.runapi.core.billing.TaskBillingFacts;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -20,6 +21,18 @@ public class GetTimestampedLyricsResponse {
   @JsonProperty("aligned_words")
   private List<Map<String, Object>> alignedWords;
 
+  @JsonProperty("waveform_data")
+  private List<Double> waveformData;
+
+  @JsonProperty("hoot_cer")
+  private Double hootCer;
+
+  @JsonProperty("is_streamed")
+  private Boolean streamed;
+
+  @JsonProperty("billing")
+  private TaskBillingFacts billing;
+
   private final Map<String, JsonNode> extraFields = new LinkedHashMap<String, JsonNode>();
 
   /** Returns the response ID. */
@@ -35,6 +48,26 @@ public class GetTimestampedLyricsResponse {
   /** Returns the aligned words, when present. */
   public List<Map<String, Object>> getAlignedWords() {
     return alignedWords == null ? null : Collections.unmodifiableList(alignedWords);
+  }
+
+  /** Returns waveform samples, when present. */
+  public List<Double> getWaveformData() {
+    return waveformData == null ? null : Collections.unmodifiableList(waveformData);
+  }
+
+  /** Returns the alignment character error rate, when present. */
+  public Double getHootCer() {
+    return hootCer;
+  }
+
+  /** Returns whether the source was streamed, when present. */
+  public Boolean getIsStreamed() {
+    return streamed;
+  }
+
+  /** Returns the reservation, settlement, and refund facts for this request. */
+  public TaskBillingFacts getBilling() {
+    return billing;
   }
 
   /** Returns unrecognized response fields preserved from the API response. */

@@ -4,6 +4,8 @@ module RunApi
   module Suno
     module Resources
       # Converts a generated track to WAV format.
+      #
+      # @deprecated Use {RunApi::Suno::Resources::AudioExports} instead.
       class ConvertAudio
         include RunApi::Core::ResourceHelpers
 

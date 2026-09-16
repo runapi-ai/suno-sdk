@@ -1,5 +1,6 @@
 package ai.runapi.suno.types;
 
+import ai.runapi.core.billing.TaskBillingFacts;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,6 +20,9 @@ public class BoostStyleResponse {
   @JsonProperty("style")
   private String style;
 
+  @JsonProperty("billing")
+  private TaskBillingFacts billing;
+
   private final Map<String, JsonNode> extraFields = new LinkedHashMap<String, JsonNode>();
 
   /** Returns the response ID. */
@@ -34,6 +38,11 @@ public class BoostStyleResponse {
   /** Returns the style, when present. */
   public String getStyle() {
     return style;
+  }
+
+  /** Returns the reservation, settlement, and refund facts for this request. */
+  public TaskBillingFacts getBilling() {
+    return billing;
   }
 
   /** Returns unrecognized response fields preserved from the API response. */

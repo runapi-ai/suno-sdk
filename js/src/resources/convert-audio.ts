@@ -5,7 +5,10 @@ import type { CompletedConvertAudioResponse, ConvertAudioParams, ConvertAudioRes
 
 const ENDPOINT = '/api/v1/suno/convert_audio';
 
-/** Converts a generated track to WAV format. */
+/**
+ * Converts a generated track to WAV format.
+ * @deprecated Use {@link AudioExports}, which exports a RunAPI audio resource as a downloadable file.
+ */
 export class ConvertAudio {
   constructor(private readonly http: HttpClient) {}
 

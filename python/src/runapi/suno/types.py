@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+from typing import TypedDict
+
 from runapi.core import BaseModel, TaskResponse, optional, required
 
 MODELS = [
+    "suno-v6",
+    "suno-v6-wild",
+    "suno-v6-mini",
     "suno-v5.5",
     "suno-v5",
     "suno-v4.5-plus",
@@ -392,3 +397,180 @@ class CompletedVoiceGenerationResponse(VoiceGenerationResponse):
     """Narrowed voice generation response once polling observes completion."""
 
     voice_id = required(str)
+
+
+# --- Provider-neutral resources -------------------------------------------
+#
+# The models below are the RunAPI-owned surface for Suno workflows. They name
+# the audio, persona, and voice a request works on instead of the provider
+# operation that produced it, so a caller can create once and continue,
+# recover, or export later without tracking provider operation names.
+
+
+class PersonaParams(TypedDict):
+    """Parameters for creating a reusable persona from an existing track."""
+
+    source_task_id: str
+    source_audio_id: str
+    name: str
+    description: str
+
+
+class _VoiceRequiredParams(TypedDict):
+    source_audio_url: str
+
+
+class VoiceParams(_VoiceRequiredParams, total=False):
+    """Parameters for creating a reusable voice from a recording."""
+
+    name: str
+
+
+class StyleExpansionParams(TypedDict):
+    """Parameters for expanding a style description into genre tags."""
+
+    description: str
+
+
+class _AudioReferenceRequiredParams(TypedDict):
+    source_audio_id: str
+
+
+class TimestampedLyricsParams(_AudioReferenceRequiredParams, total=False):
+    """Parameters for retrieving word-level timing data for a track."""
+
+    source_task_id: str
+
+
+class AudioExportParams(_AudioReferenceRequiredParams, total=False):
+    """Parameters for exporting a track to a downloadable audio file."""
+
+    source_task_id: str
+    callback_url: str
+
+
+class MusicVisualizationParams(_AudioReferenceRequiredParams, total=False):
+    """Parameters for rendering a visualization video for a track."""
+
+    source_task_id: str
+    callback_url: str
+    author: str
+    domain_name: str
+
+
+class _MusicFromSampleRequiredParams(TypedDict):
+    model: str
+    audio_url: str
+    start_seconds: float
+    end_seconds: float
+
+
+class MusicFromSampleParams(_MusicFromSampleRequiredParams, total=False):
+    """Parameters for creating music guided by an uploaded audio sample."""
+
+    prompt: str
+    callback_url: str
+
+
+class ResourceStatus:
+    """Availability of a RunAPI-owned resource."""
+
+    AVAILABLE = "available"
+    FAILED = "failed"
+
+    ALL = [AVAILABLE, FAILED]
+
+
+class ResourceBilling(BaseModel):
+    """Billing envelope for a RunAPI-owned resource.
+
+    Resource provenance is intentionally opaque and is not exposed here.
+    """
+
+
+class PersonaResource(BaseModel):
+    """A RunAPI-owned persona handle, reusable as ``persona_id`` in generation params."""
+
+    id = required(str)
+    name = optional(str)
+    description = optional(str)
+
+
+class VoiceResource(BaseModel):
+    """A RunAPI-owned voice handle."""
+
+    id = required(str)
+    name = optional(str)
+
+
+class PersonaCreationResponse(TaskResponse):
+    """Suno persona creation result.
+
+    A completed request carries ``persona``; a request the service accepted for
+    local execution carries the task acceptance (``id``, ``status``) instead and
+    is read from ``GET /api/v1/tasks/{id}``.
+    """
+
+    persona = optional(lambda: PersonaResource)
+    error = optional(str)
+
+
+class VoiceCreationResponse(TaskResponse):
+    """Suno voice creation result."""
+
+    voice = optional(lambda: VoiceResource)
+    error = optional(str)
+
+
+class PersonaResourceResponse(BaseModel):
+    """Suno persona resource envelope."""
+
+    persona = required(lambda: PersonaResource)
+    status = required(str, enum=lambda: ResourceStatus.ALL)
+    billing = required(lambda: ResourceBilling)
+
+
+class VoiceResourceResponse(BaseModel):
+    """Suno voice resource envelope. ``status`` reports whether the voice is ready."""
+
+    voice = required(lambda: VoiceResource)
+    status = required(str, enum=lambda: ResourceStatus.ALL)
+    billing = required(lambda: ResourceBilling)
+
+
+class AudioExportResponse(AsyncTaskResponse):
+    """Suno audio-export task status response."""
+
+    wav_url = optional(str)
+    original_task_id = optional(str)
+
+
+class CompletedAudioExportResponse(AudioExportResponse):
+    """Narrowed audio-export response once polling observes completion."""
+
+    wav_url = required(str)
+
+
+class MusicVisualizationResponse(AsyncTaskResponse):
+    """Suno music-visualization task status response."""
+
+    video_url = optional(str)
+    original_task_id = optional(str)
+
+
+class CompletedMusicVisualizationResponse(MusicVisualizationResponse):
+    """Narrowed music-visualization response once polling observes completion."""
+
+    video_url = required(str)
+
+
+class MusicFromSampleResponse(AsyncTaskResponse):
+    """Suno music-from-sample task status response."""
+
+    audios = optional([lambda: Audio])
+
+
+class CompletedMusicFromSampleResponse(MusicFromSampleResponse):
+    """Narrowed music-from-sample response once polling observes completion."""
+
+    audios = required([lambda: Audio])

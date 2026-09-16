@@ -8,7 +8,10 @@ import ai.runapi.suno.types.CompletedConvertAudioResponse;
 import ai.runapi.suno.types.ConvertAudioParams;
 import ai.runapi.suno.types.ConvertAudioResponse;
 
-/** Convert Audio operations. */
+/** Convert Audio operations.
+ *
+ * @deprecated Use {@link AudioExportsResource} instead.
+ */
 public final class ConvertAudioResource extends SunoResource {
   /** API endpoint path for convert audio operations. */
   public static final String ENDPOINT = "/api/v1/suno/convert_audio";

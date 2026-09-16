@@ -32,6 +32,13 @@ from .resources.text_to_music import TextToMusic
 from .resources.text_to_sound import TextToSound
 from .resources.visualize_music import VisualizeMusic
 from .resources.voice_to_validation_phrase import VoiceToValidationPhrase
+from .resources.personas import Personas
+from .resources.voices import Voices
+from .resources.style_expansions import StyleExpansions
+from .resources.timestamped_lyrics import TimestampedLyrics
+from .resources.audio_exports import AudioExports
+from .resources.music_visualizations import MusicVisualizations
+from .resources.music_from_sample import MusicFromSample
 
 
 class SunoClient(ProviderClient):
@@ -77,3 +84,14 @@ class SunoClient(ProviderClient):
         self.check_voice = CheckVoice(http)
         self.generate_persona = GeneratePersona(http)
         self.boost_style = BoostStyle(http)
+
+        # Provider-neutral resources. These name the audio, persona, and voice a
+        # request works on; the operation resources above stay available for
+        # callers that already use them, and the replaced ones are deprecated.
+        self.personas = Personas(http)
+        self.voices = Voices(http)
+        self.style_expansions = StyleExpansions(http)
+        self.timestamped_lyrics = TimestampedLyrics(http)
+        self.audio_exports = AudioExports(http)
+        self.music_visualizations = MusicVisualizations(http)
+        self.music_from_sample = MusicFromSample(http)

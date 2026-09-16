@@ -5,7 +5,7 @@ module RunApi
     # Suno type definitions, response models, and enum constants.
     module Types
       # Suno music generation engine versions. V5.5 has highest quality; V4 is the earliest available.
-      MODELS = %w[suno-v5.5 suno-v5 suno-v4.5-plus suno-v4.5-all suno-v4.5 suno-v4].freeze
+      MODELS = %w[suno-v6 suno-v6-wild suno-v6-mini suno-v5.5 suno-v5 suno-v4.5-plus suno-v4.5-all suno-v4.5 suno-v4].freeze
       # Model versions that support sound effect generation (subset of MODELS).
       SOUND_MODELS = %w[suno-v5 suno-v5.5].freeze
       # Musical keys (major and minor) for sound effect generation.
@@ -250,74 +250,6 @@ module RunApi
         optional :is_available
         optional :error, String
         optional :billing, RunApi::Core::TaskBillingFacts
-      end
-
-      class CompletedTextToMusicResponse < TextToMusicResponse
-        required :audios, [-> { Audio }]
-      end
-
-      class CompletedExtendMusicResponse < ExtendMusicResponse
-        required :audios, [-> { Audio }]
-      end
-
-      class CompletedGenerateArtworkResponse < GenerateArtworkResponse
-        required :covers, [-> { Cover }]
-      end
-
-      class CompletedCoverAudioResponse < CoverAudioResponse
-        required :audios, [-> { Audio }]
-      end
-
-      class CompletedAddInstrumentalResponse < AddInstrumentalResponse
-        required :audios, [-> { Audio }]
-      end
-
-      class CompletedAddVocalsResponse < AddVocalsResponse
-        required :audios, [-> { Audio }]
-      end
-
-      class CompletedSeparateAudioStemsResponse < SeparateAudioStemsResponse
-        required :separated_audios, -> { SeparatedAudio }
-      end
-
-      class CompletedGenerateMidiResponse < GenerateMidiResponse
-        required :instruments, [-> { MidiInstrument }]
-      end
-
-      class CompletedConvertAudioResponse < ConvertAudioResponse
-        required :wav_url, String
-      end
-
-      class CompletedVisualizeMusicResponse < VisualizeMusicResponse
-        required :video_url, String
-      end
-
-      class CompletedGenerateLyricsResponse < GenerateLyricsResponse
-        required :lyrics, [-> { Lyric }]
-      end
-
-      class CompletedBlendLyricsResponse < BlendLyricsResponse
-        required :lyrics, [-> { Lyric }]
-      end
-
-      class CompletedReplaceSectionResponse < ReplaceSectionResponse
-        required :track, -> { Audio }
-      end
-
-      class CompletedCreateMashupResponse < CreateMashupResponse
-        required :audios, [-> { Audio }]
-      end
-
-      class CompletedTextToSoundResponse < TextToSoundResponse
-        required :audios, [-> { SoundAudio }]
-      end
-
-      class CompletedValidationPhraseResponse < ValidationPhraseResponse
-        required :validation_phrase, String
-      end
-
-      class CompletedVoiceGenerationResponse < VoiceGenerationResponse
-        required :voice_id, String
       end
     end
   end

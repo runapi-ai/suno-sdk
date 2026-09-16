@@ -25,6 +25,28 @@ describe('SunoClient', () => {
     expect(client.generatePersona).toBeDefined();
     expect(client.inspireMusic).toBeDefined();
     expect(client.boostStyle).toBeDefined();
+    expect(client.personas).toBeDefined();
+    expect(client.voices).toBeDefined();
+    expect(client.styleExpansions).toBeDefined();
+    expect(client.timestampedLyrics).toBeDefined();
+    expect(client.audioExports).toBeDefined();
+    expect(client.musicVisualizations).toBeDefined();
+    expect(client.musicFromSample).toBeDefined();
+  });
+
+  it('should initialize the provider-neutral resources', () => {
+    const client = new SunoClient({
+      apiKey: 'test-key',
+      baseUrl: 'https://runapi.ai',
+    });
+
+    expect(client.personas).toBeDefined();
+    expect(client.voices).toBeDefined();
+    expect(client.styleExpansions).toBeDefined();
+    expect(client.timestampedLyrics).toBeDefined();
+    expect(client.audioExports).toBeDefined();
+    expect(client.musicVisualizations).toBeDefined();
+    expect(client.musicFromSample).toBeDefined();
   });
 
   it('should accept valid client options', () => {

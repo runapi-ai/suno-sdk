@@ -11,7 +11,11 @@ from ..types import BoostStyleResponse
 
 
 class BoostStyle(Resource):
-    """Boost a style description. Synchronous: run() returns the result directly."""
+    """Boost a style description. Synchronous: run() returns the result directly.
+
+    .. deprecated::
+        Use :class:`StyleExpansions`.
+    """
 
     ENDPOINT = "/api/v1/suno/boost_style"
 

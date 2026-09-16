@@ -4,6 +4,9 @@ module RunApi
   module Suno
     module Resources
       # Step 4 of voice cloning: checks whether a custom voice is ready for use. Synchronous (run only).
+      #
+      # @deprecated Use {RunApi::Suno::Resources::Voices} instead; its +get+ reports the
+      #   voice resource status directly.
       class CheckVoice
         include RunApi::Core::ResourceHelpers
 

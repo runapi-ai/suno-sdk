@@ -4,6 +4,9 @@ module RunApi
   module Suno
     module Resources
       # Creates a reusable style or voice persona from an existing track's vocals. Synchronous (run only).
+      #
+      # @deprecated Use {RunApi::Suno::Resources::Personas} instead, which returns an
+      #   account-owned persona resource that later requests reference by ID.
       class GeneratePersona
         include RunApi::Core::ResourceHelpers
 

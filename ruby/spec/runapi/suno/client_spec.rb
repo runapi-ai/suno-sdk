@@ -53,7 +53,14 @@ RSpec.describe RunApi::Suno::Client do
       generate_voice: RunApi::Suno::Resources::GenerateVoice,
       check_voice: RunApi::Suno::Resources::CheckVoice,
       generate_persona: RunApi::Suno::Resources::GeneratePersona,
-      boost_style: RunApi::Suno::Resources::BoostStyle
+      boost_style: RunApi::Suno::Resources::BoostStyle,
+      personas: RunApi::Suno::Resources::Personas,
+      voices: RunApi::Suno::Resources::Voices,
+      style_expansions: RunApi::Suno::Resources::StyleExpansions,
+      timestamped_lyrics: RunApi::Suno::Resources::TimestampedLyrics,
+      audio_exports: RunApi::Suno::Resources::AudioExports,
+      music_visualizations: RunApi::Suno::Resources::MusicVisualizations,
+      music_from_sample: RunApi::Suno::Resources::MusicFromSample
     }.each do |reader, resource_class|
       it "exposes #{reader} resource" do
         expect(client.public_send(reader)).to be_a(resource_class)

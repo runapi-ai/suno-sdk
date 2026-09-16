@@ -124,3 +124,6 @@ Use this route only for application or production-code integration. Open the cur
 - `suno-v4.5-plus`: https://runapi.ai/models/suno/v4.5-plus.md
 - `suno-v5`: https://runapi.ai/models/suno/v5.md
 - `suno-v5.5`: https://runapi.ai/models/suno/v5.5.md
+- `suno-v6`: https://runapi.ai/models/suno/v6.md
+- `suno-v6-mini`: https://runapi.ai/models/suno/v6-mini.md
+- `suno-v6-wild`: https://runapi.ai/models/suno/v6-wild.md

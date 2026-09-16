@@ -8,7 +8,10 @@ import ai.runapi.suno.types.CompletedVisualizeMusicResponse;
 import ai.runapi.suno.types.VisualizeMusicParams;
 import ai.runapi.suno.types.VisualizeMusicResponse;
 
-/** Visualize Music operations. */
+/** Visualize Music operations.
+ *
+ * @deprecated Use {@link MusicVisualizationsResource} instead.
+ */
 public final class VisualizeMusicResource extends SunoResource {
   /** API endpoint path for visualize music operations. */
   public static final String ENDPOINT = "/api/v1/suno/visualize_music";

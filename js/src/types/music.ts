@@ -10,6 +10,8 @@ export interface TextToMusicPromptParams extends SunoBaseParams {
   title?: never;
   persona_id?: string;
   persona_type?: PersonaType;
+  /** RunAPI Voice handle; supported for suno-v5.5. */
+  voice_id?: string;
 }
 
 /** Exact-lyrics variant: sings the literal `lyrics` text with explicit style/title. */
@@ -21,6 +23,8 @@ export interface TextToMusicLyricsParams extends SunoBaseParams {
   title: string;
   persona_id?: string;
   persona_type?: PersonaType;
+  /** RunAPI Voice handle; supported for suno-v5.5. */
+  voice_id?: string;
   /** Styles to avoid (e.g. "heavy metal, screamo"). */
   negative_tags?: string;
   duration_seconds?: number;
@@ -38,6 +42,8 @@ export interface TextToMusicInstrumentalParams extends SunoBaseParams {
   title: string;
   persona_id?: string;
   persona_type?: PersonaType;
+  /** RunAPI Voice handle; supported for suno-v5.5. */
+  voice_id?: string;
   negative_tags?: string;
   duration_seconds?: number;
   continue_at?: number;

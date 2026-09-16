@@ -11,7 +11,11 @@ from ..types import CompletedVisualizeMusicResponse, VisualizeMusicResponse
 
 
 class VisualizeMusic(Resource):
-    """Render a music visualization video."""
+    """Render a music visualization video.
+
+    .. deprecated::
+        Use :class:`MusicVisualizations`.
+    """
 
     ENDPOINT = "/api/v1/suno/visualize_music"
 

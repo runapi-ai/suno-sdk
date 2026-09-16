@@ -210,3 +210,76 @@ export interface CheckVoiceParams {
   /** Task ID from a prior GenerateVoice call. */
   task_id: string;
 }
+
+/**
+ * Params for creating a reusable persona. The result is a RunAPI-owned persona resource:
+ * pass its ID in the `persona_id` field of later music generation params.
+ */
+export interface PersonaParams {
+  /** RunAPI task id that produced the reference audio. */
+  source_task_id: string;
+  /** Audio id within the source task, or a RunAPI-owned audio resource id. */
+  source_audio_id: string;
+  name: string;
+  description: string;
+}
+
+/** Params for creating a reusable voice from a recording. */
+export interface VoiceParams {
+  /** Public URL of the voice recording to clone. */
+  source_audio_url: string;
+  name?: string;
+}
+
+/** Params for expanding a style description into genre tags. Synchronous -- use `run()` directly. */
+export interface StyleExpansionParams {
+  /** Style description to expand into genre tags. */
+  description: string;
+}
+
+/**
+ * Params for retrieving word-level timing alignment for an audio resource.
+ * `source_task_id` is only needed when the audio id alone does not identify the source.
+ * Synchronous -- use `run()` directly.
+ */
+export interface TimestampedLyricsParams {
+  /** Audio id within the source task, or a RunAPI-owned audio resource id. */
+  source_audio_id: string;
+  /** RunAPI task id that produced the audio. */
+  source_task_id?: string;
+}
+
+/** Params for exporting an audio resource as a downloadable file. */
+export interface AudioExportParams {
+  /** Audio id within the source task, or a RunAPI-owned audio resource id. */
+  source_audio_id: string;
+  /** RunAPI task id that produced the audio. */
+  source_task_id?: string;
+  callback_url?: string;
+}
+
+/** Params for rendering a visualization video for an audio resource. */
+export interface MusicVisualizationParams {
+  /** Audio id within the source task, or a RunAPI-owned audio resource id. */
+  source_audio_id: string;
+  /** RunAPI task id that produced the audio. */
+  source_task_id?: string;
+  callback_url?: string;
+  /** Author name shown in the video. */
+  author?: string;
+  /** Domain name watermark. */
+  domain_name?: string;
+}
+
+/** Params for creating music guided by a sample of an uploaded audio file. */
+export interface MusicFromSampleParams {
+  model: SunoModel;
+  audio_url: string;
+  /** Optional description of the sample to add. */
+  prompt?: string;
+  /** Start of the sample range in seconds. */
+  start_seconds: number;
+  /** End of the sample range in seconds; must exceed `start_seconds`. */
+  end_seconds: number;
+  callback_url?: string;
+}

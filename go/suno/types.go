@@ -14,6 +14,10 @@ type RemasterAudioParams struct {
 	AudioID      string    `json:"audio_id"`
 	CallbackURL  string    `json:"callback_url,omitempty"`
 }
+
+// AddSamplesParams configures adding a sample to a track.
+//
+// Deprecated: use [MusicFromSampleParams] with [MusicFromSample].
 type AddSamplesParams struct {
 	Model        SunoModel `json:"model"`
 	AudioURL     string    `json:"audio_url"`
@@ -137,6 +141,7 @@ type TextToMusicParams struct {
 	NegativeTags    string      `json:"negative_tags,omitempty" help:"optional; styles to avoid"`
 	PersonaID       string      `json:"persona_id,omitempty" help:"optional; persona ID"`
 	PersonaType     PersonaType `json:"persona_type,omitempty" help:"optional; persona type"`
+	VoiceID         string      `json:"voice_id,omitempty" help:"optional; RunAPI Voice handle (suno-v5.5)"`
 	DurationSeconds *int        `json:"duration_seconds,omitempty" help:"optional; duration in seconds"`
 	ContinueAt      *float64    `json:"continue_at,omitempty" help:"optional; timestamp in seconds to continue from"`
 	Endpoint        string      `json:"endpoint,omitempty" help:"optional; API endpoint override"`
@@ -226,6 +231,8 @@ type GenerateMidiParams struct {
 }
 
 // ConvertAudioParams configures conversion of a generated track to WAV format.
+//
+// Deprecated: use [AudioExportParams] with [AudioExports].
 type ConvertAudioParams struct {
 	TaskID      string `json:"task_id" help:"required; source task ID"`
 	AudioID     string `json:"audio_id" help:"required; audio ID within the task"`
@@ -233,6 +240,8 @@ type ConvertAudioParams struct {
 }
 
 // VisualizeMusicParams configures generation of a music visualization video from an existing track.
+//
+// Deprecated: use [MusicVisualizationParams] with [MusicVisualizations].
 type VisualizeMusicParams struct {
 	TaskID      string `json:"task_id" help:"required; source task ID"`
 	AudioID     string `json:"audio_id" help:"required; audio ID within the task"`
@@ -256,6 +265,8 @@ type BlendLyricsParams struct {
 
 // GetTimestampedLyricsParams retrieves word-level timing data for a generated track.
 // This is synchronous (use Run directly, no Create/Get polling).
+//
+// Deprecated: use [TimestampedLyricsParams] with [TimestampedLyrics].
 type GetTimestampedLyricsParams struct {
 	TaskID  string `json:"task_id" help:"required; source task ID"`
 	AudioID string `json:"audio_id" help:"required; audio ID within the task"`
@@ -281,6 +292,8 @@ type ReplaceSectionParams struct {
 
 // GeneratePersonaParams creates a reusable persona (style or voice) from an existing music task's vocals.
 // The persona can then be referenced by ID in generation params. This is synchronous (use Run directly).
+//
+// Deprecated: use [PersonaParams] with [Personas], which returns a RunAPI-owned persona resource.
 type GeneratePersonaParams struct {
 	TaskID      string `json:"task_id" help:"required; source task ID with reference vocals"`
 	AudioID     string `json:"audio_id" help:"required; audio ID within the task"`
@@ -290,6 +303,8 @@ type GeneratePersonaParams struct {
 
 // BoostStyleParams generates style/genre tags from a text description.
 // Useful for filling Style fields in other params. This is synchronous (use Run directly).
+//
+// Deprecated: use [StyleExpansionParams] with [StyleExpansions].
 type BoostStyleParams struct {
 	Description string `json:"description" help:"required; style description to generate tags from"`
 }
@@ -328,6 +343,8 @@ type RegenerateValidationPhraseParams struct {
 // GenerateVoiceParams submits the user's recording of the validation phrase to train a custom voice.
 // TaskID is from the prior VoiceToValidationPhrase task; VerifyURL is the user's recording of the phrase.
 // Step 3 of the voice cloning workflow.
+//
+// Deprecated: use [VoiceParams] with [Voices] to create a voice from a recording directly.
 type GenerateVoiceParams struct {
 	TaskID           string           `json:"task_id" help:"required; prior validation phrase task ID"`
 	VerifyURL        string           `json:"verify_url" help:"required; user recording URL of the validation phrase"`
@@ -340,6 +357,8 @@ type GenerateVoiceParams struct {
 
 // CheckVoiceParams checks whether a custom voice from [GenerateVoice] is ready for use.
 // This is synchronous (use Run directly). Step 4 (final) of the voice cloning workflow.
+//
+// Deprecated: use [Voices.Get], which reports the voice resource status directly.
 type CheckVoiceParams struct {
 	TaskID string `json:"task_id" help:"required; custom voice task ID"`
 }
@@ -604,4 +623,149 @@ type CheckVoiceResponse struct {
 	core.TaskBillingFacts
 	IsAvailable *bool  `json:"is_available,omitempty"`
 	Error       string `json:"error,omitempty"`
+}
+
+// --- Provider-neutral resources ------------------------------------------
+//
+// The resources below are the RunAPI-owned surface for Suno workflows. They
+// name the audio, persona, and voice a request works on instead of the provider
+// operation that produced it, so a caller can create once and continue,
+// recover, or export later without tracking provider operation names.
+
+// PersonaParams creates a reusable style persona from an existing track and
+// returns a RunAPI-owned persona resource.
+type PersonaParams struct {
+	SourceTaskID  string `json:"source_task_id" help:"required; RunAPI task ID that produced the reference audio"`
+	SourceAudioID string `json:"source_audio_id" help:"required; audio ID within the source task"`
+	Name          string `json:"name" help:"required; persona name"`
+	Description   string `json:"description" help:"required; persona description"`
+}
+
+// VoiceParams creates a reusable voice from a recording.
+type VoiceParams struct {
+	SourceAudioURL string `json:"source_audio_url" help:"required; public URL of the voice recording to clone"`
+	Name           string `json:"name,omitempty" help:"optional; voice name"`
+}
+
+// StyleExpansionParams expands a style description into genre tags.
+type StyleExpansionParams struct {
+	Description string `json:"description" help:"required; style description to expand into tags"`
+}
+
+// TimestampedLyricsParams retrieves word-level timing data for an existing track.
+// SourceAudioID is the audio ID inside the producing task, or a RunAPI audio
+// resource ID returned by an earlier request; SourceTaskID is only needed when
+// the audio ID alone does not identify the source.
+// This is synchronous (use Run directly, no Create/Get polling).
+type TimestampedLyricsParams struct {
+	SourceAudioID string `json:"source_audio_id" help:"required; audio ID within the source task, or a RunAPI audio resource ID"`
+	SourceTaskID  string `json:"source_task_id,omitempty" help:"optional; RunAPI task ID that produced the audio"`
+}
+
+// AudioExportParams exports an existing track to a downloadable audio file.
+type AudioExportParams struct {
+	SourceAudioID string `json:"source_audio_id" help:"required; audio ID within the source task, or a RunAPI audio resource ID"`
+	SourceTaskID  string `json:"source_task_id,omitempty" help:"optional; RunAPI task ID that produced the audio"`
+	CallbackURL   string `json:"callback_url,omitempty" help:"optional; webhook URL for async notifications"`
+}
+
+// MusicVisualizationParams renders a visualization video for an existing track.
+type MusicVisualizationParams struct {
+	SourceAudioID string `json:"source_audio_id" help:"required; audio ID within the source task, or a RunAPI audio resource ID"`
+	SourceTaskID  string `json:"source_task_id,omitempty" help:"optional; RunAPI task ID that produced the audio"`
+	CallbackURL   string `json:"callback_url,omitempty" help:"optional; webhook URL for async notifications"`
+	Author        string `json:"author,omitempty" help:"optional; author name shown in the video"`
+	DomainName    string `json:"domain_name,omitempty" help:"optional; domain name watermark"`
+}
+
+// MusicFromSampleParams creates music guided by a sample of an uploaded audio file.
+type MusicFromSampleParams struct {
+	Model        SunoModel `json:"model" help:"required; model slug"`
+	AudioURL     string    `json:"audio_url" help:"required; URL of the audio file to sample"`
+	Prompt       string    `json:"prompt,omitempty" help:"optional; description of the sample to add"`
+	StartSeconds float64   `json:"start_seconds" help:"required; start of the sample range in seconds"`
+	EndSeconds   float64   `json:"end_seconds" help:"required; end of the sample range in seconds; must exceed start_seconds"`
+	CallbackURL  string    `json:"callback_url,omitempty" help:"optional; webhook URL for async notifications"`
+}
+
+// ResourceStatus is the availability of a RunAPI-owned resource.
+type ResourceStatus string
+
+const (
+	ResourceStatusAvailable ResourceStatus = "available"
+	ResourceStatusFailed    ResourceStatus = "failed"
+)
+
+// ResourceBilling is the billing envelope for a RunAPI-owned resource.
+// Resource provenance is intentionally opaque and is not exposed here.
+type ResourceBilling struct{}
+
+// PersonaResource is a RunAPI-owned persona handle. Pass ID in the persona_id
+// field of music generation parameters.
+type PersonaResource struct {
+	ID          string `json:"id"`
+	Name        string `json:"name,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
+// VoiceResource is a RunAPI-owned voice handle.
+type VoiceResource struct {
+	ID   string `json:"id"`
+	Name string `json:"name,omitempty"`
+}
+
+// PersonaCreationResponse is the result of creating a persona. A completed
+// request carries Persona; a request that was accepted for local execution
+// carries the embedded task acceptance instead, and its result is polled from
+// GET /api/v1/tasks/{id}.
+type PersonaCreationResponse struct {
+	core.TaskCreateResponse
+	Persona *PersonaResource `json:"persona,omitempty"`
+	Error   string           `json:"error,omitempty"`
+}
+
+// VoiceCreationResponse is the result of creating a voice. Voice creation is
+// synchronous, so the body carries the voice and the request's billing facts
+// rather than a task to poll.
+type VoiceCreationResponse struct {
+	core.TaskBillingFacts
+	Voice *VoiceResource `json:"voice,omitempty"`
+	Error string         `json:"error,omitempty"`
+}
+
+// PersonaResourceResponse is the result of retrieving a persona resource.
+type PersonaResourceResponse struct {
+	Persona PersonaResource `json:"persona"`
+	Status  ResourceStatus  `json:"status"`
+	Billing ResourceBilling `json:"billing"`
+}
+
+// VoiceResourceResponse is the result of retrieving a voice resource. Status
+// reports whether the voice is ready to use.
+type VoiceResourceResponse struct {
+	Voice   VoiceResource   `json:"voice"`
+	Status  ResourceStatus  `json:"status"`
+	Billing ResourceBilling `json:"billing"`
+}
+
+// AudioExportResponse is an audio export task: the create acceptance, the
+// polled task status, and the completed export body.
+type AudioExportResponse struct {
+	AsyncTaskResponse
+	WavURL         string `json:"wav_url,omitempty"`
+	OriginalTaskID string `json:"original_task_id,omitempty"`
+}
+
+// MusicVisualizationResponse is a music visualization task: the create
+// acceptance, the polled task status, and the completed video body.
+type MusicVisualizationResponse struct {
+	AsyncTaskResponse
+	VideoURL       string `json:"video_url,omitempty"`
+	OriginalTaskID string `json:"original_task_id,omitempty"`
+}
+
+// MusicFromSampleResponse is the completed result of a music-from-sample task.
+type MusicFromSampleResponse struct {
+	AsyncTaskResponse
+	Audios []Audio `json:"audios,omitempty"`
 }

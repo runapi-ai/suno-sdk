@@ -4,7 +4,10 @@ import type { CheckVoiceParams, CheckVoiceResponse } from '../types';
 
 const ENDPOINT = '/api/v1/suno/check_voice';
 
-/** Step 4 of voice cloning: checks whether a custom voice is ready for use. Synchronous (run only). */
+/**
+ * Step 4 of voice cloning: checks whether a custom voice is ready for use. Synchronous (run only).
+ * @deprecated Use {@link Voices.get}, which reports the voice resource status directly.
+ */
 export class CheckVoice {
   constructor(private readonly http: HttpClient) {}
 

@@ -24,6 +24,13 @@ from .text_to_music import TextToMusic
 from .text_to_sound import TextToSound
 from .visualize_music import VisualizeMusic
 from .voice_to_validation_phrase import VoiceToValidationPhrase
+from .personas import Personas
+from .voices import Voices
+from .style_expansions import StyleExpansions
+from .timestamped_lyrics import TimestampedLyrics
+from .audio_exports import AudioExports
+from .music_visualizations import MusicVisualizations
+from .music_from_sample import MusicFromSample
 
 __all__ = [
     "TextToMusic",
@@ -52,4 +59,11 @@ __all__ = [
     "CheckVoice",
     "GeneratePersona",
     "BoostStyle",
+    "Personas",
+    "Voices",
+    "StyleExpansions",
+    "TimestampedLyrics",
+    "AudioExports",
+    "MusicVisualizations",
+    "MusicFromSample",
 ]

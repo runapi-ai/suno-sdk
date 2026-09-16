@@ -11,7 +11,11 @@ from ..types import CompletedVoiceGenerationResponse, VoiceGenerationResponse
 
 
 class GenerateVoice(Resource):
-    """Generate a custom voice."""
+    """Generate a custom voice.
+
+    .. deprecated::
+        Use :class:`Voices`, which creates a voice from a recording directly.
+    """
 
     ENDPOINT = "/api/v1/suno/generate_voice"
 

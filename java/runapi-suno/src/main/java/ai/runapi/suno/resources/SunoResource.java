@@ -10,6 +10,7 @@ import ai.runapi.core.http.HttpTransport;
 import ai.runapi.core.http.JsonRequestBody;
 import ai.runapi.core.json.Json;
 import ai.runapi.core.polling.Poller;
+import ai.runapi.core.polling.Task;
 import ai.runapi.core.polling.TaskCreateResponse;
 import ai.runapi.core.polling.TaskResponse;
 import java.time.Duration;
@@ -44,6 +45,29 @@ abstract class SunoResource {
     ContractValidator.validate(action, body);
     return executor.send(
         HttpRequest.builder(HttpMethod.POST, endpoint).body(new JsonRequestBody(body)).options(requestOptions).build(),
+        responseType);
+  }
+
+  final <T> Task<T> createHybridTask(
+      String action, Map<String, Object> body, RequestOptions requestOptions, Class<T> responseType) {
+    Objects.requireNonNull(action, "action");
+    Objects.requireNonNull(body, "body");
+    Objects.requireNonNull(requestOptions, "requestOptions");
+    ContractValidator.validate(action, body);
+    return Task.start(
+        executor,
+        HttpRequest.builder(HttpMethod.POST, endpoint).body(new JsonRequestBody(body)).options(requestOptions).build(),
+        responseType,
+        pollingInterval(requestOptions),
+        pollingMaxWait(requestOptions));
+  }
+
+  final <T> T getResource(String id, RequestOptions requestOptions, Class<T> responseType) {
+    String checkedId = requireNonBlank(id, "id");
+    return executor.send(
+        HttpRequest.builder(HttpMethod.GET, endpoint + "/" + checkedId)
+            .options(Objects.requireNonNull(requestOptions, "requestOptions"))
+            .build(),
         responseType);
   }
 

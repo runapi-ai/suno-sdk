@@ -76,6 +76,18 @@ type Client struct {
 	RegenerateValidationPhrase *RegenerateValidationPhrase
 	GenerateVoice              *GenerateVoice
 	CheckVoice                 *CheckVoice
+
+	// Provider-neutral resources. These are the RunAPI-owned surface for Suno
+	// workflows; the operation resources above stay available for callers that
+	// already use them, and the ones a resource replaces say so in their own doc
+	// comments.
+	Personas            *Personas
+	Voices              *Voices
+	StyleExpansions     *StyleExpansions
+	TimestampedLyrics   *TimestampedLyrics
+	AudioExports        *AudioExports
+	MusicVisualizations *MusicVisualizations
+	MusicFromSample     *MusicFromSample
 }
 
 // NewClient creates a Suno client with the given options.
@@ -121,6 +133,13 @@ func NewClientWithHTTP(httpClient core.HTTPClient) *Client {
 		RegenerateValidationPhrase: &RegenerateValidationPhrase{http: httpClient},
 		GenerateVoice:              &GenerateVoice{http: httpClient},
 		CheckVoice:                 &CheckVoice{http: httpClient},
+		Personas:                   &Personas{http: httpClient},
+		Voices:                     &Voices{http: httpClient},
+		StyleExpansions:            &StyleExpansions{http: httpClient},
+		TimestampedLyrics:          &TimestampedLyrics{http: httpClient},
+		AudioExports:               &AudioExports{http: httpClient},
+		MusicVisualizations:        &MusicVisualizations{http: httpClient},
+		MusicFromSample:            &MusicFromSample{http: httpClient},
 	}
 }
 
@@ -131,6 +150,10 @@ type TextToMusic struct{ http core.HTTPClient }
 type ExtendMusic struct{ http core.HTTPClient }
 type StitchAudio struct{ http core.HTTPClient }
 type RemasterAudio struct{ http core.HTTPClient }
+
+// AddSamples adds a sample of an uploaded audio file to new music.
+//
+// Deprecated: use [MusicFromSample].
 type AddSamples struct{ http core.HTTPClient }
 type InspireMusic struct{ http core.HTTPClient }
 
@@ -221,9 +244,13 @@ type SeparateAudioStems struct{ http core.HTTPClient }
 type GenerateMidi struct{ http core.HTTPClient }
 
 // ConvertAudio converts a generated track to WAV format.
+//
+// Deprecated: use [AudioExports].
 type ConvertAudio struct{ http core.HTTPClient }
 
 // VisualizeMusic generates a music visualization video from an existing track.
+//
+// Deprecated: use [MusicVisualizations].
 type VisualizeMusic struct{ http core.HTTPClient }
 
 // GenerateLyrics produces AI-generated lyrics from a text prompt.
@@ -233,6 +260,8 @@ type GenerateLyrics struct{ http core.HTTPClient }
 type BlendLyrics struct{ http core.HTTPClient }
 
 // GetTimestampedLyrics retrieves word-level timing alignment for a track. Synchronous (Run only).
+//
+// Deprecated: use [TimestampedLyrics].
 type GetTimestampedLyrics struct{ http core.HTTPClient }
 
 // ReplaceSection re-generates a time range within an existing track with new lyrics and style.
@@ -245,9 +274,13 @@ type CreateMashup struct{ http core.HTTPClient }
 type TextToSound struct{ http core.HTTPClient }
 
 // GeneratePersona creates a reusable style or voice persona from an existing track's vocals. Synchronous (Run only).
+//
+// Deprecated: use [Personas], which returns a RunAPI-owned persona resource.
 type GeneratePersona struct{ http core.HTTPClient }
 
 // BoostStyle generates style/genre tags from a text description for use in Style fields. Synchronous (Run only).
+//
+// Deprecated: use [StyleExpansions].
 type BoostStyle struct{ http core.HTTPClient }
 
 // VoiceToValidationPhrase starts the voice cloning pipeline by extracting a validation phrase from a voice recording.
@@ -257,9 +290,13 @@ type VoiceToValidationPhrase struct{ http core.HTTPClient }
 type RegenerateValidationPhrase struct{ http core.HTTPClient }
 
 // GenerateVoice trains a custom voice from the user's recording of the validation phrase.
+//
+// Deprecated: use [Voices].
 type GenerateVoice struct{ http core.HTTPClient }
 
 // CheckVoice checks whether a custom voice from [GenerateVoice] is ready for use. Synchronous (Run only).
+//
+// Deprecated: use [Voices.Get], which reports the voice resource status directly.
 type CheckVoice struct{ http core.HTTPClient }
 
 // Create submits a song-generation task and returns immediately with a task id.
@@ -734,4 +771,191 @@ func (r *GeneratePersona) Run(ctx context.Context, params GeneratePersonaParams,
 func (r *BoostStyle) Run(ctx context.Context, params BoostStyleParams, opts ...option.RequestOption) (*BoostStyleResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	return core.PostJSON[BoostStyleResponse](ctx, r.http, boostStylePath, core.CompactParams(params), requestOptions)
+}
+
+// Provider-neutral resource paths. These name the resource a request works on
+// rather than the provider operation that produced it; the operation routes
+// above stay available for callers that already use them.
+const (
+	personasPath            = "/api/v1/personas"
+	voicesPath              = "/api/v1/voices"
+	styleExpansionsPath     = "/api/v1/style_expansions"
+	timestampedLyricsPath   = "/api/v1/timestamped_lyrics"
+	audioExportsPath        = "/api/v1/audio_exports"
+	musicVisualizationsPath = "/api/v1/music_visualizations"
+	musicFromSamplePath     = "/api/v1/music_from_sample"
+)
+
+// Personas creates and retrieves the personas a music request can reuse.
+//
+// A persona is a RunAPI-owned resource: create it once, then pass its ID in the
+// persona_id field of music generation parameters. Holding the resource ID
+// instead of the creating request keeps a workflow resumable after that request
+// is gone.
+type Personas struct{ http core.HTTPClient }
+
+// Create submits a persona request. A request the service accepted for local
+// execution returns an accepted Task to follow with [Personas.Run]; otherwise
+// the returned Terminal holds the finished persona.
+func (r *Personas) Create(ctx context.Context, params PersonaParams, opts ...option.RequestOption) (*core.HybridCreateResponse[PersonaCreationResponse], error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["personas"], body); err != nil {
+		return nil, err
+	}
+	return core.CreateHybrid[PersonaCreationResponse](ctx, r.http, personasPath, body, requestOptions)
+}
+
+// Run submits a persona request and follows an accepted Task to its stored result.
+func (r *Personas) Run(ctx context.Context, params PersonaParams, opts ...option.RequestOption) (*PersonaCreationResponse, error) {
+	requestOptions, pollingOptions := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["personas"], body); err != nil {
+		return nil, err
+	}
+	return core.RunHybrid[PersonaCreationResponse](ctx, r.http, personasPath, body, requestOptions, pollingOptions)
+}
+
+// Get retrieves a persona resource by its RunAPI-owned ID.
+func (r *Personas) Get(ctx context.Context, id string, opts ...option.RequestOption) (*PersonaResourceResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[PersonaResourceResponse](ctx, r.http, core.ResourcePath(personasPath, id), requestOptions)
+}
+
+// Voices creates and retrieves the voices a music request can reuse.
+//
+// A voice is a RunAPI-owned resource: create it from a recording, then pass its
+// ID wherever a voice persona is accepted. [Voices.Get] reports whether the
+// voice is ready, which replaces polling a separate availability operation.
+type Voices struct{ http core.HTTPClient }
+
+// Run submits a voice recording and returns the created voice resource.
+func (r *Voices) Run(ctx context.Context, params VoiceParams, opts ...option.RequestOption) (*VoiceCreationResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["voices"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[VoiceCreationResponse](ctx, r.http, voicesPath, body, requestOptions)
+}
+
+// Get retrieves a voice resource by its RunAPI-owned ID.
+func (r *Voices) Get(ctx context.Context, id string, opts ...option.RequestOption) (*VoiceResourceResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[VoiceResourceResponse](ctx, r.http, core.ResourcePath(voicesPath, id), requestOptions)
+}
+
+// StyleExpansions expands a style description into genre tags. Synchronous (Run only).
+type StyleExpansions struct{ http core.HTTPClient }
+
+// Run expands a style description into genre tags and returns the result.
+func (r *StyleExpansions) Run(ctx context.Context, params StyleExpansionParams, opts ...option.RequestOption) (*BoostStyleResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["style-expansions"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[BoostStyleResponse](ctx, r.http, styleExpansionsPath, body, requestOptions)
+}
+
+// TimestampedLyrics retrieves word-level timing alignment for an existing track.
+// Synchronous (Run only).
+type TimestampedLyrics struct{ http core.HTTPClient }
+
+// Run retrieves word-level timing alignment and returns the result.
+func (r *TimestampedLyrics) Run(ctx context.Context, params TimestampedLyricsParams, opts ...option.RequestOption) (*GetTimestampedLyricsResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["timestamped-lyrics"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[GetTimestampedLyricsResponse](ctx, r.http, timestampedLyricsPath, body, requestOptions)
+}
+
+// AudioExports exports an existing track to a downloadable audio file.
+type AudioExports struct{ http core.HTTPClient }
+
+// Create submits an audio export and returns immediately with a task id. The
+// export body is available from [AudioExports.Get] once the task completes.
+func (r *AudioExports) Create(ctx context.Context, params AudioExportParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["audio-exports"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, audioExportsPath, body, requestOptions)
+}
+
+// Get fetches the current status of an audio export by id.
+func (r *AudioExports) Get(ctx context.Context, id string, opts ...option.RequestOption) (*AudioExportResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[AudioExportResponse](ctx, r.http, core.ResourcePath(audioExportsPath, id), requestOptions)
+}
+
+// Run submits an audio export and polls until it completes.
+func (r *AudioExports) Run(ctx context.Context, params AudioExportParams, opts ...option.RequestOption) (*AudioExportResponse, error) {
+	_, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) {
+		return r.Create(ctx, params, opts...)
+	}, func(ctx context.Context, id string) (*AudioExportResponse, error) {
+		return r.Get(ctx, id, opts...)
+	}, pollingOptions)
+}
+
+// MusicVisualizations renders a visualization video for an existing track.
+type MusicVisualizations struct{ http core.HTTPClient }
+
+// Create submits a visualization request and returns immediately with a task id.
+func (r *MusicVisualizations) Create(ctx context.Context, params MusicVisualizationParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["music-visualizations"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, musicVisualizationsPath, body, requestOptions)
+}
+
+// Get fetches the current status of a visualization request by id.
+func (r *MusicVisualizations) Get(ctx context.Context, id string, opts ...option.RequestOption) (*MusicVisualizationResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[MusicVisualizationResponse](ctx, r.http, core.ResourcePath(musicVisualizationsPath, id), requestOptions)
+}
+
+// Run submits a visualization request and polls until it completes.
+func (r *MusicVisualizations) Run(ctx context.Context, params MusicVisualizationParams, opts ...option.RequestOption) (*MusicVisualizationResponse, error) {
+	_, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) {
+		return r.Create(ctx, params, opts...)
+	}, func(ctx context.Context, id string) (*MusicVisualizationResponse, error) {
+		return r.Get(ctx, id, opts...)
+	}, pollingOptions)
+}
+
+// MusicFromSample creates music guided by a sample of an uploaded audio file.
+type MusicFromSample struct{ http core.HTTPClient }
+
+// Create submits a music-from-sample request and returns immediately with a task id.
+func (r *MusicFromSample) Create(ctx context.Context, params MusicFromSampleParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	body := core.CompactParams(params)
+	if err := core.ValidateParams(contractSchema["music-from-sample"], body); err != nil {
+		return nil, err
+	}
+	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, musicFromSamplePath, body, requestOptions)
+}
+
+// Get fetches the current status of a music-from-sample request by id.
+func (r *MusicFromSample) Get(ctx context.Context, id string, opts ...option.RequestOption) (*MusicFromSampleResponse, error) {
+	requestOptions, _ := option.ResolveRequestOptions(opts...)
+	return core.GetJSON[MusicFromSampleResponse](ctx, r.http, core.ResourcePath(musicFromSamplePath, id), requestOptions)
+}
+
+// Run submits a music-from-sample request and polls until it completes.
+func (r *MusicFromSample) Run(ctx context.Context, params MusicFromSampleParams, opts ...option.RequestOption) (*MusicFromSampleResponse, error) {
+	_, pollingOptions := option.ResolveRequestOptions(opts...)
+	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) {
+		return r.Create(ctx, params, opts...)
+	}, func(ctx context.Context, id string) (*MusicFromSampleResponse, error) {
+		return r.Get(ctx, id, opts...)
+	}, pollingOptions)
 }

@@ -25,6 +25,13 @@ import { VoiceToValidationPhrase } from './resources/voice-to-validation-phrase'
 import { RegenerateValidationPhrase } from './resources/regenerate-validation-phrase';
 import { GenerateVoice } from './resources/generate-voice';
 import { CheckVoice } from './resources/check-voice';
+import { Personas } from './resources/personas';
+import { Voices } from './resources/voices';
+import { StyleExpansions } from './resources/style-expansions';
+import { TimestampedLyrics } from './resources/timestamped-lyrics';
+import { AudioExports } from './resources/audio-exports';
+import { MusicVisualizations } from './resources/music-visualizations';
+import { MusicFromSample } from './resources/music-from-sample';
 
 /**
  * Suno music platform client covering song generation, extension, covers, stems,
@@ -93,6 +100,20 @@ export class SunoClient extends BaseClient {
   public readonly generateVoice: GenerateVoice;
   /** Step 4 of voice cloning: checks whether a custom voice is ready for use. Synchronous (run only). */
   public readonly checkVoice: CheckVoice;
+  /** Creates and retrieves the reusable personas a music request can reference by ID. */
+  public readonly personas: Personas;
+  /** Creates and retrieves the reusable voices a music request can reference by ID. */
+  public readonly voices: Voices;
+  /** Expands a style description into genre tags. Synchronous (run only). */
+  public readonly styleExpansions: StyleExpansions;
+  /** Retrieves word-level timing alignment for an audio resource. Synchronous (run only). */
+  public readonly timestampedLyrics: TimestampedLyrics;
+  /** Exports an audio resource as a downloadable file. */
+  public readonly audioExports: AudioExports;
+  /** Renders a visualization video for an audio resource. */
+  public readonly musicVisualizations: MusicVisualizations;
+  /** Creates new music guided by a sample of an uploaded audio file. */
+  public readonly musicFromSample: MusicFromSample;
 
   constructor(options: ClientOptions = {}) {
     super(options);
@@ -122,5 +143,12 @@ export class SunoClient extends BaseClient {
     this.regenerateValidationPhrase = new RegenerateValidationPhrase(this.http);
     this.generateVoice = new GenerateVoice(this.http);
     this.checkVoice = new CheckVoice(this.http);
+    this.personas = new Personas(this.http);
+    this.voices = new Voices(this.http);
+    this.styleExpansions = new StyleExpansions(this.http);
+    this.timestampedLyrics = new TimestampedLyrics(this.http);
+    this.audioExports = new AudioExports(this.http);
+    this.musicVisualizations = new MusicVisualizations(this.http);
+    this.musicFromSample = new MusicFromSample(this.http);
   }
 }

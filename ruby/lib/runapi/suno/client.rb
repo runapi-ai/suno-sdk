@@ -57,6 +57,20 @@ module RunApi
       attr_reader :generate_persona
       # @return [Resources::BoostStyle] generates style/genre tags from a text description (synchronous)
       attr_reader :boost_style
+      # @return [Resources::Personas] creates personas and retrieves them by their account-owned ID
+      attr_reader :personas
+      # @return [Resources::Voices] creates voices and retrieves them by their account-owned ID
+      attr_reader :voices
+      # @return [Resources::StyleExpansions] expands a style description into genre tags (synchronous)
+      attr_reader :style_expansions
+      # @return [Resources::TimestampedLyrics] retrieves word-level timing alignment for a track (synchronous)
+      attr_reader :timestamped_lyrics
+      # @return [Resources::AudioExports] exports an existing track to a downloadable audio file
+      attr_reader :audio_exports
+      # @return [Resources::MusicVisualizations] renders a visualization video for an existing track
+      attr_reader :music_visualizations
+      # @return [Resources::MusicFromSample] creates music guided by a sample of an uploaded audio file
+      attr_reader :music_from_sample
 
       def initialize(api_key: nil, **options)
         super
@@ -87,6 +101,13 @@ module RunApi
         @check_voice = Resources::CheckVoice.new(http)
         @generate_persona = Resources::GeneratePersona.new(http)
         @boost_style = Resources::BoostStyle.new(http)
+        @personas = Resources::Personas.new(http)
+        @voices = Resources::Voices.new(http)
+        @style_expansions = Resources::StyleExpansions.new(http)
+        @timestamped_lyrics = Resources::TimestampedLyrics.new(http)
+        @audio_exports = Resources::AudioExports.new(http)
+        @music_visualizations = Resources::MusicVisualizations.new(http)
+        @music_from_sample = Resources::MusicFromSample.new(http)
       end
     end
   end

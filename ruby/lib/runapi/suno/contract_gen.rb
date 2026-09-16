@@ -288,6 +288,16 @@ module RunApi
           }
         }
       },
+      "audio-exports" => {
+        "models" => [],
+        "fields_by_model" => {
+          "_" => {
+            "source_audio_id" => {
+              "required" => true
+            }
+          }
+        }
+      },
       "blend-lyrics" => {
         "models" => [],
         "fields_by_model" => {
@@ -335,7 +345,7 @@ module RunApi
         }
       },
       "cover-audio" => {
-        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5", "suno-v6", "suno-v6-mini", "suno-v6-wild"],
         "fields_by_model" => {
           "suno-v4" => {
             "audio_weight" => {
@@ -568,6 +578,144 @@ module RunApi
             }
           },
           "suno-v5.5" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "upload_url" => {
+              "required" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "upload_url" => {
+              "required" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6-mini" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "upload_url" => {
+              "required" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6-wild" => {
             "audio_weight" => {
               "min" => 0,
               "max" => 1
@@ -635,7 +783,7 @@ module RunApi
         }]
       },
       "create-mashup" => {
-        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5", "suno-v6", "suno-v6-mini", "suno-v6-wild"],
         "fields_by_model" => {
           "suno-v4" => {
             "audio_weight" => {
@@ -878,6 +1026,150 @@ module RunApi
             }
           },
           "suno-v5.5" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "upload_url_list" => {
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "upload_url_list" => {
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6-mini" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "upload_url_list" => {
+              "required" => true,
+              "min_items" => 2,
+              "max_items" => 2
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6-wild" => {
             "audio_weight" => {
               "min" => 0,
               "max" => 1
@@ -947,7 +1239,7 @@ module RunApi
         }]
       },
       "extend-music" => {
-        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5", "suno-v6", "suno-v6-mini", "suno-v6-wild"],
         "fields_by_model" => {
           "suno-v4" => {
             "audio_weight" => {
@@ -1165,6 +1457,135 @@ module RunApi
             }
           },
           "suno-v5.5" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "parameter_mode" => {
+              "enum" => ["source", "custom"],
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "parameter_mode" => {
+              "enum" => ["source", "custom"],
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6-mini" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "parameter_mode" => {
+              "enum" => ["source", "custom"],
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6-wild" => {
             "audio_weight" => {
               "min" => 0,
               "max" => 1
@@ -1342,6 +1763,120 @@ module RunApi
           }
         }
       },
+      "music-from-sample" => {
+        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "fields_by_model" => {
+          "suno-v4" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          },
+          "suno-v4.5" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          },
+          "suno-v4.5-plus" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          },
+          "suno-v5" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          },
+          "suno-v5.5" => {
+            "audio_url" => {
+              "required" => true
+            },
+            "end_seconds" => {
+              "required" => true,
+              "min" => 0
+            },
+            "model" => {
+              "required" => true
+            },
+            "start_seconds" => {
+              "required" => true,
+              "min" => 0
+            }
+          }
+        }
+      },
+      "music-visualizations" => {
+        "models" => [],
+        "fields_by_model" => {
+          "_" => {
+            "source_audio_id" => {
+              "required" => true
+            }
+          }
+        }
+      },
+      "personas" => {
+        "models" => [],
+        "fields_by_model" => {
+          "_" => {
+            "description" => {
+              "required" => true
+            },
+            "name" => {
+              "required" => true
+            },
+            "source_audio_id" => {
+              "required" => true
+            },
+            "source_task_id" => {
+              "required" => true
+            }
+          }
+        }
+      },
       "regenerate-validation-phrase" => {
         "models" => [],
         "fields_by_model" => {
@@ -1433,7 +1968,7 @@ module RunApi
               "length" => true
             },
             "model" => {
-              "enum" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"]
+              "enum" => ["suno-v6", "suno-v6-wild", "suno-v6-mini", "suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"]
             },
             "tags" => {
               "required" => true,
@@ -1533,8 +2068,18 @@ module RunApi
           }
         }
       },
+      "style-expansions" => {
+        "models" => [],
+        "fields_by_model" => {
+          "_" => {
+            "description" => {
+              "required" => true
+            }
+          }
+        }
+      },
       "text-to-music" => {
-        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"],
+        "models" => ["suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5", "suno-v6", "suno-v6-mini", "suno-v6-wild"],
         "fields_by_model" => {
           "suno-v4" => {
             "audio_weight" => {
@@ -1823,6 +2368,150 @@ module RunApi
               "min" => 0,
               "max" => 1
             }
+          },
+          "suno-v6" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
+              "type" => "integer"
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6-mini" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
+              "type" => "integer"
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
+          },
+          "suno-v6-wild" => {
+            "audio_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "duration_seconds" => {
+              "min" => 10,
+              "max" => 360,
+              "type" => "integer"
+            },
+            "lyrics" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "model" => {
+              "required" => true
+            },
+            "persona_type" => {
+              "enum" => ["style", "voice"]
+            },
+            "prompt" => {
+              "max" => 5000,
+              "length" => true
+            },
+            "style" => {
+              "max" => 1000,
+              "length" => true
+            },
+            "style_weight" => {
+              "min" => 0,
+              "max" => 1
+            },
+            "title" => {
+              "max" => 80,
+              "length" => true
+            },
+            "vocal_gender" => {
+              "enum" => ["male", "female"]
+            },
+            "vocal_mode" => {
+              "enum" => ["auto_lyrics", "exact_lyrics", "instrumental"],
+              "required" => true
+            },
+            "weirdness_constraint" => {
+              "min" => 0,
+              "max" => 1
+            }
           }
         },
         "rules" => [{
@@ -1868,6 +2557,13 @@ module RunApi
             "model" => "suno-v5"
           },
           "forbidden" => ["duration_seconds"]
+        }, {
+          "when" => {
+            "voice_id" => {
+              "present" => true
+            }
+          },
+          "forbidden" => ["persona_id", "persona_type"]
         }]
       },
       "text-to-sound" => {
@@ -1903,6 +2599,16 @@ module RunApi
           }
         }
       },
+      "timestamped-lyrics" => {
+        "models" => [],
+        "fields_by_model" => {
+          "_" => {
+            "source_audio_id" => {
+              "required" => true
+            }
+          }
+        }
+      },
       "visualize-music" => {
         "models" => [],
         "fields_by_model" => {
@@ -1932,6 +2638,16 @@ module RunApi
               "type" => "integer"
             },
             "voice_url" => {
+              "required" => true
+            }
+          }
+        }
+      },
+      "voices" => {
+        "models" => [],
+        "fields_by_model" => {
+          "_" => {
+            "source_audio_url" => {
               "required" => true
             }
           }

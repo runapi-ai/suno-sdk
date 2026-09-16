@@ -1,5 +1,31 @@
 # Changelog
 
+## [js/v0.4.6](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.6), [ruby/v0.4.4](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.4.4), [go/v0.4.5](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.4.5), [python/v0.4.4](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.4.4) - 2026-09-16
+
+### Added
+- Add Suno V6 model variants and supported operations to generated SDK contracts.
+- Add persona, voice, style-expansion, timestamped-lyrics, audio-export, music-visualization, and music-from-sample resources with typed resource handles, task result types, and resource provenance billing.
+
+### Changed
+- Support the canonical voice_id request field for same-channel Suno v5.5 music generation while retaining legacy Persona inputs.
+
+### Deprecated
+- Deprecate generate-persona, generate-voice, check-voice, boost-style, get-timestamped-lyrics, convert-audio, visualize-music, and add-samples.
+  Replacement: Migrate to personas, voices, style-expansions, timestamped-lyrics, audio-exports, music-visualizations, and music-from-sample; the replacement resources preserve resumable RunAPI handles.
+
+## [java/v0.3.3](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.3.3) - 2026-09-16
+
+### Added
+- Add persona, voice, style-expansion, timestamped-lyrics, audio-export, music-visualization, and music-from-sample resources with typed resource handles, task result types, and resource provenance billing.
+
+### Changed
+- Support the canonical voice_id request field for same-channel Suno v5.5 music generation while retaining legacy Persona inputs.
+
+### Deprecated
+- Deprecate generate-persona, generate-voice, check-voice, boost-style, get-timestamped-lyrics, convert-audio, visualize-music, and add-samples.
+  Replacement: Migrate to personas, voices, style-expansions, timestamped-lyrics, audio-exports, music-visualizations, and music-from-sample; the replacement resources preserve resumable RunAPI handles.
+
+
 ## [js/v0.4.5](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.5) - 2026-09-09
 
 ### Added

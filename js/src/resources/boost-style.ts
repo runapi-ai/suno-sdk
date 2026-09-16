@@ -4,7 +4,10 @@ import type { BoostStyleParams, BoostStyleResponse } from '../types';
 
 const ENDPOINT = '/api/v1/suno/boost_style';
 
-/** Generates style/genre tags from a text description for use in style fields. Synchronous (run only). */
+/**
+ * Generates style/genre tags from a text description for use in style fields. Synchronous (run only).
+ * @deprecated Use {@link StyleExpansions}, the canonical way to expand a style description.
+ */
 export class BoostStyle {
   constructor(private readonly http: HttpClient) {}
 

@@ -5,7 +5,10 @@ import type { CompletedVisualizeMusicResponse, VisualizeMusicParams, VisualizeMu
 
 const ENDPOINT = '/api/v1/suno/visualize_music';
 
-/** Generates a music visualization video from an existing track. */
+/**
+ * Generates a music visualization video from an existing track.
+ * @deprecated Use {@link MusicVisualizations}, which renders a visualization for a RunAPI audio resource.
+ */
 export class VisualizeMusic {
   constructor(private readonly http: HttpClient) {}
 

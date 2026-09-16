@@ -11,7 +11,11 @@ from ..types import GetTimestampedLyricsResponse
 
 
 class GetTimestampedLyrics(Resource):
-    """Fetch timestamped lyrics for a track. Synchronous: run() returns the result directly."""
+    """Fetch timestamped lyrics for a track. Synchronous: run() returns the result directly.
+
+    .. deprecated::
+        Use :class:`TimestampedLyrics`.
+    """
 
     ENDPOINT = "/api/v1/suno/get_timestamped_lyrics"
 

@@ -2,6 +2,8 @@
 
 require "runapi/core"
 require_relative "suno/types"
+require_relative "suno/types/completed_responses"
+require_relative "suno/types/resource_responses"
 require_relative "suno/contract_gen"
 require_relative "suno/validators"
 require_relative "suno/resources/text_to_music"
@@ -31,6 +33,13 @@ require_relative "suno/resources/generate_voice"
 require_relative "suno/resources/check_voice"
 require_relative "suno/resources/generate_persona"
 require_relative "suno/resources/boost_style"
+require_relative "suno/resources/personas"
+require_relative "suno/resources/voices"
+require_relative "suno/resources/style_expansions"
+require_relative "suno/resources/timestamped_lyrics"
+require_relative "suno/resources/audio_exports"
+require_relative "suno/resources/music_visualizations"
+require_relative "suno/resources/music_from_sample"
 require_relative "suno/client"
 
 module RunApi

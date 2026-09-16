@@ -11,7 +11,11 @@ from ..types import GeneratePersonaResponse
 
 
 class GeneratePersona(Resource):
-    """Generate a reusable persona. Synchronous: run() returns the result directly."""
+    """Generate a reusable persona. Synchronous: run() returns the result directly.
+
+    .. deprecated::
+        Use :class:`Personas`, which returns a RunAPI-owned persona resource.
+    """
 
     ENDPOINT = "/api/v1/suno/generate_persona"
 

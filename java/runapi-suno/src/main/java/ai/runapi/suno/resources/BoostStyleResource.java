@@ -6,7 +6,10 @@ import ai.runapi.core.http.HttpTransport;
 import ai.runapi.suno.types.BoostStyleParams;
 import ai.runapi.suno.types.BoostStyleResponse;
 
-/** Boost Style operations. */
+/** Boost Style operations.
+ *
+ * @deprecated Use {@link StyleExpansionsResource} instead.
+ */
 public final class BoostStyleResource extends SunoResource {
   /** API endpoint path for boost style operations. */
   public static final String ENDPOINT = "/api/v1/suno/boost_style";

@@ -20,6 +20,7 @@ public final class TextToMusicParams {
   private final String negativeTags;
   private final String personaId;
   private final String personaType;
+  private final String voiceId;
   private final Integer durationSeconds;
   private final Double continueAt;
   private final String endpoint;
@@ -39,6 +40,7 @@ public final class TextToMusicParams {
     this.negativeTags = builder.negativeTags;
     this.personaId = builder.personaId;
     this.personaType = builder.personaType;
+    this.voiceId = builder.voiceId;
     this.durationSeconds = builder.durationSeconds;
     this.continueAt = builder.continueAt;
     this.endpoint = builder.endpoint;
@@ -71,6 +73,7 @@ public final class TextToMusicParams {
     raw.put("negative_tags", SunoParamUtils.wireValue(negativeTags));
     raw.put("persona_id", SunoParamUtils.wireValue(personaId));
     raw.put("persona_type", SunoParamUtils.wireValue(personaType));
+    raw.put("voice_id", SunoParamUtils.wireValue(voiceId));
     raw.put("duration_seconds", SunoParamUtils.wireValue(durationSeconds));
     raw.put("continue_at", SunoParamUtils.wireValue(continueAt));
     raw.put("endpoint", SunoParamUtils.wireValue(endpoint));
@@ -95,6 +98,7 @@ public final class TextToMusicParams {
     private String negativeTags;
     private String personaId;
     private String personaType;
+    private String voiceId;
     private Integer durationSeconds;
     private Double continueAt;
     private String endpoint;
@@ -189,6 +193,12 @@ public final class TextToMusicParams {
     /** Sets the persona type. */
     public Builder personaType(String value) {
       this.personaType = SunoParamUtils.requireNonBlank(value, "personaType");
+      return this;
+    }
+
+    /** Sets the RunAPI Voice handle for suno-v5.5. */
+    public Builder voiceId(String value) {
+      this.voiceId = SunoParamUtils.requireNonBlank(value, "voiceId");
       return this;
     }
 

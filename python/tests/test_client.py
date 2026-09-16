@@ -1,17 +1,27 @@
 import pytest
 
-from runapi.core import config
+from runapi.core import ApiResponse, config
 from runapi.core.errors import AuthenticationError, ValidationError
 from runapi.suno import SunoClient
 from runapi.suno import resources as R
 from runapi.suno.types import (
+    AudioExportResponse,
     BoostStyleResponse,
     CheckVoiceResponse,
+    CompletedAudioExportResponse,
+    CompletedMusicFromSampleResponse,
+    CompletedMusicVisualizationResponse,
     CompletedTextToMusicResponse,
     GeneratePersonaResponse,
     GetTimestampedLyricsResponse,
+    MusicFromSampleResponse,
+    MusicVisualizationResponse,
+    PersonaCreationResponse,
+    PersonaResourceResponse,
     SeparateAudioStemsResponse,
     TextToMusicResponse,
+    VoiceCreationResponse,
+    VoiceResourceResponse,
 )
 
 
@@ -19,9 +29,11 @@ class FakeHttp:
     def __init__(self, *responses):
         self._responses = list(responses)
         self.calls = []
+        self.options = []
 
     def request(self, method, path, body=None, options=None):
         self.calls.append((method, path, body))
+        self.options.append(options)
         if self._responses:
             return self._responses.pop(0)
         return {"id": "task_1", "status": "pending"}
@@ -95,8 +107,15 @@ def test_exposes_all_resource_accessors():
         "check_voice": R.CheckVoice,
         "generate_persona": R.GeneratePersona,
         "boost_style": R.BoostStyle,
+        "personas": R.Personas,
+        "voices": R.Voices,
+        "style_expansions": R.StyleExpansions,
+        "timestamped_lyrics": R.TimestampedLyrics,
+        "audio_exports": R.AudioExports,
+        "music_visualizations": R.MusicVisualizations,
+        "music_from_sample": R.MusicFromSample,
     }
-    assert len(expected) == 26
+    assert len(expected) == 33
     for name, cls in expected.items():
         assert isinstance(getattr(client, name), cls), name
 
@@ -118,6 +137,16 @@ def test_create_posts_compacted_body():
         ),
     ]
     assert isinstance(result, TextToMusicResponse)
+
+
+def test_create_accepts_canonical_voice_handle():
+    fake = FakeHttp({"id": "voice_task", "status": "pending"})
+    client = SunoClient(api_key="k", http_client=fake)
+    client.text_to_music.create(
+        model="suno-v5.5", vocal_mode="exact_lyrics", lyrics="[Verse] hello",
+        style="acoustic pop", title="Hello", voice_id="res_voice_handle",
+    )
+    assert fake.calls[0][2]["voice_id"] == "res_voice_handle"
 
 
 def test_get_fetches_by_id():
@@ -549,3 +578,333 @@ def test_response_without_status_coerces_cleanly():
     m = BaseModel.coerce({"id": "t1", "audios": []}, as_=TextToMusicResponse)
     assert m.id == "t1"
     assert m.status is None
+
+
+# --- provider-neutral resources -------------------------------------------
+
+PERSONA_ID = "res_" + "a" * 48
+BILLING = {"reservation": None, "settlement": None, "refund": None}
+
+
+def test_personas_run_posts_compacted_body_and_decodes_persona():
+    fake = FakeHttp({"persona": {"id": PERSONA_ID, "name": "Echo", "description": "soft and airy"}, "billing": BILLING})
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.personas.run(
+        source_task_id="task_1",
+        source_audio_id="audio_1",
+        name="Echo",
+        description="soft and airy",
+    )
+
+    assert fake.calls == [
+        (
+            "post",
+            "/api/v1/personas",
+            {
+                "source_task_id": "task_1",
+                "source_audio_id": "audio_1",
+                "name": "Echo",
+                "description": "soft and airy",
+            },
+        ),
+    ]
+    assert isinstance(result, PersonaCreationResponse)
+    assert result.persona.name == "Echo"
+
+
+def test_personas_run_follows_accepted_task_to_stored_result():
+    location = "https://runapi.ai/api/v1/tasks/task_1"
+    fake = FakeHttp(
+        ApiResponse({"id": "task_1", "status": "pending"}, {"Location": location}, status_code=202),
+        ApiResponse(
+            {
+                "id": "task_1",
+                "status": "completed",
+                "response": {
+                    "status": 200,
+                    "content_type": "application/json",
+                    "headers": {},
+                    "body": {"persona": {"id": PERSONA_ID, "name": "Echo"}, "billing": BILLING},
+                },
+            }
+        ),
+    )
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.personas.run(
+        source_task_id="task_1", source_audio_id="audio_1", name="Echo", description="soft and airy"
+    )
+
+    assert [call[:2] for call in fake.calls] == [("post", "/api/v1/personas"), ("get", location)]
+    assert fake.options[0].headers["Idempotency-Key"]
+    assert fake.options[1].headers == fake.options[0].headers
+    assert isinstance(result, PersonaCreationResponse)
+    assert result.persona.id == PERSONA_ID
+
+
+def test_personas_get_decodes_resource_envelope():
+    fake = FakeHttp(
+        {
+            "persona": {"id": PERSONA_ID, "name": "Echo", "description": "soft and airy"},
+            "status": "available",
+            "billing": {},
+        }
+    )
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.personas.get(PERSONA_ID)
+
+    assert fake.calls == [("get", f"/api/v1/personas/{PERSONA_ID}", None)]
+    assert isinstance(result, PersonaResourceResponse)
+    assert result.status == "available"
+    assert result.billing is not None
+
+
+def test_personas_requires_a_source_audio_and_metadata():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="source_audio_id is required"):
+        client.personas.run(source_task_id="task_1", name="Echo", description="soft and airy")
+
+
+def test_voices_run_posts_recording_and_decodes_voice():
+    fake = FakeHttp({"voice": {"id": "res_1", "name": "Narrator"}, "billing": BILLING})
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.voices.run(source_audio_url="https://cdn.runapi.ai/narrator.mp3", name=None)
+
+    assert fake.calls == [
+        ("post", "/api/v1/voices", {"source_audio_url": "https://cdn.runapi.ai/narrator.mp3"}),
+    ]
+    assert isinstance(result, VoiceCreationResponse)
+    assert result.voice.id == "res_1"
+
+
+def test_voices_get_decodes_resource_envelope():
+    fake = FakeHttp(
+        {
+            "voice": {"id": "res_1", "name": "Narrator"},
+            "status": "failed",
+            "billing": {},
+        }
+    )
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.voices.get("res_1")
+
+    assert fake.calls == [("get", "/api/v1/voices/res_1", None)]
+    assert isinstance(result, VoiceResourceResponse)
+    assert result.status == "failed"
+    assert result.billing is not None
+
+
+def test_voices_requires_a_recording():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="source_audio_url is required"):
+        client.voices.run(name="Narrator")
+
+
+def test_style_expansions_run_posts_description():
+    fake = FakeHttp({"style": "dreamy synthwave", "billing": BILLING})
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.style_expansions.run(description="dreamy synth")
+
+    assert fake.calls == [("post", "/api/v1/style_expansions", {"description": "dreamy synth"})]
+    assert isinstance(result, BoostStyleResponse)
+    assert result.style == "dreamy synthwave"
+
+
+def test_style_expansions_requires_description():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="description is required"):
+        client.style_expansions.run()
+
+
+def test_timestamped_lyrics_run_posts_audio_reference():
+    fake = FakeHttp(
+        {
+            "aligned_words": [
+                {"word": "hi", "success": True, "start_time": 0.0, "end_time": 0.5, "palign": 1.0},
+            ],
+            "waveform_data": [0.1, 0.2],
+            "hoct_cer": 0.02,
+            "is_streamed": False,
+            "billing": BILLING,
+        }
+    )
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.timestamped_lyrics.run(source_audio_id=PERSONA_ID, source_task_id=None)
+
+    assert fake.calls == [("post", "/api/v1/timestamped_lyrics", {"source_audio_id": PERSONA_ID})]
+    assert isinstance(result, GetTimestampedLyricsResponse)
+    assert result.aligned_words[0].word == "hi"
+    assert result.waveform_data == [0.1, 0.2]
+
+
+def test_timestamped_lyrics_requires_audio_id():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="source_audio_id is required"):
+        client.timestamped_lyrics.run(source_task_id="task_1")
+
+
+def test_audio_exports_create_posts_compacted_body():
+    fake = FakeHttp({"id": "export_1", "status": "pending", "billing": BILLING})
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.audio_exports.create(
+        source_audio_id="res_1", source_task_id="task_1", callback_url=None
+    )
+
+    assert fake.calls == [
+        ("post", "/api/v1/audio_exports", {"source_audio_id": "res_1", "source_task_id": "task_1"}),
+    ]
+    assert isinstance(result, AudioExportResponse)
+    assert result.id == "export_1"
+
+
+def test_audio_exports_run_narrows_completed_response():
+    fake = FakeHttp(
+        {"id": "export_1", "status": "pending", "billing": BILLING},
+        {
+            "id": "export_1",
+            "status": "completed",
+            "wav_url": "https://file.runapi.ai/track.wav",
+            "billing": BILLING,
+        },
+    )
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.audio_exports.run(source_audio_id="res_1")
+
+    assert fake.calls == [
+        ("post", "/api/v1/audio_exports", {"source_audio_id": "res_1"}),
+        ("get", "/api/v1/audio_exports/export_1", None),
+    ]
+    assert isinstance(result, CompletedAudioExportResponse)
+    assert result.wav_url == "https://file.runapi.ai/track.wav"
+
+
+def test_music_visualizations_create_posts_compacted_body():
+    fake = FakeHttp({"id": "viz_1", "status": "pending", "billing": BILLING})
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.music_visualizations.create(
+        source_audio_id="res_1",
+        author="Ada",
+        callback_url="https://hooks.example.test/visualizations",
+    )
+
+    assert fake.calls == [
+        (
+            "post",
+            "/api/v1/music_visualizations",
+            {
+                "source_audio_id": "res_1",
+                "author": "Ada",
+                "callback_url": "https://hooks.example.test/visualizations",
+            },
+        ),
+    ]
+    assert isinstance(result, MusicVisualizationResponse)
+    assert result.id == "viz_1"
+
+
+def test_music_visualizations_run_narrows_completed_response():
+    fake = FakeHttp(
+        {"id": "viz_1", "status": "pending", "billing": BILLING},
+        {
+            "id": "viz_1",
+            "status": "completed",
+            "video_url": "https://file.runapi.ai/visualization.mp4",
+            "billing": BILLING,
+        },
+    )
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.music_visualizations.run(source_audio_id="res_1", domain_name="runapi.ai")
+
+    assert fake.calls == [
+        ("post", "/api/v1/music_visualizations", {"source_audio_id": "res_1", "domain_name": "runapi.ai"}),
+        ("get", "/api/v1/music_visualizations/viz_1", None),
+    ]
+    assert isinstance(result, CompletedMusicVisualizationResponse)
+    assert result.video_url == "https://file.runapi.ai/visualization.mp4"
+
+
+def test_music_from_sample_create_posts_compacted_body():
+    fake = FakeHttp({"id": "sample_1", "status": "pending", "billing": BILLING})
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.music_from_sample.create(
+        model="suno-v5",
+        audio_url="https://cdn.runapi.ai/sample.mp3",
+        start_seconds=12,
+        end_seconds=32,
+        prompt=None,
+    )
+
+    assert fake.calls == [
+        (
+            "post",
+            "/api/v1/music_from_sample",
+            {
+                "model": "suno-v5",
+                "audio_url": "https://cdn.runapi.ai/sample.mp3",
+                "start_seconds": 12,
+                "end_seconds": 32,
+            },
+        ),
+    ]
+    assert isinstance(result, MusicFromSampleResponse)
+    assert result.id == "sample_1"
+
+
+def test_music_from_sample_run_narrows_completed_response():
+    fake = FakeHttp(
+        {"id": "sample_1", "status": "pending", "billing": BILLING},
+        {
+            "id": "sample_1",
+            "status": "completed",
+            "audios": [{"id": "a1", "audio_url": "https://file.runapi.ai/sample.mp3"}],
+            "billing": BILLING,
+        },
+    )
+    client = SunoClient(api_key="k", http_client=fake)
+
+    result = client.music_from_sample.run(
+        model="suno-v5", audio_url="https://cdn.runapi.ai/sample.mp3", start_seconds=12, end_seconds=32
+    )
+
+    assert fake.calls == [
+        (
+            "post",
+            "/api/v1/music_from_sample",
+            {
+                "model": "suno-v5",
+                "audio_url": "https://cdn.runapi.ai/sample.mp3",
+                "start_seconds": 12,
+                "end_seconds": 32,
+            },
+        ),
+        ("get", "/api/v1/music_from_sample/sample_1", None),
+    ]
+    assert isinstance(result, CompletedMusicFromSampleResponse)
+    assert result.audios[0].audio_url == "https://file.runapi.ai/sample.mp3"
+
+
+def test_music_from_sample_rejects_unknown_model():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="model must be one of:"):
+        client.music_from_sample.create(
+            model="nope", audio_url="https://cdn.runapi.ai/sample.mp3", start_seconds=0, end_seconds=1
+        )
+
+
+def test_music_from_sample_requires_a_sample_window():
+    client = SunoClient(api_key="k", http_client=FakeHttp())
+    with pytest.raises(ValidationError, match="end_seconds is required"):
+        client.music_from_sample.create(
+            model="suno-v5", audio_url="https://cdn.runapi.ai/sample.mp3", start_seconds=0
+        )

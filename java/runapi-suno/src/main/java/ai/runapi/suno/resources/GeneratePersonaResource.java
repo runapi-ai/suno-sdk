@@ -6,7 +6,10 @@ import ai.runapi.core.http.HttpTransport;
 import ai.runapi.suno.types.GeneratePersonaParams;
 import ai.runapi.suno.types.GeneratePersonaResponse;
 
-/** Generate Persona operations. */
+/** Generate Persona operations.
+ *
+ * @deprecated Use {@link PersonasResource} instead.
+ */
 public final class GeneratePersonaResource extends SunoResource {
   /** API endpoint path for generate persona operations. */
   public static final String ENDPOINT = "/api/v1/suno/generate_persona";

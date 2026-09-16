@@ -5,6 +5,13 @@ import ai.runapi.core.ClientOptions;
 import ai.runapi.core.http.HttpTransport;
 import java.net.URI;
 import ai.runapi.suno.resources.AddInstrumentalResource;
+import ai.runapi.suno.resources.AudioExportsResource;
+import ai.runapi.suno.resources.MusicFromSampleResource;
+import ai.runapi.suno.resources.MusicVisualizationsResource;
+import ai.runapi.suno.resources.PersonasResource;
+import ai.runapi.suno.resources.StyleExpansionsResource;
+import ai.runapi.suno.resources.TimestampedLyricsResource;
+import ai.runapi.suno.resources.VoicesResource;
 import ai.runapi.suno.resources.AddVocalsResource;
 import ai.runapi.suno.resources.AddSamplesResource;
 import ai.runapi.suno.resources.InspireMusicResource;
@@ -59,6 +66,13 @@ public final class SunoClient extends BaseClient {
   private final TextToSoundResource textToSound;
   private final VisualizeMusicResource visualizeMusic;
   private final VoiceToValidationPhraseResource voiceToValidationPhrase;
+  private final AudioExportsResource audioExports;
+  private final MusicFromSampleResource musicFromSample;
+  private final MusicVisualizationsResource musicVisualizations;
+  private final PersonasResource personas;
+  private final StyleExpansionsResource styleExpansions;
+  private final TimestampedLyricsResource timestampedLyrics;
+  private final VoicesResource voices;
 
   private SunoClient(ClientOptions options) {
     super(options);
@@ -88,6 +102,13 @@ public final class SunoClient extends BaseClient {
     this.textToSound = new TextToSoundResource(transport(), options());
     this.visualizeMusic = new VisualizeMusicResource(transport(), options());
     this.voiceToValidationPhrase = new VoiceToValidationPhraseResource(transport(), options());
+    this.audioExports = new AudioExportsResource(transport(), options());
+    this.musicFromSample = new MusicFromSampleResource(transport(), options());
+    this.musicVisualizations = new MusicVisualizationsResource(transport(), options());
+    this.personas = new PersonasResource(transport(), options());
+    this.styleExpansions = new StyleExpansionsResource(transport(), options());
+    this.timestampedLyrics = new TimestampedLyricsResource(transport(), options());
+    this.voices = new VoicesResource(transport(), options());
   }
 
   /** Creates a new SunoClient builder. */
@@ -208,6 +229,27 @@ public final class SunoClient extends BaseClient {
   public VoiceToValidationPhraseResource voiceToValidationPhrase() {
     return voiceToValidationPhrase;
   }
+
+  /** Audio export operations. */
+  public AudioExportsResource audioExports() { return audioExports; }
+
+  /** Music-from-sample operations. */
+  public MusicFromSampleResource musicFromSample() { return musicFromSample; }
+
+  /** Music visualization operations. */
+  public MusicVisualizationsResource musicVisualizations() { return musicVisualizations; }
+
+  /** Persona resource operations. */
+  public PersonasResource personas() { return personas; }
+
+  /** Style expansion operations. */
+  public StyleExpansionsResource styleExpansions() { return styleExpansions; }
+
+  /** Timestamped lyrics operations. */
+  public TimestampedLyricsResource timestampedLyrics() { return timestampedLyrics; }
+
+  /** Voice resource operations. */
+  public VoicesResource voices() { return voices; }
 
   /** Builder for {@link SunoClient}. */
   public static final class Builder extends BaseClient.Builder<Builder> {

@@ -8,7 +8,10 @@ import ai.runapi.suno.types.AudioActionParams;
 import ai.runapi.suno.types.AudioActionResponse;
 import ai.runapi.suno.types.CompletedAudioActionResponse;
 
-/** Add samples operations. */
+/** Add samples operations.
+ *
+ * @deprecated Use {@link MusicFromSampleResource} instead.
+ */
 public final class AddSamplesResource extends SunoResource {
   /** API endpoint path for add samples operations. */
   public static final String ENDPOINT = "/api/v1/suno/add_samples";

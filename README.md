@@ -39,7 +39,7 @@ Gradle:
 
 ```kotlin
 dependencies {
-  implementation("ai.runapi:runapi-suno:0.3.2")
+  implementation("ai.runapi:runapi-suno:0.3.3")
 }
 ```
 
@@ -49,7 +49,7 @@ Maven:
 <dependency>
   <groupId>ai.runapi</groupId>
   <artifactId>runapi-suno</artifactId>
-  <version>0.3.2</version>
+  <version>0.3.3</version>
 </dependency>
 ```
 
@@ -57,7 +57,7 @@ Use the Java BOM when installing multiple RunAPI Java modules:
 
 ```kotlin
 dependencies {
-  implementation(platform("ai.runapi:runapi-bom:0.6.4"))
+  implementation(platform("ai.runapi:runapi-bom:0.6.6"))
   implementation("ai.runapi:runapi-suno")
 }
 ```

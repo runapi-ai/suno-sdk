@@ -4,7 +4,10 @@ import type { GetTimestampedLyricsParams, GetTimestampedLyricsResponse } from '.
 
 const ENDPOINT = '/api/v1/suno/get_timestamped_lyrics';
 
-/** Retrieves word-level timing alignment for a track. Synchronous (run only, no create/get polling). */
+/**
+ * Retrieves word-level timing alignment for a track. Synchronous (run only, no create/get polling).
+ * @deprecated Use {@link TimestampedLyrics}, which takes a RunAPI audio resource id directly.
+ */
 export class GetTimestampedLyrics {
   constructor(private readonly http: HttpClient) {}
 

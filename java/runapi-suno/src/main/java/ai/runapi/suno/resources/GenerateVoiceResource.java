@@ -8,7 +8,10 @@ import ai.runapi.suno.types.CompletedGenerateVoiceResponse;
 import ai.runapi.suno.types.GenerateVoiceParams;
 import ai.runapi.suno.types.GenerateVoiceResponse;
 
-/** Generate Voice operations. */
+/** Generate Voice operations.
+ *
+ * @deprecated Use {@link VoicesResource} instead.
+ */
 public final class GenerateVoiceResource extends SunoResource {
   /** API endpoint path for generate voice operations. */
   public static final String ENDPOINT = "/api/v1/suno/generate_voice";

@@ -24,6 +24,8 @@ import ai.runapi.suno.types.AddVocalsParams;
 import ai.runapi.suno.types.AddVocalsResponse;
 import ai.runapi.suno.types.AudioActionParams;
 import ai.runapi.suno.types.AudioActionResponse;
+import ai.runapi.suno.types.AudioExportParams;
+import ai.runapi.suno.types.AudioExportResponse;
 import ai.runapi.suno.types.InspireMusicParams;
 import ai.runapi.suno.types.BoostStyleParams;
 import ai.runapi.suno.types.BoostStyleResponse;
@@ -71,6 +73,14 @@ import ai.runapi.suno.types.GenerateVoiceParams;
 import ai.runapi.suno.types.GenerateVoiceResponse;
 import ai.runapi.suno.types.GetTimestampedLyricsParams;
 import ai.runapi.suno.types.GetTimestampedLyricsResponse;
+import ai.runapi.suno.types.MusicFromSampleModel;
+import ai.runapi.suno.types.MusicFromSampleParams;
+import ai.runapi.suno.types.MusicFromSampleResponse;
+import ai.runapi.suno.types.MusicVisualizationParams;
+import ai.runapi.suno.types.MusicVisualizationResponse;
+import ai.runapi.suno.types.PersonaCreationResponse;
+import ai.runapi.suno.types.PersonaParams;
+import ai.runapi.suno.types.PersonaResourceResponse;
 import ai.runapi.suno.types.RegenerateValidationPhraseParams;
 import ai.runapi.suno.types.RegenerateValidationPhraseResponse;
 import ai.runapi.suno.types.ReplaceSectionModel;
@@ -81,11 +91,15 @@ import ai.runapi.suno.types.SeparateAudioStemsResponse;
 import ai.runapi.suno.types.TextToMusicModel;
 import ai.runapi.suno.types.TextToMusicParams;
 import ai.runapi.suno.types.TextToMusicResponse;
+import ai.runapi.suno.types.StyleExpansionParams;
+import ai.runapi.suno.types.TimestampedLyricsParams;
 import ai.runapi.suno.types.TextToSoundModel;
 import ai.runapi.suno.types.TextToSoundParams;
 import ai.runapi.suno.types.TextToSoundResponse;
 import ai.runapi.suno.types.VisualizeMusicParams;
 import ai.runapi.suno.types.VisualizeMusicResponse;
+import ai.runapi.suno.types.VoiceParams;
+import ai.runapi.suno.types.VoiceResourceResponse;
 import ai.runapi.suno.types.VoiceToValidationPhraseParams;
 import ai.runapi.suno.types.VoiceToValidationPhraseResponse;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -1275,6 +1289,19 @@ class SunoClientTest {
                   .build()
       ));
 
+      CapturingTransport voiceTransport = new CapturingTransport("{\"id\":\"task_text_to_music_voice\",\"status\":\"processing\"}");
+      SunoClient voiceClient = SunoClient.builder().apiKey("sk-test").transport(voiceTransport).build();
+      assertNotNull(voiceClient.textToMusic().create(
+              TextToMusicParams.builder()
+                  .model(TextToMusicModel.SUNO_V5_5)
+                  .vocalMode("exact_lyrics")
+                  .lyrics("[Verse] hello")
+                  .style("acoustic pop")
+                  .title("Hello")
+                  .voiceId("res_voice_handle")
+                  .build()
+      ));
+
       CapturingTransport createWithOptionsTransport = new CapturingTransport("{\"id\":\"task_text_to_music_options\",\"status\":\"processing\"}");
       SunoClient createWithOptionsClient = SunoClient.builder().apiKey("sk-test").transport(createWithOptionsTransport).build();
       assertNotNull(createWithOptionsClient.textToMusic().create(
@@ -1483,6 +1510,216 @@ class SunoClientTest {
           RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build()));
     }
 
+  @Test
+  void personasUseCanonicalCollectionAndDecodeResource() throws Exception {
+    CapturingTransport createTransport = new CapturingTransport(
+        "{\"persona\":{\"id\":\"res_persona\",\"name\":\"Dream Pop\",\"description\":\"Airy\"},\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");
+    SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
+
+    assertEquals("res_persona", createClient.personas().create(
+        PersonaParams.builder()
+            .sourceTaskId("tsk_source")
+            .sourceAudioId("audio_source")
+            .name("Dream Pop")
+            .description("Airy")
+            .build()).subscribe().getPersona().getId());
+
+    assertEquals("POST", createTransport.request.getMethod().name());
+    assertEquals("/api/v1/personas", createTransport.request.getPath());
+    JsonNode createBody = bodyJson(createTransport.request);
+    assertEquals("tsk_source", createBody.get("source_task_id").asText());
+    assertEquals("audio_source", createBody.get("source_audio_id").asText());
+    assertEquals("Dream Pop", createBody.get("name").asText());
+    assertEquals("Airy", createBody.get("description").asText());
+
+    CapturingTransport getTransport = new CapturingTransport(
+        "{\"persona\":{\"id\":\"res_persona\",\"name\":\"Dream Pop\",\"description\":\"Airy\"},\"status\":\"available\",\"billing\":{}}");
+    PersonaResourceResponse fetched = SunoClient.builder().apiKey("sk-test").transport(getTransport).build()
+        .personas().get("res_persona");
+    assertEquals("GET", getTransport.request.getMethod().name());
+    assertEquals("/api/v1/personas/res_persona", getTransport.request.getPath());
+    assertEquals("available", fetched.getStatus().value());
+  }
+
+  @Test
+  void voicesUseCanonicalCollectionAndDecodeResource() throws Exception {
+    CapturingTransport createTransport = new CapturingTransport(
+        "{\"voice\":{\"id\":\"res_voice\",\"name\":\"Lead\"},\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");
+    SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
+
+    assertEquals("res_voice", createClient.voices().run(
+        VoiceParams.builder().sourceAudioUrl("https://file.runapi.ai/voice.wav").name("Lead").build())
+        .getVoice().getId());
+
+    assertEquals("POST", createTransport.request.getMethod().name());
+    assertEquals("/api/v1/voices", createTransport.request.getPath());
+    JsonNode createBody = bodyJson(createTransport.request);
+    assertEquals("https://file.runapi.ai/voice.wav", createBody.get("source_audio_url").asText());
+    assertEquals("Lead", createBody.get("name").asText());
+
+    CapturingTransport getTransport = new CapturingTransport(
+        "{\"voice\":{\"id\":\"res_voice\",\"name\":\"Lead\"},\"status\":\"available\",\"billing\":{}}");
+    VoiceResourceResponse fetched = SunoClient.builder().apiKey("sk-test").transport(getTransport).build()
+        .voices().get("res_voice");
+    assertEquals("GET", getTransport.request.getMethod().name());
+    assertEquals("/api/v1/voices/res_voice", getTransport.request.getPath());
+    assertEquals("Lead", fetched.getVoice().getName());
+  }
+
+  @Test
+  void styleExpansionsUseCanonicalPathAndDecodeStyle() throws Exception {
+    CapturingTransport transport = new CapturingTransport(
+        "{\"style\":\"dream pop, synthwave\",\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    BoostStyleResponse response = client.styleExpansions().run(
+        StyleExpansionParams.builder().description("dreamy electronic pop").build());
+
+    assertEquals("POST", transport.request.getMethod().name());
+    assertEquals("/api/v1/style_expansions", transport.request.getPath());
+    assertEquals("dreamy electronic pop", bodyJson(transport.request).get("description").asText());
+    assertEquals("dream pop, synthwave", response.getStyle());
+  }
+
+  @Test
+  void timestampedLyricsUseCanonicalAudioReference() throws Exception {
+    CapturingTransport transport = new CapturingTransport(
+        "{\"aligned_words\":[{\"word\":\"Hello\"}],\"waveform_data\":[0.1,0.2],\"hoot_cer\":0.03,\"is_streamed\":false,\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    GetTimestampedLyricsResponse response = client.timestampedLyrics().run(
+        TimestampedLyricsParams.builder().sourceAudioId("res_audio").sourceTaskId("tsk_source").build());
+
+    assertEquals("POST", transport.request.getMethod().name());
+    assertEquals("/api/v1/timestamped_lyrics", transport.request.getPath());
+    JsonNode body = bodyJson(transport.request);
+    assertEquals("res_audio", body.get("source_audio_id").asText());
+    assertEquals("tsk_source", body.get("source_task_id").asText());
+    assertEquals("Hello", response.getAlignedWords().get(0).get("word"));
+    assertEquals(0.03, response.getHootCer());
+  }
+
+  @Test
+  void audioExportsUseCanonicalPathBodyAndResponse() throws Exception {
+    CapturingTransport createTransport = new CapturingTransport("{\"id\":\"tsk_export\",\"status\":\"pending\",\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
+
+    client.audioExports().create(AudioExportParams.builder()
+        .sourceAudioId("res_audio")
+        .sourceTaskId("tsk_source")
+        .callbackUrl("https://example.test/callback")
+        .build());
+
+    assertEquals("POST", createTransport.request.getMethod().name());
+    assertEquals("/api/v1/audio_exports", createTransport.request.getPath());
+    JsonNode body = bodyJson(createTransport.request);
+    assertEquals("res_audio", body.get("source_audio_id").asText());
+    assertEquals("tsk_source", body.get("source_task_id").asText());
+    assertEquals("https://example.test/callback", body.get("callback_url").asText());
+
+    CapturingTransport getTransport = new CapturingTransport(
+        "{\"id\":\"tsk_export\",\"status\":\"completed\",\"wav_url\":\"https://file.runapi.ai/export.wav\",\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");
+    AudioExportResponse response = SunoClient.builder().apiKey("sk-test").transport(getTransport).build()
+        .audioExports().get("tsk_export");
+    assertEquals("GET", getTransport.request.getMethod().name());
+    assertEquals("/api/v1/audio_exports/tsk_export", getTransport.request.getPath());
+    assertEquals("https://file.runapi.ai/export.wav", response.getWavUrl());
+  }
+
+  @Test
+  void musicVisualizationsUseCanonicalPathBodyAndResponse() throws Exception {
+    CapturingTransport createTransport = new CapturingTransport("{\"id\":\"tsk_video\",\"status\":\"pending\"}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
+
+    client.musicVisualizations().create(MusicVisualizationParams.builder()
+        .sourceAudioId("res_audio")
+        .sourceTaskId("tsk_source")
+        .callbackUrl("https://example.test/callback")
+        .author("Ada")
+        .domainName("example.test")
+        .build());
+
+    assertEquals("POST", createTransport.request.getMethod().name());
+    assertEquals("/api/v1/music_visualizations", createTransport.request.getPath());
+    JsonNode body = bodyJson(createTransport.request);
+    assertEquals("res_audio", body.get("source_audio_id").asText());
+    assertEquals("tsk_source", body.get("source_task_id").asText());
+    assertEquals("Ada", body.get("author").asText());
+    assertEquals("example.test", body.get("domain_name").asText());
+
+    CapturingTransport getTransport = new CapturingTransport(
+        "{\"id\":\"tsk_video\",\"status\":\"completed\",\"video_url\":\"https://file.runapi.ai/video.mp4\",\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");
+    MusicVisualizationResponse response = SunoClient.builder().apiKey("sk-test").transport(getTransport).build()
+        .musicVisualizations().get("tsk_video");
+    assertEquals("GET", getTransport.request.getMethod().name());
+    assertEquals("/api/v1/music_visualizations/tsk_video", getTransport.request.getPath());
+    assertEquals("https://file.runapi.ai/video.mp4", response.getVideoUrl());
+  }
+
+  @Test
+  void musicFromSampleUsesCanonicalPathBodyAndResponse() throws Exception {
+    CapturingTransport createTransport = new CapturingTransport("{\"id\":\"tsk_sample\",\"status\":\"pending\"}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
+
+    client.musicFromSample().create(MusicFromSampleParams.builder()
+        .model(MusicFromSampleModel.SUNO_V5)
+        .audioUrl("https://file.runapi.ai/sample.wav")
+        .prompt("Add this sample")
+        .startSeconds(2.5)
+        .endSeconds(8.5)
+        .callbackUrl("https://example.test/callback")
+        .build());
+
+    assertEquals("POST", createTransport.request.getMethod().name());
+    assertEquals("/api/v1/music_from_sample", createTransport.request.getPath());
+    JsonNode body = bodyJson(createTransport.request);
+    assertEquals("suno-v5", body.get("model").asText());
+    assertEquals("https://file.runapi.ai/sample.wav", body.get("audio_url").asText());
+    assertEquals(2.5, body.get("start_seconds").asDouble());
+    assertEquals(8.5, body.get("end_seconds").asDouble());
+
+    assertThrows(
+        ValidationException.class,
+        () -> MusicFromSampleParams.builder()
+            .model(MusicFromSampleModel.SUNO_V5)
+            .audioUrl("https://file.runapi.ai/sample.wav")
+            .startSeconds(8.5)
+            .endSeconds(8.5)
+            .build());
+
+    CapturingTransport getTransport = new CapturingTransport(
+        "{\"id\":\"tsk_sample\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/result.mp3\"}],\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");
+    MusicFromSampleResponse response = SunoClient.builder().apiKey("sk-test").transport(getTransport).build()
+        .musicFromSample().get("tsk_sample");
+    assertEquals("GET", getTransport.request.getMethod().name());
+    assertEquals("/api/v1/music_from_sample/tsk_sample", getTransport.request.getPath());
+    assertEquals("https://file.runapi.ai/result.mp3", response.getAudios().get(0).getUrl());
+  }
+
+  @Test
+  void personasFollowAnAcceptedTaskToItsStoredResult() {
+    HybridTransport transport = new HybridTransport(
+        "{\"id\":\"tsk_persona\",\"status\":\"pending\"}",
+        "/api/v1/tasks/tsk_persona",
+        "{\"id\":\"tsk_persona\",\"status\":\"completed\",\"response\":{\"status\":200,\"content_type\":\"application/json\",\"headers\":{},\"body\":{\"persona\":{\"id\":\"res_persona\",\"name\":\"Dream Pop\",\"description\":\"Airy\"}}}}");
+    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
+
+    PersonaCreationResponse response = client.personas().run(
+        PersonaParams.builder()
+            .sourceTaskId("tsk_source")
+            .sourceAudioId("audio_source")
+            .name("Dream Pop")
+            .description("Airy")
+            .build(),
+        RequestOptions.builder().pollingInterval(Duration.ofMillis(1)).pollingMaxWait(Duration.ofSeconds(1)).build());
+
+    assertEquals("res_persona", response.getPersona().getId());
+    assertEquals("POST", transport.posted.getMethod().name());
+    assertEquals("/api/v1/personas", transport.posted.getPath());
+    assertEquals("GET", transport.polled.getMethod().name());
+    assertEquals("/api/v1/tasks/tsk_persona", transport.polled.getPath());
+  }
+
   private static JsonNode bodyJson(HttpRequest request) throws Exception {
     JsonRequestBody body = (JsonRequestBody) request.getBody();
     ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -1501,6 +1738,34 @@ class SunoClientTest {
     public HttpResponse send(HttpRequest request) {
       this.request = request;
       return new HttpResponse(200, body, Collections.<String, java.util.List<String>>emptyMap());
+    }
+
+    public void close() {}
+  }
+
+  private static final class HybridTransport implements HttpTransport {
+    private final String acceptance;
+    private final String location;
+    private final String taskResult;
+    private HttpRequest posted;
+    private HttpRequest polled;
+
+    private HybridTransport(String acceptance, String location, String taskResult) {
+      this.acceptance = acceptance;
+      this.location = location;
+      this.taskResult = taskResult;
+    }
+
+    public HttpResponse send(HttpRequest request) {
+      if ("POST".equals(request.getMethod().name())) {
+        this.posted = request;
+        java.util.Map<String, java.util.List<String>> headers = new java.util.LinkedHashMap<String, java.util.List<String>>();
+        headers.put("Location", Collections.singletonList(location));
+        headers.put("Retry-After", Collections.singletonList("0"));
+        return new HttpResponse(202, acceptance, headers);
+      }
+      this.polled = request;
+      return new HttpResponse(200, taskResult, Collections.<String, java.util.List<String>>emptyMap());
     }
 
     public void close() {}
