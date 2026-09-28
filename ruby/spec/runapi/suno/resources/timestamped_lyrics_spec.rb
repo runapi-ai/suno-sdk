@@ -14,20 +14,17 @@ RSpec.describe RunApi::Suno::Resources::TimestampedLyrics do
       expect(http).to receive(:request).with(:post, endpoint, body: valid_params)
         .and_return(
           "aligned_words" => [{"word" => "hi", "success" => true, "start_time" => 0.0, "end_time" => 0.5, "palign" => 0.9}],
-          "waveform_data" => [0.1],
-          "billing" => {"reservation" => {"amount_cents" => 5}, "settlement" => {"charged_amount_cents" => 5, "amount_micro_cents" => 5_000_000}, "refund" => nil}
+          "waveform_data" => [0.1]
         )
 
       result = resource.run(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::TimestampedLyricsResponse)
       expect(result.aligned_words.first.word).to eq("hi")
-      expect(result.billing).to be_a(RunApi::Core::TaskBillingFacts)
-      expect(result.billing.reservation.amount_cents).to eq(5)
     end
 
     it "accepts an audio resource ID without a source task" do
       expect(http).to receive(:request).with(:post, endpoint, body: {source_audio_id: source_audio_id})
-        .and_return("aligned_words" => [], "billing" => {"reservation" => nil, "settlement" => nil, "refund" => nil})
+        .and_return("aligned_words" => [])
 
       result = resource.run(source_audio_id: source_audio_id)
       expect(result.aligned_words).to eq([])

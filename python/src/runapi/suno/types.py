@@ -481,13 +481,6 @@ class ResourceStatus:
     ALL = [AVAILABLE, FAILED]
 
 
-class ResourceBilling(BaseModel):
-    """Billing envelope for a RunAPI-owned resource.
-
-    Resource provenance is intentionally opaque and is not exposed here.
-    """
-
-
 class PersonaResource(BaseModel):
     """A RunAPI-owned persona handle, reusable as ``persona_id`` in generation params."""
 
@@ -527,7 +520,6 @@ class PersonaResourceResponse(BaseModel):
 
     persona = required(lambda: PersonaResource)
     status = required(str, enum=lambda: ResourceStatus.ALL)
-    billing = required(lambda: ResourceBilling)
 
 
 class VoiceResourceResponse(BaseModel):
@@ -535,7 +527,6 @@ class VoiceResourceResponse(BaseModel):
 
     voice = required(lambda: VoiceResource)
     status = required(str, enum=lambda: ResourceStatus.ALL)
-    billing = required(lambda: ResourceBilling)
 
 
 class AudioExportResponse(AsyncTaskResponse):

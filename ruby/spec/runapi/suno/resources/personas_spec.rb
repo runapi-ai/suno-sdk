@@ -14,16 +14,13 @@ RSpec.describe RunApi::Suno::Resources::Personas do
     it "POSTs to the correct endpoint and returns the created persona" do
       expect(http).to receive(:request).with(:post, endpoint, body: valid_params, options: anything)
         .and_return(
-          "persona" => {"id" => "per-1", "name" => "Singer", "description" => "Warm voice"},
-          "billing" => {"reservation" => nil, "settlement" => {"charged_amount_cents" => 10, "amount_micro_cents" => 10_000_000}, "refund" => nil}
+          "persona" => {"id" => "per-1", "name" => "Singer", "description" => "Warm voice"}
         )
 
       result = resource.run(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::PersonaCreationResponse)
       expect(result.persona).to be_a(RunApi::Suno::Types::PersonaResource)
       expect(result.persona.id).to eq("per-1")
-      expect(result.billing).to be_a(RunApi::Core::TaskBillingFacts)
-      expect(result.billing.settlement.charged_amount_cents).to eq(10)
     end
 
     it "validates required params" do
@@ -37,14 +34,12 @@ RSpec.describe RunApi::Suno::Resources::Personas do
     it "returns the finished persona for a request handled inline" do
       expect(http).to receive(:request).with(:post, endpoint, body: valid_params)
         .and_return(
-          "persona" => {"id" => "per-1", "name" => "Singer", "description" => "Warm voice"},
-          "billing" => {"reservation" => {"amount_cents" => 2}, "settlement" => nil, "refund" => nil}
+          "persona" => {"id" => "per-1", "name" => "Singer", "description" => "Warm voice"}
         )
 
       result = resource.create(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::PersonaCreationResponse)
       expect(result.persona.id).to eq("per-1")
-      expect(result.billing.reservation.amount_cents).to eq(2)
     end
 
     it "returns the acceptance of a request deferred to local execution" do
@@ -54,7 +49,7 @@ RSpec.describe RunApi::Suno::Resources::Personas do
             body: {"id" => "task-1", "status" => "pending"},
             headers: {
               "Content-Type" => "application/json",
-              "Location" => "https://api.runapi.ai/api/v1/tasks/task-1",
+              "Location" => "https://runapi.ai/api/v1/tasks/task-1",
               "Retry-After" => "1"
             },
             status: 202
@@ -65,14 +60,14 @@ RSpec.describe RunApi::Suno::Resources::Personas do
       expect(result.id).to eq("task-1")
       expect(result.status).to eq("pending")
       expect(result.persona).to be_nil
-      expect(result.response_header("Location")).to eq("https://api.runapi.ai/api/v1/tasks/task-1")
+      expect(result.response_header("Location")).to eq("https://runapi.ai/api/v1/tasks/task-1")
       expect(result.response_header("Retry-After")).to eq("1")
     end
   end
 
   describe "#subscribe" do
     it "yields processing updates before the terminal persona" do
-      location = "https://api.runapi.ai/api/v1/tasks/task-1"
+      location = "https://runapi.ai/api/v1/tasks/task-1"
       allow(http).to receive(:request).and_return(
         RunApi::Core::Response.new(
           body: {"id" => "task-1", "status" => "processing"},
@@ -93,8 +88,7 @@ RSpec.describe RunApi::Suno::Resources::Personas do
               "content_type" => "application/json",
               "headers" => {},
               "body" => {
-                "persona" => {"id" => "per-1", "name" => "Singer", "description" => "Warm voice"},
-                "billing" => {"reservation" => nil, "settlement" => nil, "refund" => nil}
+                "persona" => {"id" => "per-1", "name" => "Singer", "description" => "Warm voice"}
               }
             }
           },
@@ -116,14 +110,12 @@ RSpec.describe RunApi::Suno::Resources::Personas do
       expect(http).to receive(:request).with(:get, "#{endpoint}/per-1")
         .and_return(
           "persona" => {"id" => "per-1", "name" => "Singer", "description" => "Warm voice"},
-          "status" => "available",
-          "billing" => {}
+          "status" => "available"
         )
 
       result = resource.get("per-1")
       expect(result).to be_a(RunApi::Suno::Types::PersonaResourceResponse)
       expect(result.status).to eq("available")
-      expect(result.billing).to be_a(RunApi::Suno::Types::ResourceBilling)
     end
   end
 end

@@ -12,16 +12,13 @@ RSpec.describe RunApi::Suno::Resources::Voices do
     it "POSTs to the correct endpoint" do
       expect(http).to receive(:request).with(:post, endpoint, body: valid_params)
         .and_return(
-          "voice" => {"id" => "voi-1", "name" => "Narrator"},
-          "billing" => {"reservation" => {"amount_cents" => 5}, "settlement" => nil, "refund" => nil}
+          "voice" => {"id" => "voi-1", "name" => "Narrator"}
         )
 
       result = resource.run(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::VoiceCreationResponse)
       expect(result.voice).to be_a(RunApi::Suno::Types::VoiceResource)
       expect(result.voice.id).to eq("voi-1")
-      expect(result.billing).to be_a(RunApi::Core::TaskBillingFacts)
-      expect(result.billing.reservation.amount_cents).to eq(5)
     end
 
     it "validates required params" do
@@ -30,7 +27,7 @@ RSpec.describe RunApi::Suno::Resources::Voices do
 
     it "submits an unnamed recording" do
       expect(http).to receive(:request).with(:post, endpoint, body: {source_audio_url: "https://file.runapi.ai/voice.mp3"})
-        .and_return("voice" => {"id" => "voi-2", "name" => nil}, "billing" => {"reservation" => nil, "settlement" => nil, "refund" => nil})
+        .and_return("voice" => {"id" => "voi-2", "name" => nil})
 
       result = resource.run(source_audio_url: "https://file.runapi.ai/voice.mp3")
       expect(result.voice.id).to eq("voi-2")
@@ -42,8 +39,7 @@ RSpec.describe RunApi::Suno::Resources::Voices do
       expect(http).to receive(:request).with(:get, "#{endpoint}/voi-1")
         .and_return(
           "voice" => {"id" => "voi-1", "name" => "Narrator"},
-          "status" => "available",
-          "billing" => {}
+          "status" => "available"
         )
 
       result = resource.get("voi-1")

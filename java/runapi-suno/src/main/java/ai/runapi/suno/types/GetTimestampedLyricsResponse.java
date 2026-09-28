@@ -3,7 +3,6 @@ package ai.runapi.suno.types;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import ai.runapi.core.billing.TaskBillingFacts;
 import com.fasterxml.jackson.databind.JsonNode;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -29,9 +28,6 @@ public class GetTimestampedLyricsResponse {
 
   @JsonProperty("is_streamed")
   private Boolean streamed;
-
-  @JsonProperty("billing")
-  private TaskBillingFacts billing;
 
   private final Map<String, JsonNode> extraFields = new LinkedHashMap<String, JsonNode>();
 
@@ -63,11 +59,6 @@ public class GetTimestampedLyricsResponse {
   /** Returns whether the source was streamed, when present. */
   public Boolean getIsStreamed() {
     return streamed;
-  }
-
-  /** Returns the reservation, settlement, and refund facts for this request. */
-  public TaskBillingFacts getBilling() {
-    return billing;
   }
 
   /** Returns unrecognized response fields preserved from the API response. */

@@ -13,7 +13,7 @@ export class TimestampedLyrics {
    * Retrieve word-level timing alignment for an audio resource (synchronous).
    * @param params Timestamped lyrics parameters.
    * @param options Per-request overrides.
-   * @returns The alignment, waveform, and billing for the request.
+   * @returns The alignment and waveform for the request.
    */
   async run(params: TimestampedLyricsParams, options?: RequestOptions): Promise<GetTimestampedLyricsResponse> {
     const body = compactParams(params);

@@ -1,5 +1,21 @@
 # Changelog
 
+## [js/v0.5.0](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.5.0), [ruby/v0.5.0](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.5.0), [go/v0.5.0](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.5.0), [python/v0.5.0](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.5.0), [java/v0.4.0](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.4.0) - 2026-09-28
+
+### Added
+- Return usage.cost as a float USD amount on completed async Task query and webhook envelopes.
+- Accept an optional variation_category (subtle, normal, high) on remaster_audio for suno-v5 and suno-v5.5 targets; the server defaults to normal.
+
+### Changed
+- remaster_audio's model now selects the target render model; any completed Suno song, from any model version, is accepted as the source.
+  Migration: Stop matching the remaster model to the source song's model. Pick a supported target model and pass the source task and audio ids as before.
+- generate_artwork accepts only completed music generation tasks (text_to_music) as its source; extend or upload tasks are rejected with a clear error.
+
+### Removed
+- Remove the public Task billing object from Task envelopes.
+  Migration: Read usage.cost on completed Task envelopes. Create, processing, and failed envelopes omit usage.
+
+
 ## [js/v0.4.6](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.4.6), [ruby/v0.4.4](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.4.4), [go/v0.4.5](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.4.5), [python/v0.4.4](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.4.4) - 2026-09-16
 
 ### Added

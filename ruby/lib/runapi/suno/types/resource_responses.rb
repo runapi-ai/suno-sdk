@@ -10,10 +10,6 @@ module RunApi
         ALL = [AVAILABLE, FAILED].freeze
       end
 
-      # Billing envelope for a resource lookup. Resource provenance remains opaque.
-      class ResourceBilling < RunApi::Core::BaseModel
-      end
-
       class PersonaResource < RunApi::Core::BaseModel
         required :id, String
         optional :name, String
@@ -30,12 +26,10 @@ module RunApi
         optional :id, String
         optional :status, String
         optional :error, String
-        optional :billing, RunApi::Core::TaskBillingFacts
       end
 
       class VoiceCreationResponse < RunApi::Core::BaseModel
         required :voice, -> { VoiceResource }
-        optional :billing, RunApi::Core::TaskBillingFacts
       end
 
       class TimestampedLyricsResponse < RunApi::Core::BaseModel
@@ -43,19 +37,16 @@ module RunApi
         optional :waveform_data, [Numeric]
         optional :hoct_cer, Numeric
         optional :is_streamed
-        optional :billing, RunApi::Core::TaskBillingFacts
       end
 
       class PersonaResourceResponse < RunApi::Core::BaseModel
         required :persona, -> { PersonaResource }
         required :status, String, enum: -> { ResourceStatus::ALL }
-        required :billing, ResourceBilling
       end
 
       class VoiceResourceResponse < RunApi::Core::BaseModel
         required :voice, -> { VoiceResource }
         required :status, String, enum: -> { ResourceStatus::ALL }
-        required :billing, ResourceBilling
       end
 
       class AudioExportResponse < AsyncTaskResponse

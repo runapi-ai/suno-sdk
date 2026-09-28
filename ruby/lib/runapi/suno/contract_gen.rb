@@ -1899,6 +1899,9 @@ module RunApi
             },
             "source_task_id" => {
               "required" => true
+            },
+            "variation_category" => {
+              "enum" => ["subtle", "normal", "high"]
             }
           },
           "suno-v4.5" => {
@@ -1910,6 +1913,9 @@ module RunApi
             },
             "source_task_id" => {
               "required" => true
+            },
+            "variation_category" => {
+              "enum" => ["subtle", "normal", "high"]
             }
           },
           "suno-v4.5-plus" => {
@@ -1921,6 +1927,9 @@ module RunApi
             },
             "source_task_id" => {
               "required" => true
+            },
+            "variation_category" => {
+              "enum" => ["subtle", "normal", "high"]
             }
           },
           "suno-v5" => {
@@ -1932,6 +1941,9 @@ module RunApi
             },
             "source_task_id" => {
               "required" => true
+            },
+            "variation_category" => {
+              "enum" => ["subtle", "normal", "high"]
             }
           },
           "suno-v5.5" => {
@@ -1943,6 +1955,9 @@ module RunApi
             },
             "source_task_id" => {
               "required" => true
+            },
+            "variation_category" => {
+              "enum" => ["subtle", "normal", "high"]
             }
           }
         }
