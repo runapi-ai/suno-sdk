@@ -14,12 +14,11 @@ RSpec.describe RunApi::Suno::Resources::AudioExports do
   describe "#create" do
     it "POSTs to the correct endpoint" do
       expect(http).to receive(:request).with(:post, endpoint, body: valid_params)
-        .and_return("id" => "task-1", "status" => "processing", "billing" => {"reservation" => {"amount_cents" => 5}, "settlement" => nil, "refund" => nil})
+        .and_return("id" => "task-1", "status" => "processing")
 
       result = resource.create(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::AudioExportResponse)
       expect(result.id).to eq("task-1")
-      expect(result.billing.reservation.amount_cents).to eq(5)
     end
 
     it "validates required params" do

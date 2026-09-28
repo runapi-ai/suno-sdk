@@ -20,7 +20,7 @@ RSpec.describe RunApi::Suno::Resources::MusicFromSample do
   describe "#create" do
     it "POSTs to the correct endpoint" do
       expect(http).to receive(:request).with(:post, endpoint, body: valid_params)
-        .and_return("id" => "task-1", "status" => "processing", "billing" => {"reservation" => nil, "settlement" => nil, "refund" => nil})
+        .and_return("id" => "task-1", "status" => "processing")
 
       result = resource.create(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::MusicFromSampleResponse)

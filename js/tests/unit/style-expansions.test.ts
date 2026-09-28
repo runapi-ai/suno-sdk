@@ -11,11 +11,6 @@ describe('StyleExpansions', () => {
   it('posts the style description and decodes the expanded tags', async () => {
     const response: BoostStyleResponse = {
       style: 'upbeat summer pop, acoustic guitar, bright vocals',
-      billing: {
-        reservation: { amount_cents: 4 },
-        settlement: { charged_amount_cents: 4, amount_micro_cents: 4_000_000 },
-        refund: null,
-      },
     };
     vi.mocked(mockHttp.request).mockResolvedValueOnce(response);
 
@@ -25,6 +20,7 @@ describe('StyleExpansions', () => {
       body: { description: 'upbeat summer pop with acoustic guitar' },
     });
     expect(result.style).toContain('upbeat summer pop');
-    expect(result.billing?.reservation?.amount_cents).toBe(4);
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 });

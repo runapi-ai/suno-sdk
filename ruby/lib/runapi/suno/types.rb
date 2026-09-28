@@ -204,7 +204,6 @@ module RunApi
         optional :waveform_data, [Numeric]
         optional :hoot_cer, Numeric
         optional :is_streamed
-        optional :billing, RunApi::Core::TaskBillingFacts
       end
 
       # Result of a section replacement task.
@@ -217,14 +216,12 @@ module RunApi
       class GeneratePersonaResponse < RunApi::Core::BaseModel
         required :persona, -> { Persona }
         optional :error, String
-        optional :billing, RunApi::Core::TaskBillingFacts
       end
 
       # Synchronous result of style tag generation. +style+ contains the generated tags string.
       class BoostStyleResponse < RunApi::Core::BaseModel
         optional :style, String
         optional :error, String
-        optional :billing, RunApi::Core::TaskBillingFacts
       end
 
       # Result of a mashup task.
@@ -249,7 +246,6 @@ module RunApi
       class CheckVoiceResponse < RunApi::Core::BaseModel
         optional :is_available
         optional :error, String
-        optional :billing, RunApi::Core::TaskBillingFacts
       end
     end
   end

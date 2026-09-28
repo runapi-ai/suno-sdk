@@ -1895,6 +1895,9 @@ CONTRACT = {
                 },
                 "source_task_id": {
                     "required": True
+                },
+                "variation_category": {
+                    "enum": ["subtle", "normal", "high"]
                 }
             },
             "suno-v4.5": {
@@ -1906,6 +1909,9 @@ CONTRACT = {
                 },
                 "source_task_id": {
                     "required": True
+                },
+                "variation_category": {
+                    "enum": ["subtle", "normal", "high"]
                 }
             },
             "suno-v4.5-plus": {
@@ -1917,6 +1923,9 @@ CONTRACT = {
                 },
                 "source_task_id": {
                     "required": True
+                },
+                "variation_category": {
+                    "enum": ["subtle", "normal", "high"]
                 }
             },
             "suno-v5": {
@@ -1928,6 +1937,9 @@ CONTRACT = {
                 },
                 "source_task_id": {
                     "required": True
+                },
+                "variation_category": {
+                    "enum": ["subtle", "normal", "high"]
                 }
             },
             "suno-v5.5": {
@@ -1939,6 +1951,9 @@ CONTRACT = {
                 },
                 "source_task_id": {
                     "required": True
+                },
+                "variation_category": {
+                    "enum": ["subtle", "normal", "high"]
                 }
             }
         }

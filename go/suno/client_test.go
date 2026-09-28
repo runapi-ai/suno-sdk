@@ -38,8 +38,7 @@ func TestCreateMashupCreateWrapsPayload(t *testing.T) {
 		VocalMode:     VocalModeAutoLyrics,
 		Prompt:        "hi",
 		PersonaID:     "persona_123",
-		PersonaType:   PersonaTypeStyle,
-	})
+		PersonaType:   PersonaTypeStyle})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -70,8 +69,7 @@ func TestTextToMusicCreateAcceptsCanonicalVoiceHandle(t *testing.T) {
 		Lyrics:      "[Verse] hello",
 		Style:       "acoustic pop",
 		Title:       "Hello",
-		VoiceID:     "res_voice_handle",
-	})
+		VoiceID:     "res_voice_handle"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -90,8 +88,7 @@ func TestAddVocalsCreateUsesLyricsPayload(t *testing.T) {
 		Title:        "Song",
 		NegativeTags: "screaming",
 		Style:        "Pop",
-		Model:        ModelV5,
-	})
+		Model:        ModelV5})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -122,35 +119,37 @@ func TestAudioActionsCreateUsePublicRequestShapes(t *testing.T) {
 			path: "/api/v1/suno/stitch_audio",
 			call: func(client *Client) error {
 				_, err := client.StitchAudio.Create(context.Background(), StitchAudioParams{
-					Model: ModelV5, SourceTaskID: "task-source", AudioID: "audio-source",
-				})
+					Model: ModelV5, SourceTaskID: "task-source", AudioID: "audio-source"})
 				return err
 			},
-			want: map[string]any{"model": string(ModelV5), "source_task_id": "task-source", "audio_id": "audio-source"},
-		},
+			want: map[string]any{"model": string(ModelV5), "source_task_id": "task-source", "audio_id": "audio-source"}},
 		{
 			name: "remaster",
 			path: "/api/v1/suno/remaster_audio",
 			call: func(client *Client) error {
 				_, err := client.RemasterAudio.Create(context.Background(), RemasterAudioParams{
-					Model: ModelV5, SourceTaskID: "task-source", AudioID: "audio-source",
-				})
+					Model: ModelV5, SourceTaskID: "task-source", AudioID: "audio-source"})
 				return err
 			},
-			want: map[string]any{"model": string(ModelV5), "source_task_id": "task-source", "audio_id": "audio-source"},
-		},
+			want: map[string]any{"model": string(ModelV5), "source_task_id": "task-source", "audio_id": "audio-source"}},
+		{
+			name: "remaster with variation category",
+			path: "/api/v1/suno/remaster_audio",
+			call: func(client *Client) error {
+				_, err := client.RemasterAudio.Create(context.Background(), RemasterAudioParams{
+					Model: ModelV55, SourceTaskID: "task-source", AudioID: "audio-source", VariationCategory: "high"})
+				return err
+			},
+			want: map[string]any{"model": string(ModelV55), "source_task_id": "task-source", "audio_id": "audio-source", "variation_category": "high"}},
 		{
 			name: "samples",
 			path: "/api/v1/suno/add_samples",
 			call: func(client *Client) error {
 				_, err := client.AddSamples.Create(context.Background(), AddSamplesParams{
-					Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", Prompt: "Add a crisp handclap sample to the chorus", StartSeconds: 5, EndSeconds: 20,
-				})
+					Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", Prompt: "Add a crisp handclap sample to the chorus", StartSeconds: 5, EndSeconds: 20})
 				return err
 			},
-			want: map[string]any{"model": string(ModelV5), "audio_url": "https://file.runapi.ai/source.mp3", "prompt": "Add a crisp handclap sample to the chorus", "start_seconds": float64(5), "end_seconds": float64(20)},
-		},
-	}
+			want: map[string]any{"model": string(ModelV5), "audio_url": "https://file.runapi.ai/source.mp3", "prompt": "Add a crisp handclap sample to the chorus", "start_seconds": float64(5), "end_seconds": float64(20)}}}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -177,8 +176,7 @@ func TestAudioActionsCreateUsePublicRequestShapes(t *testing.T) {
 func TestAddSamplesRejectsInvalidWindow(t *testing.T) {
 	client := NewClientWithHTTP(&stubHTTPClient{})
 	_, err := client.AddSamples.Create(context.Background(), AddSamplesParams{
-		Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", StartSeconds: 20, EndSeconds: 20,
-	})
+		Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", StartSeconds: 20, EndSeconds: 20})
 	if err == nil || err.Error() != "end_seconds must be greater than start_seconds" {
 		t.Fatalf("expected invalid window error, got %v", err)
 	}
@@ -189,11 +187,9 @@ func TestInspireMusicCreateUsesCallerAudioURLs(t *testing.T) {
 	client := NewClientWithHTTP(httpClient)
 	audioURLs := []string{
 		"https://file.runapi.ai/inspiration-one.mp3",
-		"https://file.runapi.ai/inspiration-two.mp3",
-	}
+		"https://file.runapi.ai/inspiration-two.mp3"}
 	_, err := client.InspireMusic.Create(context.Background(), InspireMusicParams{
-		Model: ModelV5, AudioURLs: audioURLs,
-	})
+		Model: ModelV5, AudioURLs: audioURLs})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -223,8 +219,7 @@ func TestBlendLyricsCreateUsesLyricsPair(t *testing.T) {
 	client := NewClientWithHTTP(httpClient)
 	_, err := client.BlendLyrics.Create(context.Background(), BlendLyricsParams{
 		LyricsA: "First verse",
-		LyricsB: "Second verse",
-	})
+		LyricsB: "Second verse"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -247,8 +242,7 @@ func TestSeparateAudioStemsCreateUsesAdvancedStemPayload(t *testing.T) {
 		TaskID:   "task-1",
 		AudioID:  "audio-1",
 		Type:     "split_stem_advanced",
-		StemName: "Bass",
-	})
+		StemName: "Bass"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -270,8 +264,7 @@ func TestSeparateAudioStemsCreateRequiresAdvancedStemName(t *testing.T) {
 	_, err := client.SeparateAudioStems.Create(context.Background(), SeparateAudioStemsParams{
 		TaskID:  "task-1",
 		AudioID: "audio-1",
-		Type:    "split_stem_advanced",
-	})
+		Type:    "split_stem_advanced"})
 	if err == nil || !strings.Contains(err.Error(), "stem_name is required when type is split_stem_advanced") {
 		t.Fatalf("expected advanced stem_name validation error, got %v", err)
 	}
@@ -283,7 +276,7 @@ func TestSeparateAudioStemsCreateRequiresAdvancedStemName(t *testing.T) {
 func TestSeparateAudioStemsGetDecodesAdvancedPair(t *testing.T) {
 	httpClient := &stubHTTPClient{response: json.RawMessage(`{
 		"id":"advanced-stem-123",
-		"status":"completed",
+		"status":"completed", "usage": {"cost": 0.05},
 		"separated_audios":{"pairs":[{
 			"stem_name":"Bass",
 			"extracted_audio":{"id":"audio-bass","duration_seconds":116.28,"audio_url":"https://file.runapi.ai/bass.mp3"},
@@ -316,8 +309,7 @@ func TestReplaceSectionCreateUsesLyricsPayload(t *testing.T) {
 		Tags:            "Rock",
 		Title:           "Song",
 		InfillStartTime: 10,
-		InfillEndTime:   20,
-	})
+		InfillEndTime:   20})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -350,8 +342,7 @@ func TestReplaceSectionCreateSupportsUploadedAudioSource(t *testing.T) {
 		Tags:            "Rock",
 		Title:           "Song",
 		InfillStartTime: 10,
-		InfillEndTime:   20,
-	})
+		InfillEndTime:   20})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -383,8 +374,7 @@ func TestReplaceSectionCreateRejectsMixedSources(t *testing.T) {
 		Tags:            "Rock",
 		Title:           "Song",
 		InfillStartTime: 10,
-		InfillEndTime:   20,
-	})
+		InfillEndTime:   20})
 	if err == nil || !strings.Contains(err.Error(), "task_id/audio_id cannot be combined with upload_url/model") {
 		t.Fatalf("expected mixed source validation error, got %v", err)
 	}
@@ -404,15 +394,12 @@ func TestReplaceSectionCreateRejectsInvalidTimeWindow(t *testing.T) {
 			name:      "end before start",
 			startTime: 10,
 			endTime:   5,
-			message:   "infill_end_time must be greater than infill_start_time",
-		},
+			message:   "infill_end_time must be greater than infill_start_time"},
 		{
 			name:      "duration too short",
 			startTime: 10,
 			endTime:   19.999,
-			message:   "replacement duration must be at least 10 seconds",
-		},
-	}
+			message:   "replacement duration must be at least 10 seconds"}}
 
 	for _, tc := range cases {
 		t.Run(tc.name, func(t *testing.T) {
@@ -426,8 +413,7 @@ func TestReplaceSectionCreateRejectsInvalidTimeWindow(t *testing.T) {
 				Tags:            "Rock",
 				Title:           "Song",
 				InfillStartTime: tc.startTime,
-				InfillEndTime:   tc.endTime,
-			})
+				InfillEndTime:   tc.endTime})
 			if err == nil || !strings.Contains(err.Error(), tc.message) {
 				t.Fatalf("expected %q validation error, got %v", tc.message, err)
 			}
@@ -449,8 +435,7 @@ func TestReplaceSectionCreateAcceptsDurationLongerThanSixtySeconds(t *testing.T)
 		Tags:            "Rock",
 		Title:           "Song",
 		InfillStartTime: 10,
-		InfillEndTime:   71,
-	})
+		InfillEndTime:   71})
 	if err != nil {
 		t.Fatalf("expected duration longer than sixty seconds to be accepted, got %v", err)
 	}
@@ -470,8 +455,7 @@ func TestReplaceSectionCreateAcceptsDecimalDurationOfExactlyTenSeconds(t *testin
 		Tags:            "Rock",
 		Title:           "Song",
 		InfillStartTime: 6.016,
-		InfillEndTime:   16.016,
-	})
+		InfillEndTime:   16.016})
 	if err != nil {
 		t.Fatalf("expected decimal duration of exactly ten seconds to be accepted, got %v", err)
 	}
@@ -487,8 +471,7 @@ func TestReplaceSectionCreateRejectsNonFiniteTimes(t *testing.T) {
 		Tags:            "Rock",
 		Title:           "Song",
 		InfillStartTime: 0,
-		InfillEndTime:   math.Inf(1),
-	})
+		InfillEndTime:   math.Inf(1)})
 	if err == nil || err.Error() != "infill_end_time must be a finite number" {
 		t.Fatalf("expected finite-number validation error, got %v", err)
 	}
@@ -501,8 +484,7 @@ func TestVoiceToValidationPhraseCreateWrapsPayload(t *testing.T) {
 		VoiceURL:          "https://files.runapi.ai/suno/source-vocal.mp3",
 		VocalStartSeconds: 2,
 		VocalEndSeconds:   12,
-		Language:          ValidationLanguageEnglish,
-	})
+		Language:          ValidationLanguageEnglish})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -544,8 +526,7 @@ func TestGenerateVoiceCreateWrapsPayload(t *testing.T) {
 		TaskID:           "validate-task-1",
 		VerifyURL:        "https://files.runapi.ai/suno/verify-read.mp3",
 		VoiceName:        "Warm Test Voice",
-		SingerSkillLevel: SingerSkillAdvanced,
-	})
+		SingerSkillLevel: SingerSkillAdvanced})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -562,9 +543,9 @@ func TestGenerateVoiceCreateWrapsPayload(t *testing.T) {
 }
 
 func TestCheckVoiceRunWrapsPayload(t *testing.T) {
-	httpClient := &stubHTTPClient{response: json.RawMessage(`{"is_available":true,"billing":{"reservation":{"amount_cents":10}}}`)}
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"is_available":true}`)}
 	client := NewClientWithHTTP(httpClient)
-	response, err := client.CheckVoice.Run(context.Background(), CheckVoiceParams{TaskID: "voice-task-1"})
+	_, err := client.CheckVoice.Run(context.Background(), CheckVoiceParams{TaskID: "voice-task-1"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -578,45 +559,17 @@ func TestCheckVoiceRunWrapsPayload(t *testing.T) {
 	if body["task_id"] != "voice-task-1" {
 		t.Fatalf("expected check voice payload, got %#v", body)
 	}
-	if response.Billing == nil || response.Billing.Reservation == nil {
-		t.Fatalf("expected billing facts: %#v", response.Billing)
-	}
-}
-
-func TestSynchronousHelpersDecodeBillingFacts(t *testing.T) {
-	httpClient := &stubHTTPClient{response: json.RawMessage(`{"aligned_words":[],"billing":{"reservation":{"amount_cents":10}}}`)}
-	client := NewClientWithHTTP(httpClient)
-
-	timestamped, err := client.GetTimestampedLyrics.Run(context.Background(), GetTimestampedLyricsParams{TaskID: "task-1", AudioID: "audio-1"})
-	if err != nil || timestamped.Billing == nil || timestamped.Billing.Reservation == nil {
-		t.Fatalf("expected timestamped lyrics billing facts, response=%#v err=%v", timestamped, err)
-	}
-
-	httpClient.response = json.RawMessage(`{"persona":{"id":"persona-1"},"billing":{"reservation":{"amount_cents":10}}}`)
-	persona, err := client.GeneratePersona.Run(context.Background(), GeneratePersonaParams{
-		TaskID: "task-1", AudioID: "audio-1", Name: "Lo-fi persona", Description: "Warm lo-fi vocals",
-	})
-	if err != nil || persona.Billing == nil || persona.Billing.Reservation == nil {
-		t.Fatalf("expected persona billing facts, response=%#v err=%v", persona, err)
-	}
-
-	httpClient.response = json.RawMessage(`{"style":"lo-fi","billing":{"reservation":{"amount_cents":10}}}`)
-	style, err := client.BoostStyle.Run(context.Background(), BoostStyleParams{Description: "A chill lo-fi beat"})
-	if err != nil || style.Billing == nil || style.Billing.Reservation == nil {
-		t.Fatalf("expected style billing facts, response=%#v err=%v", style, err)
-	}
 }
 
 func TestPersonasCreatePostsCanonicalResourcePayload(t *testing.T) {
-	httpClient := &stubHTTPClient{response: json.RawMessage(`{"persona":{"id":"res_abc","name":"Lo-fi persona","description":"Warm vocals"},"billing":{"reservation":{"amount_cents":10}}}`)}
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"persona":{"id":"res_abc","name":"Lo-fi persona","description":"Warm vocals"}}`)}
 	client := NewClientWithHTTP(httpClient)
 
 	created, err := client.Personas.Create(context.Background(), PersonaParams{
 		SourceTaskID:  "task-1",
 		SourceAudioID: "audio-1",
 		Name:          "Lo-fi persona",
-		Description:   "Warm vocals",
-	})
+		Description:   "Warm vocals"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -639,7 +592,7 @@ func TestPersonasCreatePostsCanonicalResourcePayload(t *testing.T) {
 }
 
 func TestPersonasGetReadsResourceEnvelope(t *testing.T) {
-	httpClient := &stubHTTPClient{response: json.RawMessage(`{"persona":{"id":"res_abc","name":"Lo-fi persona"},"status":"available","billing":{}}`)}
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"persona":{"id":"res_abc","name":"Lo-fi persona"},"status":"available"}`)}
 	client := NewClientWithHTTP(httpClient)
 
 	persona, err := client.Personas.Get(context.Background(), "res_abc")
@@ -655,13 +608,12 @@ func TestPersonasGetReadsResourceEnvelope(t *testing.T) {
 }
 
 func TestVoicesRunPostsRecordingAndGetReportsStatus(t *testing.T) {
-	httpClient := &stubHTTPClient{response: json.RawMessage(`{"voice":{"id":"res_voice","name":"Studio Voice"},"billing":{"reservation":{"amount_cents":10}}}`)}
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"voice":{"id":"res_voice","name":"Studio Voice"}}`)}
 	client := NewClientWithHTTP(httpClient)
 
 	created, err := client.Voices.Run(context.Background(), VoiceParams{
 		SourceAudioURL: "https://files.example.test/voice.mp3",
-		Name:           "Studio Voice",
-	})
+		Name:           "Studio Voice"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -676,7 +628,7 @@ func TestVoicesRunPostsRecordingAndGetReportsStatus(t *testing.T) {
 		t.Fatalf("expected decoded voice resource, got %#v", created)
 	}
 
-	httpClient.response = json.RawMessage(`{"voice":{"id":"res_voice"},"status":"available","billing":{}}`)
+	httpClient.response = json.RawMessage(`{"voice":{"id":"res_voice"},"status":"available"}`)
 	voice, err := client.Voices.Get(context.Background(), "res_voice")
 	if err != nil {
 		t.Fatal(err)
@@ -687,21 +639,21 @@ func TestVoicesRunPostsRecordingAndGetReportsStatus(t *testing.T) {
 }
 
 func TestCanonicalSynchronousHelpersPostCanonicalPaths(t *testing.T) {
-	httpClient := &stubHTTPClient{response: json.RawMessage(`{"style":"lo-fi","billing":{"reservation":{"amount_cents":10}}}`)}
+	httpClient := &stubHTTPClient{response: json.RawMessage(`{"style":"lo-fi"}`)}
 	client := NewClientWithHTTP(httpClient)
 
-	style, err := client.StyleExpansions.Run(context.Background(), StyleExpansionParams{Description: "A chill lo-fi beat"})
-	if err != nil || style.Billing == nil {
-		t.Fatalf("expected style expansion billing facts, response=%#v err=%v", style, err)
+	_, err := client.StyleExpansions.Run(context.Background(), StyleExpansionParams{Description: "A chill lo-fi beat"})
+	if err != nil {
+		t.Fatal(err)
 	}
 	if httpClient.path != "/api/v1/style_expansions" {
 		t.Fatalf("unexpected style expansion path: %s", httpClient.path)
 	}
 
-	httpClient.response = json.RawMessage(`{"aligned_words":[],"billing":{"reservation":{"amount_cents":10}}}`)
-	lyrics, err := client.TimestampedLyrics.Run(context.Background(), TimestampedLyricsParams{SourceAudioID: "audio-1"})
-	if err != nil || lyrics.Billing == nil {
-		t.Fatalf("expected timestamped lyrics billing facts, response=%#v err=%v", lyrics, err)
+	httpClient.response = json.RawMessage(`{"aligned_words":[]}`)
+	_, err = client.TimestampedLyrics.Run(context.Background(), TimestampedLyricsParams{SourceAudioID: "audio-1"})
+	if err != nil {
+		t.Fatal(err)
 	}
 	if httpClient.path != "/api/v1/timestamped_lyrics" {
 		t.Fatalf("unexpected timestamped lyrics path: %s", httpClient.path)
@@ -726,7 +678,7 @@ func TestCanonicalAudioOperationsUseResourcePaths(t *testing.T) {
 		t.Fatalf("unexpected export request: %s %s", httpClient.method, httpClient.path)
 	}
 
-	httpClient.response = json.RawMessage(`{"wav_url":"https://files.runapi.ai/export.wav","billing":{"settlement":{"charged_amount_cents":4,"amount_micro_cents":40000}}}`)
+	httpClient.response = json.RawMessage(`{"wav_url":"https://files.runapi.ai/export.wav"}`)
 	export, err := client.AudioExports.Get(context.Background(), "task-1")
 	if err != nil || export.WavURL == "" {
 		t.Fatalf("expected completed export, response=%#v err=%v", export, err)
@@ -743,8 +695,7 @@ func TestCanonicalAudioOperationsUseResourcePaths(t *testing.T) {
 	}
 
 	if _, err := client.MusicFromSample.Create(context.Background(), MusicFromSampleParams{
-		Model: ModelV45Plus, AudioURL: "https://files.example.test/sample.mp3", StartSeconds: 0, EndSeconds: 10,
-	}); err != nil {
+		Model: ModelV45Plus, AudioURL: "https://files.example.test/sample.mp3", StartSeconds: 0, EndSeconds: 10}); err != nil {
 		t.Fatal(err)
 	}
 	if httpClient.path != "/api/v1/music_from_sample" {

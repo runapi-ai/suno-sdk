@@ -28,6 +28,7 @@ public final class AudioActionParams {
     public Builder prompt(String value) { values.put("prompt", value); return this; }
     public Builder startSeconds(double value) { values.put("start_seconds", value); return this; }
     public Builder endSeconds(double value) { values.put("end_seconds", value); return this; }
+    public Builder variationCategory(String value) { values.put("variation_category", value); return this; }
     public Builder callbackUrl(String value) { values.put("callback_url", value); return this; }
     public AudioActionParams build() { return new AudioActionParams(values); }
   }
