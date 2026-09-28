@@ -18,11 +18,6 @@ describe('Personas', () => {
   it('posts the persona request and decodes the created persona', async () => {
     const response: PersonaCreationResponse = {
       persona: { id: 'persona_123', name: 'Warm Baritone', description: 'A warm male lead vocal' },
-      billing: {
-        reservation: { amount_cents: 12 },
-        settlement: { charged_amount_cents: 12, amount_micro_cents: 12_000_000 },
-        refund: null,
-      },
     };
     vi.mocked(mockHttp.request).mockResolvedValueOnce(response);
 
@@ -34,7 +29,8 @@ describe('Personas', () => {
       expect.objectContaining({ body: params })
     );
     expect(result.persona.id).toBe('persona_123');
-    expect(result.billing?.reservation?.amount_cents).toBe(12);
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 
   it('rejects a persona request without a name', async () => {
@@ -45,7 +41,6 @@ describe('Personas', () => {
   it('follows an accepted task to its stored persona', async () => {
     const stored: PersonaCreationResponse = {
       persona: { id: 'persona_789', name: 'Bright Tenor', description: 'A bright tenor lead' },
-      billing: { reservation: null, settlement: null, refund: null },
     };
     const request = vi.fn(
       async (
@@ -86,7 +81,6 @@ describe('Personas', () => {
     const envelope: PersonaResourceResponse = {
       persona: { id: 'persona_123', name: 'Warm Baritone', description: 'A warm male lead vocal' },
       status: 'available',
-      billing: {},
     };
     vi.mocked(mockHttp.request).mockResolvedValueOnce(envelope);
 
@@ -94,6 +88,7 @@ describe('Personas', () => {
 
     expect(mockHttp.request).toHaveBeenCalledWith('GET', '/api/v1/personas/persona_123', {});
     expect(result.status).toBe('available');
-    expect(result.billing).toEqual({});
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 });

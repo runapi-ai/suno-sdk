@@ -11,11 +11,6 @@ describe('Voices', () => {
   it('posts the voice request and decodes the created voice', async () => {
     const response: VoiceCreationResponse = {
       voice: { id: 'voice_123', name: 'Deep Narrator' },
-      billing: {
-        reservation: { amount_cents: 25 },
-        settlement: { charged_amount_cents: 25, amount_micro_cents: 25_000_000 },
-        refund: null,
-      },
     };
     vi.mocked(mockHttp.request).mockResolvedValueOnce(response);
 
@@ -31,7 +26,8 @@ describe('Voices', () => {
       },
     });
     expect(result.voice.id).toBe('voice_123');
-    expect(result.billing?.settlement?.charged_amount_cents).toBe(25);
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 
   it('omits an absent voice name from the request body', async () => {
@@ -48,7 +44,6 @@ describe('Voices', () => {
     const envelope: VoiceResourceResponse = {
       voice: { id: 'voice_123', name: 'Deep Narrator' },
       status: 'failed',
-      billing: {},
     };
     vi.mocked(mockHttp.request).mockResolvedValueOnce(envelope);
 
@@ -56,6 +51,7 @@ describe('Voices', () => {
 
     expect(mockHttp.request).toHaveBeenCalledWith('GET', '/api/v1/voices/voice_123', {});
     expect(result.status).toBe('failed');
-    expect(result.billing).toEqual({});
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 });

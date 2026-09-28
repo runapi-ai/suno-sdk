@@ -2281,6 +2281,13 @@ export const contract = {
         },
         "source_task_id": {
           "required": true
+        },
+        "variation_category": {
+          "enum": [
+            "subtle",
+            "normal",
+            "high"
+          ]
         }
       },
       "suno-v4.5": {
@@ -2292,6 +2299,13 @@ export const contract = {
         },
         "source_task_id": {
           "required": true
+        },
+        "variation_category": {
+          "enum": [
+            "subtle",
+            "normal",
+            "high"
+          ]
         }
       },
       "suno-v4.5-plus": {
@@ -2303,6 +2317,13 @@ export const contract = {
         },
         "source_task_id": {
           "required": true
+        },
+        "variation_category": {
+          "enum": [
+            "subtle",
+            "normal",
+            "high"
+          ]
         }
       },
       "suno-v5": {
@@ -2314,6 +2335,13 @@ export const contract = {
         },
         "source_task_id": {
           "required": true
+        },
+        "variation_category": {
+          "enum": [
+            "subtle",
+            "normal",
+            "high"
+          ]
         }
       },
       "suno-v5.5": {
@@ -2325,6 +2353,13 @@ export const contract = {
         },
         "source_task_id": {
           "required": true
+        },
+        "variation_category": {
+          "enum": [
+            "subtle",
+            "normal",
+            "high"
+          ]
         }
       }
     }

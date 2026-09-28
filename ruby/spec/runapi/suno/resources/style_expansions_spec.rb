@@ -12,15 +12,12 @@ RSpec.describe RunApi::Suno::Resources::StyleExpansions do
     it "POSTs to the correct endpoint" do
       expect(http).to receive(:request).with(:post, endpoint, body: valid_params)
         .and_return(
-          "style" => "dream pop, shoegaze, slow synth",
-          "billing" => {"reservation" => {"amount_cents" => 1}, "settlement" => nil, "refund" => nil}
+          "style" => "dream pop, shoegaze, slow synth"
         )
 
       result = resource.run(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::BoostStyleResponse)
       expect(result.style).to eq("dream pop, shoegaze, slow synth")
-      expect(result.billing).to be_a(RunApi::Core::TaskBillingFacts)
-      expect(result.billing.reservation.amount_cents).to eq(1)
     end
 
     it "validates required params" do

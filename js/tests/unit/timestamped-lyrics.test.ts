@@ -16,11 +16,6 @@ describe('TimestampedLyrics', () => {
       ],
       waveform_data: [0.1, 0.2, 0.3],
       is_streamed: false,
-      billing: {
-        reservation: { amount_cents: 5 },
-        settlement: { charged_amount_cents: 5, amount_micro_cents: 5_000_000 },
-        refund: null,
-      },
     };
     vi.mocked(mockHttp.request).mockResolvedValueOnce(response);
 
@@ -30,7 +25,8 @@ describe('TimestampedLyrics', () => {
       body: { source_audio_id: 'audio_456' },
     });
     expect(result.aligned_words).toHaveLength(2);
-    expect(result.billing?.reservation?.amount_cents).toBe(5);
+    expect(result).not.toHaveProperty('billing');
+    expect(result).not.toHaveProperty('usage');
   });
 
   it('sends the source task alongside the audio resource when supplied', async () => {

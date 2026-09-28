@@ -35,6 +35,26 @@ describe('audio actions', () => {
     expect(inspiration).not.toHaveProperty('audio_id');
   });
 
+  it('passes variation_category through on remaster', async () => {
+    vi.mocked(http.request).mockResolvedValue({ id: 'task' });
+    const params = {
+      model: 'suno-v5.5', source_task_id: 'source', audio_id: 'audio',
+      variation_category: 'high' as const,
+    };
+
+    await new RemasterAudio(http).create(params);
+
+    expect(http.request).toHaveBeenCalledWith('POST', '/api/v1/suno/remaster_audio', { body: params });
+  });
+
+  it('rejects an invalid variation_category before the request', async () => {
+    await expect(new RemasterAudio(http).create({
+      model: 'suno-v5.5', source_task_id: 'source', audio_id: 'audio',
+      variation_category: 'wild' as never,
+    })).rejects.toThrow(ValidationError);
+    expect(http.request).not.toHaveBeenCalled();
+  });
+
   it('rejects an invalid samples window before the request', async () => {
     await expect(new AddSamples(http).create({
       model: 'suno-v5', audio_url: 'https://file.runapi.ai/source.mp3',

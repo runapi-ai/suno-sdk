@@ -1,14 +1,7 @@
-import type { TaskBillingResponse } from '@runapi.ai/core';
 import type { AsyncTaskResponse, Audio } from './responses';
 
 /** Availability of a RunAPI-owned resource. */
 export type ResourceStatus = 'available' | 'failed';
-
-/**
- * Billing envelope returned when retrieving a RunAPI-owned resource.
- * Resource provenance is intentionally opaque and is not exposed in this response.
- */
-export interface ResourceBilling {}
 
 /** A reusable persona resource. Pass `id` in the `persona_id` field of music generation params. */
 export interface PersonaResource {
@@ -26,7 +19,7 @@ export interface VoiceResource {
 }
 
 /** Result of creating a persona or its accepted local task. */
-export interface PersonaCreationResponse extends TaskBillingResponse {
+export interface PersonaCreationResponse {
   persona: PersonaResource;
   id?: string;
   status?: string;
@@ -35,7 +28,7 @@ export interface PersonaCreationResponse extends TaskBillingResponse {
 }
 
 /** Result of creating a voice. */
-export interface VoiceCreationResponse extends TaskBillingResponse {
+export interface VoiceCreationResponse {
   voice: VoiceResource;
   error?: string;
   [key: string]: unknown;
@@ -45,14 +38,12 @@ export interface VoiceCreationResponse extends TaskBillingResponse {
 export interface PersonaResourceResponse {
   persona: PersonaResource;
   status: ResourceStatus;
-  billing: ResourceBilling;
 }
 
 /** Result of retrieving a voice resource. `status` reports whether the voice is ready to use. */
 export interface VoiceResourceResponse {
   voice: VoiceResource;
   status: ResourceStatus;
-  billing: ResourceBilling;
 }
 
 /** Result of an audio export task. */

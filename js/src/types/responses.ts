@@ -1,8 +1,8 @@
-import type { TaskBillingResponse, TaskResponse } from '@runapi.ai/core';
+import type { TaskResponse } from '@runapi.ai/core';
 import type { GenerationStage, TaskStatus } from './common';
 
 /** Initial response from task creation with the assigned task ID. */
-export interface TaskCreateResponse extends TaskBillingResponse {
+export interface TaskCreateResponse {
   id: string;
   status?: string;
   [key: string]: unknown;
@@ -173,7 +173,7 @@ export interface AlignedWord {
 }
 
 /** Synchronous response containing word-level timing data and waveform for a track. */
-export interface GetTimestampedLyricsResponse extends TaskBillingResponse {
+export interface GetTimestampedLyricsResponse {
   aligned_words?: AlignedWord[];
   /** Waveform amplitude data for visualization. */
   waveform_data?: number[];
@@ -197,14 +197,14 @@ export interface Persona {
 }
 
 /** Synchronous result of persona creation. */
-export interface GeneratePersonaResponse extends TaskBillingResponse {
+export interface GeneratePersonaResponse {
   persona: Persona;
   error?: string;
   [key: string]: unknown;
 }
 
 /** Synchronous result of style tag generation. `style` contains the generated tags string. */
-export interface BoostStyleResponse extends TaskBillingResponse {
+export interface BoostStyleResponse {
   style: string;
   error?: string;
   [key: string]: unknown;
@@ -230,7 +230,7 @@ export interface VoiceGenerationResponse extends AsyncTaskResponse {
 }
 
 /** Synchronous result indicating whether a custom voice is ready for use. */
-export interface CheckVoiceResponse extends TaskBillingResponse {
+export interface CheckVoiceResponse {
   is_available?: boolean;
   error?: string;
   [key: string]: unknown;

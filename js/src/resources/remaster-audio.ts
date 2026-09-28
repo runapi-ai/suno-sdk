@@ -4,7 +4,7 @@ import { pollUntilComplete } from '@runapi.ai/core/internal';
 import { contract } from '../contract_gen';
 import type { TextToMusicResponse, TaskCreateResponse } from '../types';
 const ENDPOINT = '/api/v1/suno/remaster_audio';
-export interface RemasterAudioParams { model: string; source_task_id: string; audio_id: string; callback_url?: string }
+export interface RemasterAudioParams { model: string; source_task_id: string; audio_id: string; variation_category?: 'subtle' | 'normal' | 'high'; callback_url?: string }
 export class RemasterAudio {
   constructor(private readonly http: HttpClient) {}
   async create(params: RemasterAudioParams, options?: RequestOptions): Promise<TaskCreateResponse> { const body = compactParams(params); validateParams(contract['remaster-audio'] as ActionSchema, body as Record<string, unknown>); return this.http.request('POST', ENDPOINT, { body, ...options }); }

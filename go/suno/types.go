@@ -12,7 +12,11 @@ type RemasterAudioParams struct {
 	Model        SunoModel `json:"model"`
 	SourceTaskID string    `json:"source_task_id"`
 	AudioID      string    `json:"audio_id"`
-	CallbackURL  string    `json:"callback_url,omitempty"`
+	// VariationCategory controls how far the remaster may drift from the
+	// original: "subtle", "normal", or "high". Applies to suno-v5 and
+	// suno-v5.5 targets; defaults to normal.
+	VariationCategory string `json:"variation_category,omitempty"`
+	CallbackURL       string `json:"callback_url,omitempty"`
 }
 
 // AddSamplesParams configures adding a sample to a track.
@@ -380,7 +384,7 @@ type CreateMashupParams struct {
 
 // AsyncTaskResponse carries the task ID, lifecycle status, generation stage, and error for Suno async operations.
 type AsyncTaskResponse struct {
-	core.TaskBillingFacts
+	Usage *core.TaskUsage `json:"usage,omitempty"`
 	ID              string          `json:"id"`
 	Status          TaskStatus      `json:"status"`
 	GenerationStage GenerationStage `json:"generation_stage,omitempty"`
@@ -562,7 +566,6 @@ type AlignedWord struct {
 
 // GetTimestampedLyricsResponse contains word-level timing data and waveform for a track.
 type GetTimestampedLyricsResponse struct {
-	core.TaskBillingFacts
 	AlignedWords []AlignedWord `json:"aligned_words,omitempty"`
 	WaveformData []float64     `json:"waveform_data,omitempty"`
 	HootCER      *float64      `json:"hoot_cer,omitempty"`
@@ -584,14 +587,12 @@ type Persona struct {
 
 // GeneratePersonaResponse is the synchronous result of persona creation.
 type GeneratePersonaResponse struct {
-	core.TaskBillingFacts
 	Persona *Persona `json:"persona,omitempty"`
 	Error   string   `json:"error,omitempty"`
 }
 
 // BoostStyleResponse is the synchronous result of style tag generation.
 type BoostStyleResponse struct {
-	core.TaskBillingFacts
 	Style string `json:"style,omitempty"`
 	Error string `json:"error,omitempty"`
 }
@@ -620,7 +621,6 @@ type VoiceGenerationResponse struct {
 
 // CheckVoiceResponse indicates whether a custom voice is ready for use.
 type CheckVoiceResponse struct {
-	core.TaskBillingFacts
 	IsAvailable *bool  `json:"is_available,omitempty"`
 	Error       string `json:"error,omitempty"`
 }
@@ -696,10 +696,6 @@ const (
 	ResourceStatusFailed    ResourceStatus = "failed"
 )
 
-// ResourceBilling is the billing envelope for a RunAPI-owned resource.
-// Resource provenance is intentionally opaque and is not exposed here.
-type ResourceBilling struct{}
-
 // PersonaResource is a RunAPI-owned persona handle. Pass ID in the persona_id
 // field of music generation parameters.
 type PersonaResource struct {
@@ -724,11 +720,8 @@ type PersonaCreationResponse struct {
 	Error   string           `json:"error,omitempty"`
 }
 
-// VoiceCreationResponse is the result of creating a voice. Voice creation is
-// synchronous, so the body carries the voice and the request's billing facts
-// rather than a task to poll.
+// VoiceCreationResponse is the result of creating a voice.
 type VoiceCreationResponse struct {
-	core.TaskBillingFacts
 	Voice *VoiceResource `json:"voice,omitempty"`
 	Error string         `json:"error,omitempty"`
 }
@@ -737,15 +730,13 @@ type VoiceCreationResponse struct {
 type PersonaResourceResponse struct {
 	Persona PersonaResource `json:"persona"`
 	Status  ResourceStatus  `json:"status"`
-	Billing ResourceBilling `json:"billing"`
 }
 
 // VoiceResourceResponse is the result of retrieving a voice resource. Status
 // reports whether the voice is ready to use.
 type VoiceResourceResponse struct {
-	Voice   VoiceResource   `json:"voice"`
-	Status  ResourceStatus  `json:"status"`
-	Billing ResourceBilling `json:"billing"`
+	Voice  VoiceResource  `json:"voice"`
+	Status ResourceStatus `json:"status"`
 }
 
 // AudioExportResponse is an audio export task: the create acceptance, the
