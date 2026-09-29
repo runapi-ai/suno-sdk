@@ -15,7 +15,9 @@ export const contract = {
           "required": true
         },
         "negative_tags": {
-          "required": true
+          "required": true,
+          "max": 200,
+          "length": true
         },
         "style_weight": {
           "min": 0,
@@ -54,7 +56,9 @@ export const contract = {
           "required": true
         },
         "negative_tags": {
-          "required": true
+          "required": true,
+          "max": 200,
+          "length": true
         },
         "style_weight": {
           "min": 0,
@@ -93,7 +97,9 @@ export const contract = {
           "required": true
         },
         "negative_tags": {
-          "required": true
+          "required": true,
+          "max": 200,
+          "length": true
         },
         "style_weight": {
           "min": 0,
@@ -236,7 +242,9 @@ export const contract = {
           "required": true
         },
         "negative_tags": {
-          "required": true
+          "required": true,
+          "max": 200,
+          "length": true
         },
         "style": {
           "required": true,
@@ -280,7 +288,9 @@ export const contract = {
           "required": true
         },
         "negative_tags": {
-          "required": true
+          "required": true,
+          "max": 200,
+          "length": true
         },
         "style": {
           "required": true,
@@ -393,6 +403,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -448,6 +462,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "persona_type": {
           "enum": [
@@ -505,6 +523,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -560,6 +582,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "persona_type": {
           "enum": [
@@ -617,6 +643,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -672,6 +702,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "persona_type": {
           "enum": [
@@ -729,6 +763,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -785,6 +823,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -840,6 +882,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "persona_type": {
           "enum": [
@@ -1531,6 +1577,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "parameter_mode": {
           "enum": [
             "source",
@@ -1582,6 +1632,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "parameter_mode": {
           "enum": [
@@ -1635,6 +1689,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "parameter_mode": {
           "enum": [
             "source",
@@ -1686,6 +1744,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "parameter_mode": {
           "enum": [
@@ -1739,6 +1801,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "parameter_mode": {
           "enum": [
             "source",
@@ -1790,6 +1856,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "parameter_mode": {
           "enum": [
@@ -1843,6 +1913,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "parameter_mode": {
           "enum": [
             "source",
@@ -1895,6 +1969,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "parameter_mode": {
           "enum": [
             "source",
@@ -1946,6 +2024,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "parameter_mode": {
           "enum": [
@@ -2004,7 +2086,9 @@ export const contract = {
     "fields_by_model": {
       "_": {
         "prompt": {
-          "required": true
+          "required": true,
+          "max": 200,
+          "length": true
         }
       }
     }
@@ -2397,6 +2481,10 @@ export const contract = {
             "suno-v5.5"
           ]
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "tags": {
           "required": true,
           "max": 1000,
@@ -2648,6 +2736,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -2705,6 +2797,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "persona_type": {
           "enum": [
@@ -2764,6 +2860,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -2821,6 +2921,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "persona_type": {
           "enum": [
@@ -2880,6 +2984,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -2937,6 +3045,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "persona_type": {
           "enum": [
@@ -2996,6 +3108,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -3054,6 +3170,10 @@ export const contract = {
         "model": {
           "required": true
         },
+        "negative_tags": {
+          "max": 200,
+          "length": true
+        },
         "persona_type": {
           "enum": [
             "style",
@@ -3111,6 +3231,10 @@ export const contract = {
         },
         "model": {
           "required": true
+        },
+        "negative_tags": {
+          "max": 200,
+          "length": true
         },
         "persona_type": {
           "enum": [

@@ -15,7 +15,9 @@ module RunApi
               "required" => true
             },
             "negative_tags" => {
-              "required" => true
+              "required" => true,
+              "max" => 200,
+              "length" => true
             },
             "style_weight" => {
               "min" => 0,
@@ -51,7 +53,9 @@ module RunApi
               "required" => true
             },
             "negative_tags" => {
-              "required" => true
+              "required" => true,
+              "max" => 200,
+              "length" => true
             },
             "style_weight" => {
               "min" => 0,
@@ -87,7 +91,9 @@ module RunApi
               "required" => true
             },
             "negative_tags" => {
-              "required" => true
+              "required" => true,
+              "max" => 200,
+              "length" => true
             },
             "style_weight" => {
               "min" => 0,
@@ -218,7 +224,9 @@ module RunApi
               "required" => true
             },
             "negative_tags" => {
-              "required" => true
+              "required" => true,
+              "max" => 200,
+              "length" => true
             },
             "style" => {
               "required" => true,
@@ -259,7 +267,9 @@ module RunApi
               "required" => true
             },
             "negative_tags" => {
-              "required" => true
+              "required" => true,
+              "max" => 200,
+              "length" => true
             },
             "style" => {
               "required" => true,
@@ -359,6 +369,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -404,6 +418,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -451,6 +469,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -496,6 +518,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -543,6 +569,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -588,6 +618,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -635,6 +669,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -681,6 +719,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -726,6 +768,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -1253,6 +1299,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
               "required" => true
@@ -1295,6 +1345,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
@@ -1339,6 +1393,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
               "required" => true
@@ -1381,6 +1439,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
@@ -1425,6 +1487,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
               "required" => true
@@ -1467,6 +1533,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
@@ -1511,6 +1581,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
               "required" => true
@@ -1554,6 +1628,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
               "required" => true
@@ -1596,6 +1674,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "parameter_mode" => {
               "enum" => ["source", "custom"],
@@ -1645,7 +1727,9 @@ module RunApi
         "fields_by_model" => {
           "_" => {
             "prompt" => {
-              "required" => true
+              "required" => true,
+              "max" => 200,
+              "length" => true
             }
           }
         }
@@ -1985,6 +2069,10 @@ module RunApi
             "model" => {
               "enum" => ["suno-v6", "suno-v6-wild", "suno-v6-mini", "suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"]
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "tags" => {
               "required" => true,
               "max" => 1000,
@@ -2113,6 +2201,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -2160,6 +2252,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -2209,6 +2305,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -2256,6 +2356,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -2305,6 +2409,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -2352,6 +2460,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]
@@ -2401,6 +2513,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -2449,6 +2565,10 @@ module RunApi
             "model" => {
               "required" => true
             },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
+            },
             "persona_type" => {
               "enum" => ["style", "voice"]
             },
@@ -2496,6 +2616,10 @@ module RunApi
             },
             "model" => {
               "required" => true
+            },
+            "negative_tags" => {
+              "max" => 200,
+              "length" => true
             },
             "persona_type" => {
               "enum" => ["style", "voice"]

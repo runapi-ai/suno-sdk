@@ -1,5 +1,11 @@
 # Changelog
 
+## [js/v0.5.1](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.5.1), [ruby/v0.5.1](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.5.1), [go/v0.5.1](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.5.1), [python/v0.5.1](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.5.1) - 2026-09-29
+
+### Fixed
+- generate_lyrics prompt and every negative_tags field accept at most 200 characters; longer values are rejected client-side instead of failing after submission.
+
+
 ## [js/v0.5.0](https://github.com/runapi-ai/suno-sdk/releases/tag/js%2Fv0.5.0), [ruby/v0.5.0](https://github.com/runapi-ai/suno-sdk/releases/tag/ruby%2Fv0.5.0), [go/v0.5.0](https://github.com/runapi-ai/suno-sdk/releases/tag/go%2Fv0.5.0), [python/v0.5.0](https://github.com/runapi-ai/suno-sdk/releases/tag/python%2Fv0.5.0), [java/v0.4.0](https://github.com/runapi-ai/suno-sdk/releases/tag/java%2Fv0.4.0) - 2026-09-28
 
 ### Added

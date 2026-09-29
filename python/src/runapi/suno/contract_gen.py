@@ -11,7 +11,9 @@ CONTRACT = {
                     "required": True
                 },
                 "negative_tags": {
-                    "required": True
+                    "required": True,
+                    "max": 200,
+                    "length": True
                 },
                 "style_weight": {
                     "min": 0,
@@ -47,7 +49,9 @@ CONTRACT = {
                     "required": True
                 },
                 "negative_tags": {
-                    "required": True
+                    "required": True,
+                    "max": 200,
+                    "length": True
                 },
                 "style_weight": {
                     "min": 0,
@@ -83,7 +87,9 @@ CONTRACT = {
                     "required": True
                 },
                 "negative_tags": {
-                    "required": True
+                    "required": True,
+                    "max": 200,
+                    "length": True
                 },
                 "style_weight": {
                     "min": 0,
@@ -214,7 +220,9 @@ CONTRACT = {
                     "required": True
                 },
                 "negative_tags": {
-                    "required": True
+                    "required": True,
+                    "max": 200,
+                    "length": True
                 },
                 "style": {
                     "required": True,
@@ -255,7 +263,9 @@ CONTRACT = {
                     "required": True
                 },
                 "negative_tags": {
-                    "required": True
+                    "required": True,
+                    "max": 200,
+                    "length": True
                 },
                 "style": {
                     "required": True,
@@ -355,6 +365,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -400,6 +414,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -447,6 +465,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -492,6 +514,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -539,6 +565,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -584,6 +614,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -631,6 +665,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -677,6 +715,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -722,6 +764,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -1249,6 +1295,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
                     "required": True
@@ -1291,6 +1341,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
@@ -1335,6 +1389,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
                     "required": True
@@ -1377,6 +1435,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
@@ -1421,6 +1483,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
                     "required": True
@@ -1463,6 +1529,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
@@ -1507,6 +1577,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
                     "required": True
@@ -1550,6 +1624,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
                     "required": True
@@ -1592,6 +1670,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "parameter_mode": {
                     "enum": ["source", "custom"],
@@ -1641,7 +1723,9 @@ CONTRACT = {
         "fields_by_model": {
             "_": {
                 "prompt": {
-                    "required": True
+                    "required": True,
+                    "max": 200,
+                    "length": True
                 }
             }
         }
@@ -1981,6 +2065,10 @@ CONTRACT = {
                 "model": {
                     "enum": ["suno-v6", "suno-v6-wild", "suno-v6-mini", "suno-v4", "suno-v4.5", "suno-v4.5-all", "suno-v4.5-plus", "suno-v5", "suno-v5.5"]
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "tags": {
                     "required": True,
                     "max": 1000,
@@ -2109,6 +2197,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -2156,6 +2248,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -2205,6 +2301,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -2252,6 +2352,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -2301,6 +2405,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -2348,6 +2456,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
@@ -2397,6 +2509,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -2445,6 +2561,10 @@ CONTRACT = {
                 "model": {
                     "required": True
                 },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
+                },
                 "persona_type": {
                     "enum": ["style", "voice"]
                 },
@@ -2492,6 +2612,10 @@ CONTRACT = {
                 },
                 "model": {
                     "required": True
+                },
+                "negative_tags": {
+                    "max": 200,
+                    "length": True
                 },
                 "persona_type": {
                     "enum": ["style", "voice"]
