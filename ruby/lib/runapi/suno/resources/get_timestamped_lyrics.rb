@@ -18,14 +18,7 @@ module RunApi
 
         def run(options: nil, **params)
           params = compact_params(params)
-          validate_params!(params)
           request(:post, ENDPOINT, body: params, options: options)
-        end
-
-        private
-
-        def validate_params!(params)
-          Validators.validate_get_timestamped_lyrics!(params, self)
         end
       end
     end

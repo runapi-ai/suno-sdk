@@ -10,7 +10,6 @@ module RunApi
 
         def create(options: nil, **params)
           params = compact_params(params)
-          validate_contract!(CONTRACT.fetch(self.class::ACTION), params)
           request(:post, self.class::ENDPOINT, body: params, options: options)
         end
 

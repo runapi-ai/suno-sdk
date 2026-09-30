@@ -31,14 +31,4 @@ RSpec.describe "Suno audio action resources" do
     expect(http).to have_received(:request).with(:post, "/api/v1/suno/inspire_music", body: inspiration)
     expect(inspiration).not_to have_key(:audio_id)
   end
-
-  it "rejects an invalid samples window before the request" do
-    resource = RunApi::Suno::Resources::AddSamples.new(http)
-    expect do
-      resource.create(
-        model: "suno-v5", audio_url: "https://file.runapi.ai/source.mp3",
-        start_seconds: 20, end_seconds: 20
-      )
-    end.to raise_error(RunApi::Core::ValidationError, /end_seconds must be greater than start_seconds/)
-  end
 end

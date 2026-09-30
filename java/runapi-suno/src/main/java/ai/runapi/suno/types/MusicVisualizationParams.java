@@ -47,31 +47,31 @@ public final class MusicVisualizationParams {
 
     /** Sets the audio ID or RunAPI-owned audio resource ID. */
     public Builder sourceAudioId(String value) {
-      this.sourceAudioId = SunoParamUtils.requireNonBlank(value, "sourceAudioId");
+      this.sourceAudioId = value;
       return this;
     }
 
     /** Sets the producing RunAPI task ID when the audio ID alone is not sufficient. */
     public Builder sourceTaskId(String value) {
-      this.sourceTaskId = SunoParamUtils.requireNonBlank(value, "sourceTaskId");
+      this.sourceTaskId = value;
       return this;
     }
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 
     /** Sets the author name shown in the video. */
     public Builder author(String value) {
-      this.author = SunoParamUtils.requireNonBlank(value, "author");
+      this.author = value;
       return this;
     }
 
     /** Sets the domain name watermark. */
     public Builder domainName(String value) {
-      this.domainName = SunoParamUtils.requireNonBlank(value, "domainName");
+      this.domainName = value;
       return this;
     }
 

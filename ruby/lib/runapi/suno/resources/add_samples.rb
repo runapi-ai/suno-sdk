@@ -9,10 +9,6 @@ module RunApi
         ACTION = "add-samples"
 
         def create(options: nil, **params)
-          if params[:end_seconds].to_f <= params[:start_seconds].to_f
-            raise RunApi::Core::ValidationError, "end_seconds must be greater than start_seconds"
-          end
-
           super
         end
       end

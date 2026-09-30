@@ -9,8 +9,6 @@ package suno
 
 import (
 	"context"
-	"errors"
-	"math"
 
 	"github.com/runapi-ai/core-sdk/go/base"
 	"github.com/runapi-ai/core-sdk/go/core"
@@ -160,9 +158,6 @@ type InspireMusic struct{ http core.HTTPClient }
 func (r *StitchAudio) Create(ctx context.Context, params StitchAudioParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["stitch-audio"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, stitchAudioPath, body, requestOptions)
 }
 func (r *StitchAudio) Get(ctx context.Context, id string, opts ...option.RequestOption) (*TextToMusicResponse, error) {
@@ -176,9 +171,6 @@ func (r *StitchAudio) Run(ctx context.Context, p StitchAudioParams, opts ...opti
 func (r *RemasterAudio) Create(ctx context.Context, params RemasterAudioParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["remaster-audio"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, remasterAudioPath, body, requestOptions)
 }
 func (r *RemasterAudio) Get(ctx context.Context, id string, opts ...option.RequestOption) (*TextToMusicResponse, error) {
@@ -192,12 +184,6 @@ func (r *RemasterAudio) Run(ctx context.Context, p RemasterAudioParams, opts ...
 func (r *AddSamples) Create(ctx context.Context, params AddSamplesParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["add-samples"], body); err != nil {
-		return nil, err
-	}
-	if params.EndSeconds <= params.StartSeconds {
-		return nil, errors.New("end_seconds must be greater than start_seconds")
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, addSamplesPath, body, requestOptions)
 }
 func (r *AddSamples) Get(ctx context.Context, id string, opts ...option.RequestOption) (*TextToMusicResponse, error) {
@@ -211,9 +197,6 @@ func (r *AddSamples) Run(ctx context.Context, p AddSamplesParams, opts ...option
 func (r *InspireMusic) Create(ctx context.Context, params InspireMusicParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["inspire-music"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, inspireMusicPath, body, requestOptions)
 }
 func (r *InspireMusic) Get(ctx context.Context, id string, opts ...option.RequestOption) (*TextToMusicResponse, error) {
@@ -303,9 +286,6 @@ type CheckVoice struct{ http core.HTTPClient }
 func (r *TextToMusic) Create(ctx context.Context, params TextToMusicParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["text-to-music"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, textToMusicPath, body, requestOptions)
 }
 
@@ -361,9 +341,6 @@ func (r *GenerateArtwork) Run(ctx context.Context, params GenerateArtworkParams,
 func (r *CoverAudio) Create(ctx context.Context, params CoverAudioParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["cover-audio"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, coverAudioPath, body, requestOptions)
 }
 
@@ -419,9 +396,6 @@ func (r *AddVocals) Run(ctx context.Context, params AddVocalsParams, opts ...opt
 func (r *SeparateAudioStems) Create(ctx context.Context, params SeparateAudioStemsParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["separate-audio-stems"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, separateAudioStemsPath, body, requestOptions)
 }
 
@@ -515,9 +489,6 @@ func (r *GenerateLyrics) Run(ctx context.Context, params GenerateLyricsParams, o
 func (r *BlendLyrics) Create(ctx context.Context, params BlendLyricsParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["blend-lyrics"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, blendLyricsPath, body, requestOptions)
 }
 
@@ -542,19 +513,7 @@ func (r *GetTimestampedLyrics) Run(ctx context.Context, params GetTimestampedLyr
 // Create submits a section-replacement task and returns immediately with a task id.
 func (r *ReplaceSection) Create(ctx context.Context, params ReplaceSectionParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
-	if math.IsNaN(params.InfillStartTime) || math.IsInf(params.InfillStartTime, 0) {
-		return nil, errors.New("infill_start_time must be a finite number")
-	}
-	if math.IsNaN(params.InfillEndTime) || math.IsInf(params.InfillEndTime, 0) {
-		return nil, errors.New("infill_end_time must be a finite number")
-	}
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["replace-section"], body); err != nil {
-		return nil, err
-	}
-	if err := validateReplaceSection(body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, replaceSectionPath, body, requestOptions)
 }
 
@@ -570,98 +529,10 @@ func (r *ReplaceSection) Run(ctx context.Context, params ReplaceSectionParams, o
 	return core.RunAsync(ctx, func(ctx context.Context) (*core.TaskCreateResponse, error) { return r.Create(ctx, params, opts...) }, func(ctx context.Context, id string) (*ReplaceSectionResponse, error) { return r.Get(ctx, id, opts...) }, pollingOptions)
 }
 
-func validateReplaceSection(body map[string]any) error {
-	if err := validateReplaceSectionSource(body); err != nil {
-		return err
-	}
-
-	startTime, ok := numberValue(body["infill_start_time"])
-	if !ok || math.IsNaN(startTime) || math.IsInf(startTime, 0) {
-		return errors.New("infill_start_time must be a finite number")
-	}
-	endTime, ok := numberValue(body["infill_end_time"])
-	if !ok || math.IsNaN(endTime) || math.IsInf(endTime, 0) {
-		return errors.New("infill_end_time must be a finite number")
-	}
-	if endTime <= startTime {
-		return errors.New("infill_end_time must be greater than infill_start_time")
-	}
-	duration := endTime - startTime
-	if duration+1e-9 < 10 {
-		return errors.New("replacement duration must be at least 10 seconds")
-	}
-
-	return nil
-}
-
-func validateReplaceSectionSource(body map[string]any) error {
-	hasExistingSource := present(body["task_id"]) || present(body["audio_id"])
-	hasUploadedSource := present(body["upload_url"]) || present(body["model"])
-
-	if hasExistingSource && hasUploadedSource {
-		return errors.New("task_id/audio_id cannot be combined with upload_url/model")
-	}
-	if hasExistingSource {
-		if !present(body["task_id"]) {
-			return errors.New("task_id is required")
-		}
-		if !present(body["audio_id"]) {
-			return errors.New("audio_id is required")
-		}
-		return nil
-	}
-	if hasUploadedSource {
-		if !present(body["upload_url"]) {
-			return errors.New("upload_url is required")
-		}
-		if !present(body["model"]) {
-			return errors.New("model is required")
-		}
-		return nil
-	}
-
-	return errors.New("task_id and audio_id, or upload_url and model are required")
-}
-
-func numberValue(value any) (float64, bool) {
-	switch v := value.(type) {
-	case float64:
-		return v, true
-	case float32:
-		return float64(v), true
-	case int:
-		return float64(v), true
-	case int64:
-		return float64(v), true
-	case int32:
-		return float64(v), true
-	default:
-		return 0, false
-	}
-}
-
-func present(value any) bool {
-	switch v := value.(type) {
-	case nil:
-		return false
-	case string:
-		return v != ""
-	case []string:
-		return len(v) > 0
-	case []any:
-		return len(v) > 0
-	default:
-		return true
-	}
-}
-
 // Create submits a mashup task and returns immediately with a task id.
 func (r *CreateMashup) Create(ctx context.Context, params CreateMashupParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["create-mashup"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, createMashupPath, body, requestOptions)
 }
 
@@ -800,9 +671,6 @@ type Personas struct{ http core.HTTPClient }
 func (r *Personas) Create(ctx context.Context, params PersonaParams, opts ...option.RequestOption) (*core.HybridCreateResponse[PersonaCreationResponse], error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["personas"], body); err != nil {
-		return nil, err
-	}
 	return core.CreateHybrid[PersonaCreationResponse](ctx, r.http, personasPath, body, requestOptions)
 }
 
@@ -810,9 +678,6 @@ func (r *Personas) Create(ctx context.Context, params PersonaParams, opts ...opt
 func (r *Personas) Run(ctx context.Context, params PersonaParams, opts ...option.RequestOption) (*PersonaCreationResponse, error) {
 	requestOptions, pollingOptions := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["personas"], body); err != nil {
-		return nil, err
-	}
 	return core.RunHybrid[PersonaCreationResponse](ctx, r.http, personasPath, body, requestOptions, pollingOptions)
 }
 
@@ -833,9 +698,6 @@ type Voices struct{ http core.HTTPClient }
 func (r *Voices) Run(ctx context.Context, params VoiceParams, opts ...option.RequestOption) (*VoiceCreationResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["voices"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[VoiceCreationResponse](ctx, r.http, voicesPath, body, requestOptions)
 }
 
@@ -852,9 +714,6 @@ type StyleExpansions struct{ http core.HTTPClient }
 func (r *StyleExpansions) Run(ctx context.Context, params StyleExpansionParams, opts ...option.RequestOption) (*BoostStyleResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["style-expansions"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[BoostStyleResponse](ctx, r.http, styleExpansionsPath, body, requestOptions)
 }
 
@@ -866,9 +725,6 @@ type TimestampedLyrics struct{ http core.HTTPClient }
 func (r *TimestampedLyrics) Run(ctx context.Context, params TimestampedLyricsParams, opts ...option.RequestOption) (*GetTimestampedLyricsResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["timestamped-lyrics"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[GetTimestampedLyricsResponse](ctx, r.http, timestampedLyricsPath, body, requestOptions)
 }
 
@@ -880,9 +736,6 @@ type AudioExports struct{ http core.HTTPClient }
 func (r *AudioExports) Create(ctx context.Context, params AudioExportParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["audio-exports"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, audioExportsPath, body, requestOptions)
 }
 
@@ -909,9 +762,6 @@ type MusicVisualizations struct{ http core.HTTPClient }
 func (r *MusicVisualizations) Create(ctx context.Context, params MusicVisualizationParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["music-visualizations"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, musicVisualizationsPath, body, requestOptions)
 }
 
@@ -938,9 +788,6 @@ type MusicFromSample struct{ http core.HTTPClient }
 func (r *MusicFromSample) Create(ctx context.Context, params MusicFromSampleParams, opts ...option.RequestOption) (*core.TaskCreateResponse, error) {
 	requestOptions, _ := option.ResolveRequestOptions(opts...)
 	body := core.CompactParams(params)
-	if err := core.ValidateParams(contractSchema["music-from-sample"], body); err != nil {
-		return nil, err
-	}
 	return core.PostJSON[core.TaskCreateResponse](ctx, r.http, musicFromSamplePath, body, requestOptions)
 }
 

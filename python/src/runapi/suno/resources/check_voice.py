@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from runapi.core import Resource, RequestOptions
 
-from .. import _validators
 from ..types import CheckVoiceResponse
 
 
@@ -31,8 +30,4 @@ class CheckVoice(Resource):
             The result.
         """
         compacted = self._compact_params(params)
-        self._validate_params(compacted)
         return self._request("post", self.ENDPOINT, body=compacted, options=options)
-
-    def _validate_params(self, params: Dict[str, Any]) -> None:
-        _validators.validate_check_voice(params)

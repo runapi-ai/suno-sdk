@@ -33,11 +33,6 @@ describe('Personas', () => {
     expect(result).not.toHaveProperty('usage');
   });
 
-  it('rejects a persona request without a name', async () => {
-    await expect(new Personas(mockHttp).run({ ...params, name: '' })).rejects.toThrow('name is required');
-    expect(mockHttp.request).not.toHaveBeenCalled();
-  });
-
   it('follows an accepted task to its stored persona', async () => {
     const stored: PersonaCreationResponse = {
       persona: { id: 'persona_789', name: 'Bright Tenor', description: 'A bright tenor lead' },

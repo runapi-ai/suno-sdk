@@ -20,9 +20,4 @@ RSpec.describe RunApi::Suno::Resources::BlendLyrics do
     expect(result).to be_a(RunApi::Suno::Types::BlendLyricsResponse)
     expect(result.lyrics.first.text).to eq("Blended")
   end
-
-  it "requires both lyrics texts" do
-    expect { resource.create(lyrics_a: "First verse") }
-      .to raise_error(RunApi::Core::ValidationError, /lyrics_b/)
-  end
 end

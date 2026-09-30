@@ -16,11 +16,5 @@ RSpec.describe RunApi::Suno::Resources::GeneratePersona do
       result = resource.run(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::GeneratePersonaResponse)
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:task_id)
-      expect { resource.run(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
   end
 end

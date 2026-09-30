@@ -9,7 +9,7 @@ public final class CheckVoiceParams {
   private final String taskId;
 
   private CheckVoiceParams(Builder builder) {
-    this.taskId = SunoParamUtils.requireNonBlank(builder.taskId, "taskId");
+    this.taskId = builder.taskId;
   }
 
   /** Creates a new CheckVoiceParams builder. */
@@ -39,7 +39,7 @@ public final class CheckVoiceParams {
 
     /** Sets the task ID. */
     public Builder taskId(String value) {
-      this.taskId = SunoParamUtils.requireNonBlank(value, "taskId");
+      this.taskId = value;
       return this;
     }
 

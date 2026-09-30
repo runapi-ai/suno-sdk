@@ -21,19 +21,12 @@ module RunApi
 
         def run(options: nil, **params)
           params = compact_params(params)
-          validate_params!(params)
           request(:post, ENDPOINT, body: params, options: options)
         end
 
         # Retrieves a voice resource by its account-owned ID.
         def get(id, options: nil)
           request(:get, "#{ENDPOINT}/#{id}", options: options, response_class: RESOURCE_RESPONSE_CLASS)
-        end
-
-        private
-
-        def validate_params!(params)
-          Validators.validate_voices!(params, self)
         end
       end
     end

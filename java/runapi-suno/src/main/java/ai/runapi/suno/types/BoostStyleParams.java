@@ -39,7 +39,7 @@ public final class BoostStyleParams {
 
     /** Sets the item description. */
     public Builder description(String value) {
-      this.description = SunoParamUtils.requireNonBlank(value, "description");
+      this.description = value;
       return this;
     }
 

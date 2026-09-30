@@ -1,6 +1,5 @@
-import type { ActionSchema, HttpClient, RequestOptions } from '@runapi.ai/core';
-import { compactParams, validateParams } from '@runapi.ai/core';
-import { contract } from '../contract_gen';
+import type { HttpClient, RequestOptions } from '@runapi.ai/core';
+import { compactParams } from '@runapi.ai/core';
 import type { GetTimestampedLyricsResponse, TimestampedLyricsParams } from '../types';
 
 const ENDPOINT = '/api/v1/timestamped_lyrics';
@@ -17,7 +16,6 @@ export class TimestampedLyrics {
    */
   async run(params: TimestampedLyricsParams, options?: RequestOptions): Promise<GetTimestampedLyricsResponse> {
     const body = compactParams(params);
-    validateParams(contract['timestamped-lyrics'] as ActionSchema, body as Record<string, unknown>);
     return this.http.request<GetTimestampedLyricsResponse>('POST', ENDPOINT, {
       body,
       ...options,

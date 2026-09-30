@@ -30,7 +30,7 @@ export interface AddVocalsParams extends SunoBaseParams {
 export interface SeparateAudioStemsParams {
   task_id: string;
   audio_id: string;
-  /** Separation mode. Accepted values are validated by the Input Contract. */
+  /** Separation mode, such as `split_stem_advanced`. */
   type?: string;
   /** Target stem. Required when `type` is `split_stem_advanced`. */
   stem_name?: string;

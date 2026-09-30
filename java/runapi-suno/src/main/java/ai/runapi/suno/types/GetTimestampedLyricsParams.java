@@ -43,13 +43,13 @@ public final class GetTimestampedLyricsParams {
 
     /** Sets the task ID. */
     public Builder taskId(String value) {
-      this.taskId = SunoParamUtils.requireNonBlank(value, "taskId");
+      this.taskId = value;
       return this;
     }
 
     /** Sets the audio ID. */
     public Builder audioId(String value) {
-      this.audioId = SunoParamUtils.requireNonBlank(value, "audioId");
+      this.audioId = value;
       return this;
     }
 

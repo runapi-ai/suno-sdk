@@ -17,12 +17,6 @@ RSpec.describe RunApi::Suno::Resources::AddVocals do
       expect(result).to be_a(RunApi::Suno::Types::AddVocalsResponse)
       expect(result.id).to eq("task-1")
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:upload_url)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
   end
 
   describe "#get" do

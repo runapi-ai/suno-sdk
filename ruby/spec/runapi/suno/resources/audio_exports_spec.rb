@@ -20,12 +20,6 @@ RSpec.describe RunApi::Suno::Resources::AudioExports do
       expect(result).to be_a(RunApi::Suno::Types::AudioExportResponse)
       expect(result.id).to eq("task-1")
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:source_audio_id)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /source_audio_id is required/)
-    end
   end
 
   describe "#get" do

@@ -61,18 +61,6 @@ describe('SeparateAudioStems', () => {
         }
       );
     });
-
-    it('should require stem_name for advanced separation', async () => {
-      const separateAudioStems = new SeparateAudioStems(mockHttp);
-
-      await expect(separateAudioStems.create({
-        task_id: 'gen-task-123',
-        audio_id: 'audio-123',
-        type: 'split_stem_advanced',
-      })).rejects.toThrow('stem_name is required when type is split_stem_advanced');
-
-      expect(mockHttp.request).not.toHaveBeenCalled();
-    });
   });
 
   describe('get', () => {

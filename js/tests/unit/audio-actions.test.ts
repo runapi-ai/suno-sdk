@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { HttpClient } from '@runapi.ai/core';
-import { ValidationError } from '@runapi.ai/core';
 import { AddSamples } from '../../src/resources/add-samples';
 import { InspireMusic } from '../../src/resources/inspire-music';
 import { RemasterAudio } from '../../src/resources/remaster-audio';
@@ -45,21 +44,5 @@ describe('audio actions', () => {
     await new RemasterAudio(http).create(params);
 
     expect(http.request).toHaveBeenCalledWith('POST', '/api/v1/suno/remaster_audio', { body: params });
-  });
-
-  it('rejects an invalid variation_category before the request', async () => {
-    await expect(new RemasterAudio(http).create({
-      model: 'suno-v5.5', source_task_id: 'source', audio_id: 'audio',
-      variation_category: 'wild' as never,
-    })).rejects.toThrow(ValidationError);
-    expect(http.request).not.toHaveBeenCalled();
-  });
-
-  it('rejects an invalid samples window before the request', async () => {
-    await expect(new AddSamples(http).create({
-      model: 'suno-v5', audio_url: 'https://file.runapi.ai/source.mp3',
-      start_seconds: 20, end_seconds: 20,
-    })).rejects.toThrow(new ValidationError('end_seconds must be greater than start_seconds'));
-    expect(http.request).not.toHaveBeenCalled();
   });
 });

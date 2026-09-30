@@ -1,7 +1,6 @@
-import type { ActionSchema, HttpClient, PollingOptions, RequestOptions } from '@runapi.ai/core';
-import { compactParams, validateParams, ValidationError } from '@runapi.ai/core';
+import type { HttpClient, PollingOptions, RequestOptions } from '@runapi.ai/core';
+import { compactParams } from '@runapi.ai/core';
 import { pollUntilComplete } from '@runapi.ai/core/internal';
-import { contract } from '../contract_gen';
 import type {
   CompletedMusicFromSampleResponse,
   MusicFromSampleParams,
@@ -38,10 +37,6 @@ export class MusicFromSample {
    */
   async create(params: MusicFromSampleParams, options?: RequestOptions): Promise<TaskCreateResponse> {
     const body = compactParams(params);
-    validateParams(contract['music-from-sample'] as ActionSchema, body as Record<string, unknown>);
-    if (params.end_seconds <= params.start_seconds) {
-      throw new ValidationError('end_seconds must be greater than start_seconds');
-    }
     return this.http.request<TaskCreateResponse>('POST', ENDPOINT, {
       body,
       ...options,

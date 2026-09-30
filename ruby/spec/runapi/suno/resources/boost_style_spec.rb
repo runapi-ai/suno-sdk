@@ -16,11 +16,5 @@ RSpec.describe RunApi::Suno::Resources::BoostStyle do
       result = resource.run(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::BoostStyleResponse)
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:description)
-      expect { resource.run(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
   end
 end

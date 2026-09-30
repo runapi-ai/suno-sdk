@@ -10,7 +10,7 @@ public final class GenerateArtworkParams {
   private final String callbackUrl;
 
   private GenerateArtworkParams(Builder builder) {
-    this.taskId = SunoParamUtils.requireNonBlank(builder.taskId, "taskId");
+    this.taskId = builder.taskId;
     this.callbackUrl = builder.callbackUrl;
   }
 
@@ -43,13 +43,13 @@ public final class GenerateArtworkParams {
 
     /** Sets the task ID. */
     public Builder taskId(String value) {
-      this.taskId = SunoParamUtils.requireNonBlank(value, "taskId");
+      this.taskId = value;
       return this;
     }
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

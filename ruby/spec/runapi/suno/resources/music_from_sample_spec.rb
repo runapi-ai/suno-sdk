@@ -27,17 +27,6 @@ RSpec.describe RunApi::Suno::Resources::MusicFromSample do
       expect(result.id).to eq("task-1")
       expect(result.status).to eq("processing")
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:model)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /model must be one of/)
-    end
-
-    it "rejects a negative sample start before the request" do
-      params = valid_params.merge(start_seconds: -1)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /start_seconds must be at least 0/)
-    end
   end
 
   describe "#get" do

@@ -23,7 +23,6 @@ module RunApi
 
         def run(options: nil, **params)
           params = compact_params(params)
-          validate_params!(params)
           run_hybrid(ENDPOINT, body: params, options: options, response_class: RESPONSE_CLASS)
         end
 
@@ -32,25 +31,17 @@ module RunApi
         # and status, plus Location and Retry-After response headers.
         def create(options: nil, **params)
           params = compact_params(params)
-          validate_params!(params)
           request(:post, ENDPOINT, body: params, options: options)
         end
 
         def subscribe(options: nil, **params)
           params = compact_params(params)
-          validate_params!(params)
           subscribe_hybrid(ENDPOINT, body: params, options: options, response_class: RESPONSE_CLASS)
         end
 
         # Retrieves a persona resource by its account-owned ID.
         def get(id, options: nil)
           request(:get, "#{ENDPOINT}/#{id}", options: options, response_class: RESOURCE_RESPONSE_CLASS)
-        end
-
-        private
-
-        def validate_params!(params)
-          Validators.validate_personas!(params, self)
         end
       end
     end

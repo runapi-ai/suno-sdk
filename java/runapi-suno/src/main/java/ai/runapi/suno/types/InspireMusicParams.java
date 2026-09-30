@@ -11,8 +11,8 @@ public final class InspireMusicParams {
   private final String callbackUrl;
 
   private InspireMusicParams(Builder builder) {
-    this.model = SunoParamUtils.requireNonBlank(builder.model, "model");
-    this.audioUrls = SunoParamUtils.requiredStrings(builder.audioUrls, "audioUrls");
+    this.model = builder.model;
+    this.audioUrls = SunoParamUtils.strings(builder.audioUrls);
     this.callbackUrl = builder.callbackUrl;
   }
 
@@ -47,7 +47,7 @@ public final class InspireMusicParams {
     }
 
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

@@ -1,6 +1,5 @@
 package ai.runapi.suno.types;
 
-import ai.runapi.core.errors.ValidationException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -21,9 +20,6 @@ public final class MusicFromSampleParams {
     this.startSeconds = builder.startSeconds;
     this.endSeconds = builder.endSeconds;
     this.callbackUrl = builder.callbackUrl;
-    if (startSeconds != null && endSeconds != null && endSeconds.doubleValue() <= startSeconds.doubleValue()) {
-      throw new ValidationException("end_seconds must be greater than start_seconds");
-    }
   }
 
   /** Creates a new MusicFromSampleParams builder. */
@@ -62,19 +58,19 @@ public final class MusicFromSampleParams {
 
     /** Sets the model slug using a string value. */
     public Builder model(String value) {
-      this.model = SunoParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
     /** Sets the source audio URL. */
     public Builder audioUrl(String value) {
-      this.audioUrl = SunoParamUtils.requireNonBlank(value, "audioUrl");
+      this.audioUrl = value;
       return this;
     }
 
     /** Sets the optional sample description. */
     public Builder prompt(String value) {
-      this.prompt = SunoParamUtils.requireNonBlank(value, "prompt");
+      this.prompt = value;
       return this;
     }
 
@@ -86,7 +82,7 @@ public final class MusicFromSampleParams {
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

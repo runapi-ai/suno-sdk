@@ -21,10 +21,6 @@ RSpec.describe RunApi::Suno::Resources::Voices do
       expect(result.voice.id).to eq("voi-1")
     end
 
-    it "validates required params" do
-      expect { resource.run }.to raise_error(RunApi::Core::ValidationError, /source_audio_url is required/)
-    end
-
     it "submits an unnamed recording" do
       expect(http).to receive(:request).with(:post, endpoint, body: {source_audio_url: "https://file.runapi.ai/voice.mp3"})
         .and_return("voice" => {"id" => "voi-2", "name" => nil})

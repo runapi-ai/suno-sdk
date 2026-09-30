@@ -13,8 +13,8 @@ public final class SeparateAudioStemsParams {
   private final String callbackUrl;
 
   private SeparateAudioStemsParams(Builder builder) {
-    this.taskId = SunoParamUtils.requireNonBlank(builder.taskId, "taskId");
-    this.audioId = SunoParamUtils.requireNonBlank(builder.audioId, "audioId");
+    this.taskId = builder.taskId;
+    this.audioId = builder.audioId;
     this.type = builder.type;
     this.stemName = builder.stemName;
     this.callbackUrl = builder.callbackUrl;
@@ -55,31 +55,31 @@ public final class SeparateAudioStemsParams {
 
     /** Sets the task ID. */
     public Builder taskId(String value) {
-      this.taskId = SunoParamUtils.requireNonBlank(value, "taskId");
+      this.taskId = value;
       return this;
     }
 
     /** Sets the audio ID. */
     public Builder audioId(String value) {
-      this.audioId = SunoParamUtils.requireNonBlank(value, "audioId");
+      this.audioId = value;
       return this;
     }
 
     /** Sets the type. */
     public Builder type(String value) {
-      this.type = SunoParamUtils.requireNonBlank(value, "type");
+      this.type = value;
       return this;
     }
 
     /** Sets the stem name. */
     public Builder stemName(String value) {
-      this.stemName = SunoParamUtils.requireNonBlank(value, "stemName");
+      this.stemName = value;
       return this;
     }
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from runapi.core import Resource, RequestOptions
 
-from .. import _validators
 from ..types import CompletedAddInstrumentalResponse, AddInstrumentalResponse
 
 
@@ -40,7 +39,6 @@ class AddInstrumental(Resource):
             The task creation result with an id.
         """
         compacted = self._compact_params(params)
-        self._validate_params(compacted)
         return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
     def get(self, id: str, options: Optional[RequestOptions] = None) -> Any:
@@ -53,6 +51,3 @@ class AddInstrumental(Resource):
             The current task status.
         """
         return self._request("get", f"{self.ENDPOINT}/{id}", options=options)
-
-    def _validate_params(self, params: Dict[str, Any]) -> None:
-        _validators.validate_add_instrumental(params)

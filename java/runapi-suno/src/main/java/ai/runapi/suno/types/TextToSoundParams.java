@@ -15,8 +15,8 @@ public final class TextToSoundParams {
   private final String callbackUrl;
 
   private TextToSoundParams(Builder builder) {
-    this.prompt = SunoParamUtils.requireNonBlank(builder.prompt, "prompt");
-    this.model = SunoParamUtils.requireNonBlankTrim(builder.model, "model");
+    this.prompt = builder.prompt;
+    this.model = builder.model;
     this.soundLoop = builder.soundLoop;
     this.soundTempo = builder.soundTempo;
     this.soundKey = builder.soundKey;
@@ -63,7 +63,7 @@ public final class TextToSoundParams {
 
     /** Sets the text prompt. */
     public Builder prompt(String value) {
-      this.prompt = SunoParamUtils.requireNonBlank(value, "prompt");
+      this.prompt = value;
       return this;
     }
 
@@ -75,7 +75,7 @@ public final class TextToSoundParams {
 
     /** Sets the model slug using a string value. */
     public Builder model(String value) {
-      this.model = SunoParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
@@ -94,7 +94,7 @@ public final class TextToSoundParams {
 
     /** Sets the sound key. */
     public Builder soundKey(String value) {
-      this.soundKey = SunoParamUtils.requireNonBlank(value, "soundKey");
+      this.soundKey = value;
       return this;
     }
 
@@ -106,7 +106,7 @@ public final class TextToSoundParams {
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

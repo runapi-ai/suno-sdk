@@ -17,10 +17,6 @@ RSpec.describe RunApi::Suno::Resources::RegenerateValidationPhrase do
       expect(result).to be_a(RunApi::Suno::Types::ValidationPhraseResponse)
       expect(result.id).to eq("task-1")
     end
-
-    it "validates required params" do
-      expect { resource.create }.to raise_error(RunApi::Core::ValidationError, /task_id is required/)
-    end
   end
 
   describe "#get" do

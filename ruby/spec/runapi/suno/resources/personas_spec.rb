@@ -22,12 +22,6 @@ RSpec.describe RunApi::Suno::Resources::Personas do
       expect(result.persona).to be_a(RunApi::Suno::Types::PersonaResource)
       expect(result.persona.id).to eq("per-1")
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:source_task_id)
-      expect { resource.run(**params) }.to raise_error(RunApi::Core::ValidationError, /source_task_id is required/)
-    end
   end
 
   describe "#create" do

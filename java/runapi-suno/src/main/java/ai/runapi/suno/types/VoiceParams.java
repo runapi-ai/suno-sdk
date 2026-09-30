@@ -36,13 +36,13 @@ public final class VoiceParams {
 
     /** Sets the public URL of the voice recording. */
     public Builder sourceAudioUrl(String value) {
-      this.sourceAudioUrl = SunoParamUtils.requireNonBlank(value, "sourceAudioUrl");
+      this.sourceAudioUrl = value;
       return this;
     }
 
     /** Sets the voice name. */
     public Builder name(String value) {
-      this.name = SunoParamUtils.requireNonBlank(value, "name");
+      this.name = value;
       return this;
     }
 

@@ -15,8 +15,8 @@ public final class GenerateVoiceParams {
   private final String callbackUrl;
 
   private GenerateVoiceParams(Builder builder) {
-    this.taskId = SunoParamUtils.requireNonBlank(builder.taskId, "taskId");
-    this.verifyUrl = SunoParamUtils.requireNonBlank(builder.verifyUrl, "verifyUrl");
+    this.taskId = builder.taskId;
+    this.verifyUrl = builder.verifyUrl;
     this.voiceName = builder.voiceName;
     this.description = builder.description;
     this.style = builder.style;
@@ -63,43 +63,43 @@ public final class GenerateVoiceParams {
 
     /** Sets the task ID. */
     public Builder taskId(String value) {
-      this.taskId = SunoParamUtils.requireNonBlank(value, "taskId");
+      this.taskId = value;
       return this;
     }
 
     /** Sets the verify URL. */
     public Builder verifyUrl(String value) {
-      this.verifyUrl = SunoParamUtils.requireNonBlank(value, "verifyUrl");
+      this.verifyUrl = value;
       return this;
     }
 
     /** Sets the voice name. */
     public Builder voiceName(String value) {
-      this.voiceName = SunoParamUtils.requireNonBlank(value, "voiceName");
+      this.voiceName = value;
       return this;
     }
 
     /** Sets the item description. */
     public Builder description(String value) {
-      this.description = SunoParamUtils.requireNonBlank(value, "description");
+      this.description = value;
       return this;
     }
 
     /** Sets the style. */
     public Builder style(String value) {
-      this.style = SunoParamUtils.requireNonBlank(value, "style");
+      this.style = value;
       return this;
     }
 
     /** Sets the singer skill level. */
     public Builder singerSkillLevel(String value) {
-      this.singerSkillLevel = SunoParamUtils.requireNonBlank(value, "singerSkillLevel");
+      this.singerSkillLevel = value;
       return this;
     }
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

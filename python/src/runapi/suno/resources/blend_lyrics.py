@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from runapi.core import RequestOptions, Resource
 
-from ..contract_gen import CONTRACT
 from ..types import BlendLyricsResponse, CompletedBlendLyricsResponse
 
 
@@ -23,7 +22,6 @@ class BlendLyrics(Resource):
 
     def create(self, options: Optional[RequestOptions] = None, **params: Any) -> Any:
         compacted = self._compact_params(params)
-        self._validate_contract(CONTRACT["blend-lyrics"], compacted)
         return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
     def get(self, id: str, options: Optional[RequestOptions] = None) -> Any:

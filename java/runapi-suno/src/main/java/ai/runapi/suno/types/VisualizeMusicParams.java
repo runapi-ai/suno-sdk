@@ -55,31 +55,31 @@ public final class VisualizeMusicParams {
 
     /** Sets the task ID. */
     public Builder taskId(String value) {
-      this.taskId = SunoParamUtils.requireNonBlank(value, "taskId");
+      this.taskId = value;
       return this;
     }
 
     /** Sets the audio ID. */
     public Builder audioId(String value) {
-      this.audioId = SunoParamUtils.requireNonBlank(value, "audioId");
+      this.audioId = value;
       return this;
     }
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 
     /** Sets the author. */
     public Builder author(String value) {
-      this.author = SunoParamUtils.requireNonBlank(value, "author");
+      this.author = value;
       return this;
     }
 
     /** Sets the domain name. */
     public Builder domainName(String value) {
-      this.domainName = SunoParamUtils.requireNonBlank(value, "domainName");
+      this.domainName = value;
       return this;
     }
 

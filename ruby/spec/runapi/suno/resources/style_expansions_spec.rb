@@ -19,9 +19,5 @@ RSpec.describe RunApi::Suno::Resources::StyleExpansions do
       expect(result).to be_a(RunApi::Suno::Types::BoostStyleResponse)
       expect(result.style).to eq("dream pop, shoegaze, slow synth")
     end
-
-    it "validates required params" do
-      expect { resource.run }.to raise_error(RunApi::Core::ValidationError, /description is required/)
-    end
   end
 end

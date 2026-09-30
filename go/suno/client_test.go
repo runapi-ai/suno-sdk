@@ -3,8 +3,6 @@ package suno
 import (
 	"context"
 	"encoding/json"
-	"math"
-	"strings"
 	"testing"
 
 	"github.com/runapi-ai/core-sdk/go/core"
@@ -65,11 +63,11 @@ func TestTextToMusicCreateAcceptsCanonicalVoiceHandle(t *testing.T) {
 	client := NewClientWithHTTP(httpClient)
 	_, err := client.TextToMusic.Create(context.Background(), TextToMusicParams{
 		SunoBaseParams: SunoBaseParams{Model: ModelV55},
-		VocalMode:   VocalModeExactLyrics,
-		Lyrics:      "[Verse] hello",
-		Style:       "acoustic pop",
-		Title:       "Hello",
-		VoiceID:     "res_voice_handle"})
+		VocalMode:      VocalModeExactLyrics,
+		Lyrics:         "[Verse] hello",
+		Style:          "acoustic pop",
+		Title:          "Hello",
+		VoiceID:        "res_voice_handle"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -173,15 +171,6 @@ func TestAudioActionsCreateUsePublicRequestShapes(t *testing.T) {
 	}
 }
 
-func TestAddSamplesRejectsInvalidWindow(t *testing.T) {
-	client := NewClientWithHTTP(&stubHTTPClient{})
-	_, err := client.AddSamples.Create(context.Background(), AddSamplesParams{
-		Model: ModelV5, AudioURL: "https://file.runapi.ai/source.mp3", StartSeconds: 20, EndSeconds: 20})
-	if err == nil || err.Error() != "end_seconds must be greater than start_seconds" {
-		t.Fatalf("expected invalid window error, got %v", err)
-	}
-}
-
 func TestInspireMusicCreateUsesCallerAudioURLs(t *testing.T) {
 	httpClient := &stubHTTPClient{}
 	client := NewClientWithHTTP(httpClient)
@@ -255,21 +244,6 @@ func TestSeparateAudioStemsCreateUsesAdvancedStemPayload(t *testing.T) {
 	}
 	if body["type"] != "split_stem_advanced" || body["stem_name"] != "Bass" {
 		t.Fatalf("expected advanced stem payload, got %#v", body)
-	}
-}
-
-func TestSeparateAudioStemsCreateRequiresAdvancedStemName(t *testing.T) {
-	httpClient := &stubHTTPClient{}
-	client := NewClientWithHTTP(httpClient)
-	_, err := client.SeparateAudioStems.Create(context.Background(), SeparateAudioStemsParams{
-		TaskID:  "task-1",
-		AudioID: "audio-1",
-		Type:    "split_stem_advanced"})
-	if err == nil || !strings.Contains(err.Error(), "stem_name is required when type is split_stem_advanced") {
-		t.Fatalf("expected advanced stem_name validation error, got %v", err)
-	}
-	if httpClient.method != "" {
-		t.Fatalf("did not expect an HTTP request, got %s %s", httpClient.method, httpClient.path)
 	}
 }
 
@@ -361,69 +335,6 @@ func TestReplaceSectionCreateSupportsUploadedAudioSource(t *testing.T) {
 	}
 }
 
-func TestReplaceSectionCreateRejectsMixedSources(t *testing.T) {
-	httpClient := &stubHTTPClient{}
-	client := NewClientWithHTTP(httpClient)
-	_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
-		TaskID:          "task-1",
-		AudioID:         "audio-1",
-		UploadURL:       "https://cdn.runapi.ai/public/samples/music.mp3",
-		Model:           ModelV55,
-		Lyrics:          "[Verse] replacement",
-		FullLyrics:      "[Verse] replacement\n[Chorus] return",
-		Tags:            "Rock",
-		Title:           "Song",
-		InfillStartTime: 10,
-		InfillEndTime:   20})
-	if err == nil || !strings.Contains(err.Error(), "task_id/audio_id cannot be combined with upload_url/model") {
-		t.Fatalf("expected mixed source validation error, got %v", err)
-	}
-	if httpClient.path != "" {
-		t.Fatalf("did not expect HTTP request, got %s", httpClient.path)
-	}
-}
-
-func TestReplaceSectionCreateRejectsInvalidTimeWindow(t *testing.T) {
-	cases := []struct {
-		name      string
-		startTime float64
-		endTime   float64
-		message   string
-	}{
-		{
-			name:      "end before start",
-			startTime: 10,
-			endTime:   5,
-			message:   "infill_end_time must be greater than infill_start_time"},
-		{
-			name:      "duration too short",
-			startTime: 10,
-			endTime:   19.999,
-			message:   "replacement duration must be at least 10 seconds"}}
-
-	for _, tc := range cases {
-		t.Run(tc.name, func(t *testing.T) {
-			httpClient := &stubHTTPClient{}
-			client := NewClientWithHTTP(httpClient)
-			_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
-				TaskID:          "task-1",
-				AudioID:         "audio-1",
-				Lyrics:          "[Verse] replacement",
-				FullLyrics:      "[Verse] replacement\n[Chorus] return",
-				Tags:            "Rock",
-				Title:           "Song",
-				InfillStartTime: tc.startTime,
-				InfillEndTime:   tc.endTime})
-			if err == nil || !strings.Contains(err.Error(), tc.message) {
-				t.Fatalf("expected %q validation error, got %v", tc.message, err)
-			}
-			if httpClient.path != "" {
-				t.Fatalf("did not expect HTTP request, got %s", httpClient.path)
-			}
-		})
-	}
-}
-
 func TestReplaceSectionCreateAcceptsDurationLongerThanSixtySeconds(t *testing.T) {
 	httpClient := &stubHTTPClient{response: json.RawMessage(`{"id":"task-1","status":"processing"}`)}
 	client := NewClientWithHTTP(httpClient)
@@ -458,22 +369,6 @@ func TestReplaceSectionCreateAcceptsDecimalDurationOfExactlyTenSeconds(t *testin
 		InfillEndTime:   16.016})
 	if err != nil {
 		t.Fatalf("expected decimal duration of exactly ten seconds to be accepted, got %v", err)
-	}
-}
-
-func TestReplaceSectionCreateRejectsNonFiniteTimes(t *testing.T) {
-	client := NewClientWithHTTP(&stubHTTPClient{})
-	_, err := client.ReplaceSection.Create(context.Background(), ReplaceSectionParams{
-		TaskID:          "task-1",
-		AudioID:         "audio-1",
-		Lyrics:          "[Verse] replacement",
-		FullLyrics:      "[Verse] replacement\n[Chorus] return",
-		Tags:            "Rock",
-		Title:           "Song",
-		InfillStartTime: 0,
-		InfillEndTime:   math.Inf(1)})
-	if err == nil || err.Error() != "infill_end_time must be a finite number" {
-		t.Fatalf("expected finite-number validation error, got %v", err)
 	}
 }
 

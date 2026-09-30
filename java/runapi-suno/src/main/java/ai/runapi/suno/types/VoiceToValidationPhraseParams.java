@@ -14,8 +14,8 @@ public final class VoiceToValidationPhraseParams {
 
   private VoiceToValidationPhraseParams(Builder builder) {
     this.voiceUrl = builder.voiceUrl;
-    this.vocalStartSeconds = java.util.Objects.requireNonNull(builder.vocalStartSeconds, "vocalStartSeconds");
-    this.vocalEndSeconds = java.util.Objects.requireNonNull(builder.vocalEndSeconds, "vocalEndSeconds");
+    this.vocalStartSeconds = builder.vocalStartSeconds;
+    this.vocalEndSeconds = builder.vocalEndSeconds;
     this.language = builder.language;
     this.callbackUrl = builder.callbackUrl;
   }
@@ -55,7 +55,7 @@ public final class VoiceToValidationPhraseParams {
 
     /** Sets the voice URL. */
     public Builder voiceUrl(String value) {
-      this.voiceUrl = SunoParamUtils.requireNonBlank(value, "voiceUrl");
+      this.voiceUrl = value;
       return this;
     }
 
@@ -73,13 +73,13 @@ public final class VoiceToValidationPhraseParams {
 
     /** Sets the language. */
     public Builder language(String value) {
-      this.language = SunoParamUtils.requireNonBlank(value, "language");
+      this.language = value;
       return this;
     }
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

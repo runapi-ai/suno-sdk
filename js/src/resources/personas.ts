@@ -1,6 +1,5 @@
-import type { ActionSchema, HttpClient, HybridTaskOptions, RequestOptions } from '@runapi.ai/core';
-import { compactParams, createHybridTask, validateParams } from '@runapi.ai/core';
-import { contract } from '../contract_gen';
+import type { HttpClient, HybridTaskOptions, RequestOptions } from '@runapi.ai/core';
+import { compactParams, createHybridTask } from '@runapi.ai/core';
 import type { PersonaCreationResponse, PersonaParams, PersonaResourceResponse } from '../types';
 
 const ENDPOINT = '/api/v1/personas';
@@ -23,7 +22,6 @@ export class Personas {
    */
   async run(params: PersonaParams, options?: HybridTaskOptions): Promise<PersonaCreationResponse> {
     const body = compactParams(params);
-    validateParams(contract['personas'] as ActionSchema, body as Record<string, unknown>);
     return (await createHybridTask<PersonaCreationResponse>(this.http, ENDPOINT, { body, ...options })).run();
   }
 

@@ -17,9 +17,5 @@ RSpec.describe RunApi::Suno::Resources::CheckVoice do
       expect(result).to be_a(RunApi::Suno::Types::CheckVoiceResponse)
       expect(result.is_available).to eq(true)
     end
-
-    it "validates required params" do
-      expect { resource.run }.to raise_error(RunApi::Core::ValidationError, /task_id is required/)
-    end
   end
 end

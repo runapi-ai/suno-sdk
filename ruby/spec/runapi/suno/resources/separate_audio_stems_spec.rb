@@ -27,21 +27,6 @@ RSpec.describe RunApi::Suno::Resources::SeparateAudioStems do
 
       expect(result.id).to eq("task-advanced")
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:task_id)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
-
-    it "requires stem_name for advanced separation" do
-      expect {
-        resource.create(**valid_params, type: "split_stem_advanced")
-      }.to raise_error(
-        RunApi::Core::ValidationError,
-        "stem_name is required when type is split_stem_advanced"
-      )
-    end
   end
 
   describe "#get" do

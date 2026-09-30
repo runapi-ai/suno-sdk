@@ -10,7 +10,7 @@ public final class GenerateLyricsParams {
   private final String callbackUrl;
 
   private GenerateLyricsParams(Builder builder) {
-    this.prompt = SunoParamUtils.requireNonBlank(builder.prompt, "prompt");
+    this.prompt = builder.prompt;
     this.callbackUrl = builder.callbackUrl;
   }
 
@@ -43,13 +43,13 @@ public final class GenerateLyricsParams {
 
     /** Sets the text prompt. */
     public Builder prompt(String value) {
-      this.prompt = SunoParamUtils.requireNonBlank(value, "prompt");
+      this.prompt = value;
       return this;
     }
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

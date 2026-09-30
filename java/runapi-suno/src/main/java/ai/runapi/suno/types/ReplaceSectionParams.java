@@ -31,8 +31,6 @@ public final class ReplaceSectionParams {
     this.callbackUrl = builder.callbackUrl;
     this.negativeTags = builder.negativeTags;
     this.fullLyrics = builder.fullLyrics;
-    validateSource();
-    validateTimeRange();
   }
 
   /** Creates a new ReplaceSectionParams builder. */
@@ -63,56 +61,6 @@ public final class ReplaceSectionParams {
     return SunoParamUtils.compact(raw);
   }
 
-  private void validateSource() {
-    boolean hasExistingSource = hasText(taskId) || hasText(audioId);
-    boolean hasUploadedSource = hasText(uploadUrl) || hasText(model);
-
-    if (hasExistingSource && hasUploadedSource) {
-      throw new IllegalArgumentException("task_id/audio_id cannot be combined with upload_url/model");
-    }
-    if (hasExistingSource) {
-      requirePresent(taskId, "taskId");
-      requirePresent(audioId, "audioId");
-      return;
-    }
-    if (hasUploadedSource) {
-      requirePresent(uploadUrl, "uploadUrl");
-      requirePresent(model, "model");
-      return;
-    }
-
-    throw new IllegalArgumentException("task_id and audio_id, or upload_url and model are required");
-  }
-
-  private void validateTimeRange() {
-    if (infillStartTime == null || infillEndTime == null) {
-      return;
-    }
-    if (!Double.isFinite(infillStartTime)) {
-      throw new IllegalArgumentException("infill_start_time must be a finite number");
-    }
-    if (!Double.isFinite(infillEndTime)) {
-      throw new IllegalArgumentException("infill_end_time must be a finite number");
-    }
-    if (infillEndTime <= infillStartTime) {
-      throw new IllegalArgumentException("infill_end_time must be greater than infill_start_time");
-    }
-
-    double duration = infillEndTime - infillStartTime;
-    if (duration + 1e-9 < 10) {
-      throw new IllegalArgumentException("replacement duration must be at least 10 seconds");
-    }
-  }
-
-  private static void requirePresent(String value, String name) {
-    if (!hasText(value)) {
-      throw new IllegalArgumentException(name + " is required");
-    }
-  }
-
-  private static boolean hasText(String value) {
-    return value != null && !value.trim().isEmpty();
-  }
 
 
   /** Builder for {@link ReplaceSectionParams}. */
@@ -134,19 +82,19 @@ public final class ReplaceSectionParams {
 
     /** Sets the task ID. */
     public Builder taskId(String value) {
-      this.taskId = SunoParamUtils.requireNonBlank(value, "taskId");
+      this.taskId = value;
       return this;
     }
 
     /** Sets the audio ID. */
     public Builder audioId(String value) {
-      this.audioId = SunoParamUtils.requireNonBlank(value, "audioId");
+      this.audioId = value;
       return this;
     }
 
     /** Sets the uploaded source audio URL. */
     public Builder uploadUrl(String value) {
-      this.uploadUrl = SunoParamUtils.requireNonBlank(value, "uploadUrl");
+      this.uploadUrl = value;
       return this;
     }
 
@@ -158,25 +106,25 @@ public final class ReplaceSectionParams {
 
     /** Sets the model slug using a string value. */
     public Builder model(String value) {
-      this.model = SunoParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
     /** Sets the lyrics. */
     public Builder lyrics(String value) {
-      this.lyrics = SunoParamUtils.requireNonBlank(value, "lyrics");
+      this.lyrics = value;
       return this;
     }
 
     /** Sets the tags. */
     public Builder tags(String value) {
-      this.tags = SunoParamUtils.requireNonBlank(value, "tags");
+      this.tags = value;
       return this;
     }
 
     /** Sets the title. */
     public Builder title(String value) {
-      this.title = SunoParamUtils.requireNonBlank(value, "title");
+      this.title = value;
       return this;
     }
 
@@ -194,19 +142,19 @@ public final class ReplaceSectionParams {
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 
     /** Sets the negative tags. */
     public Builder negativeTags(String value) {
-      this.negativeTags = SunoParamUtils.requireNonBlank(value, "negativeTags");
+      this.negativeTags = value;
       return this;
     }
 
     /** Sets the full lyrics. */
     public Builder fullLyrics(String value) {
-      this.fullLyrics = SunoParamUtils.requireNonBlank(value, "fullLyrics");
+      this.fullLyrics = value;
       return this;
     }
 

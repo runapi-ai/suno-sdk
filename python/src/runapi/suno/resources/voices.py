@@ -7,11 +7,10 @@ voice is ready, which replaces polling a separate availability operation.
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from runapi.core import Resource, RequestOptions
 
-from ..contract_gen import CONTRACT
 from ..types import VoiceCreationResponse, VoiceResourceResponse
 
 
@@ -35,7 +34,6 @@ class Voices(Resource):
             The created voice resource.
         """
         compacted = self._compact_params(params)
-        self._validate_params(compacted)
         return self._request("post", self.ENDPOINT, body=compacted, options=options)
 
     def get(self, id: str, options: Optional[RequestOptions] = None) -> Any:
@@ -53,6 +51,3 @@ class Voices(Resource):
             options=options,
             response_class=VoiceResourceResponse,
         )
-
-    def _validate_params(self, params: Dict[str, Any]) -> None:
-        self._validate_contract(CONTRACT["voices"], params)

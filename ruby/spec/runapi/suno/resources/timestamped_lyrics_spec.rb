@@ -29,9 +29,5 @@ RSpec.describe RunApi::Suno::Resources::TimestampedLyrics do
       result = resource.run(source_audio_id: source_audio_id)
       expect(result.aligned_words).to eq([])
     end
-
-    it "validates required params" do
-      expect { resource.run }.to raise_error(RunApi::Core::ValidationError, /source_audio_id is required/)
-    end
   end
 end

@@ -24,17 +24,6 @@ RSpec.describe RunApi::Suno::Resources::GenerateVoice do
       expect(result).to be_a(RunApi::Suno::Types::VoiceGenerationResponse)
       expect(result.id).to eq("task-1")
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:verify_url)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /verify_url is required/)
-    end
-
-    it "validates singer skill level" do
-      expect { resource.create(**valid_params.merge(singer_skill_level: "expert")) }
-        .to raise_error(RunApi::Core::ValidationError, /singer_skill_level/)
-    end
   end
 
   describe "#get" do

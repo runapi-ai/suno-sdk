@@ -32,18 +32,6 @@ describe('MusicFromSample', () => {
     expect(result.id).toBe('sample_123');
   });
 
-  it('rejects a sample window that does not advance', async () => {
-    await expect(
-      new MusicFromSample(mockHttp).create({
-        model: 'suno-v5',
-        audio_url: 'https://cdn.runapi.ai/public/samples/source.mp3',
-        start_seconds: 20,
-        end_seconds: 20,
-      })
-    ).rejects.toThrow('end_seconds must be greater than start_seconds');
-    expect(mockHttp.request).not.toHaveBeenCalled();
-  });
-
   it('fetches a sample task by id', async () => {
     const completed: MusicFromSampleResponse = {
       id: 'sample_123',

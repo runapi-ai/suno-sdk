@@ -27,12 +27,12 @@ public final class TextToMusicParams {
 
   private TextToMusicParams(Builder builder) {
     this.callbackUrl = builder.callbackUrl;
-    this.model = SunoParamUtils.requireNonBlankTrim(builder.model, "model");
+    this.model = builder.model;
     this.vocalGender = builder.vocalGender;
     this.styleWeight = builder.styleWeight;
     this.weirdnessConstraint = builder.weirdnessConstraint;
     this.audioWeight = builder.audioWeight;
-    this.vocalMode = SunoParamUtils.requireNonBlank(builder.vocalMode, "vocalMode");
+    this.vocalMode = builder.vocalMode;
     this.prompt = builder.prompt;
     this.lyrics = builder.lyrics;
     this.style = builder.style;
@@ -107,7 +107,7 @@ public final class TextToMusicParams {
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 
@@ -119,14 +119,14 @@ public final class TextToMusicParams {
 
     /** Sets the model slug using a string value. */
     public Builder model(String value) {
-      this.model = SunoParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
 
     /** Sets the vocal gender. */
     public Builder vocalGender(String value) {
-      this.vocalGender = SunoParamUtils.requireNonBlank(value, "vocalGender");
+      this.vocalGender = value;
       return this;
     }
 
@@ -150,55 +150,55 @@ public final class TextToMusicParams {
 
     /** Sets the vocal mode. */
     public Builder vocalMode(String value) {
-      this.vocalMode = SunoParamUtils.requireNonBlank(value, "vocalMode");
+      this.vocalMode = value;
       return this;
     }
 
     /** Sets the text prompt. */
     public Builder prompt(String value) {
-      this.prompt = SunoParamUtils.requireNonBlank(value, "prompt");
+      this.prompt = value;
       return this;
     }
 
     /** Sets the lyrics. */
     public Builder lyrics(String value) {
-      this.lyrics = SunoParamUtils.requireNonBlank(value, "lyrics");
+      this.lyrics = value;
       return this;
     }
 
     /** Sets the style. */
     public Builder style(String value) {
-      this.style = SunoParamUtils.requireNonBlank(value, "style");
+      this.style = value;
       return this;
     }
 
     /** Sets the title. */
     public Builder title(String value) {
-      this.title = SunoParamUtils.requireNonBlank(value, "title");
+      this.title = value;
       return this;
     }
 
     /** Sets the negative tags. */
     public Builder negativeTags(String value) {
-      this.negativeTags = SunoParamUtils.requireNonBlank(value, "negativeTags");
+      this.negativeTags = value;
       return this;
     }
 
     /** Sets the persona ID. */
     public Builder personaId(String value) {
-      this.personaId = SunoParamUtils.requireNonBlank(value, "personaId");
+      this.personaId = value;
       return this;
     }
 
     /** Sets the persona type. */
     public Builder personaType(String value) {
-      this.personaType = SunoParamUtils.requireNonBlank(value, "personaType");
+      this.personaType = value;
       return this;
     }
 
     /** Sets the RunAPI Voice handle for suno-v5.5. */
     public Builder voiceId(String value) {
-      this.voiceId = SunoParamUtils.requireNonBlank(value, "voiceId");
+      this.voiceId = value;
       return this;
     }
 
@@ -216,7 +216,7 @@ public final class TextToMusicParams {
 
     /** Sets the endpoint. */
     public Builder endpoint(String value) {
-      this.endpoint = SunoParamUtils.requireNonBlank(value, "endpoint");
+      this.endpoint = value;
       return this;
     }
 

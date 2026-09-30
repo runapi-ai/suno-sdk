@@ -10,8 +10,8 @@ public final class BlendLyricsParams {
   private final String callbackUrl;
 
   private BlendLyricsParams(Builder builder) {
-    this.lyricsA = SunoParamUtils.requireNonBlank(builder.lyricsA, "lyricsA");
-    this.lyricsB = SunoParamUtils.requireNonBlank(builder.lyricsB, "lyricsB");
+    this.lyricsA = builder.lyricsA;
+    this.lyricsB = builder.lyricsB;
     this.callbackUrl = builder.callbackUrl;
   }
 
@@ -50,7 +50,7 @@ public final class BlendLyricsParams {
     }
 
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 

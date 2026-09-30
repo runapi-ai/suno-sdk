@@ -19,25 +19,13 @@ RSpec.describe RunApi::Suno::Resources::CoverAudio do
       expect(result.id).to eq("task-1")
     end
 
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:upload_url)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
-
-    it "validates exact lyrics shape" do
+    it "POSTs exact lyrics params" do
       params = valid_params.merge(vocal_mode: "exact_lyrics", prompt: nil, lyrics: "[Verse] jazz cover", style: "jazz", title: "Jazz Cover").compact
       expect(http).to receive(:request).with(:post, endpoint, body: params)
         .and_return("id" => "task-2", "status" => "processing")
 
       result = resource.create(**params)
       expect(result.id).to eq("task-2")
-    end
-
-    it "rejects provider persona_type values" do
-      expect do
-        resource.create(**valid_params.merge(persona_type: "style_persona"))
-      end.to raise_error(RunApi::Core::ValidationError, /persona_type must be one of/)
     end
   end
 

@@ -1,10 +1,8 @@
 package ai.runapi.suno;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import ai.runapi.core.RequestOptions;
@@ -185,17 +183,6 @@ class SunoClientTest {
   }
 
   @Test
-  void addSamplesRejectsInvalidWindow() {
-    ValidationException error = assertThrows(ValidationException.class, () -> AudioActionParams.builder()
-        .model("suno-v5")
-        .audioUrl("https://file.runapi.ai/source.mp3")
-        .startSeconds(20)
-        .endSeconds(20)
-        .build());
-    assertEquals("end_seconds must be greater than start_seconds", error.getMessage());
-  }
-
-  @Test
   void builderCreatesClientAndUniversalResources() {
     SunoClient client = SunoClient.builder().apiKey("sk-test").build();
 
@@ -317,24 +304,6 @@ class SunoClientTest {
     assertEquals("split_stem_advanced", body.get("type").asText());
     assertEquals("Bass", body.get("stem_name").asText());
     assertEquals(false, body.has("stemName"));
-  }
-
-  @Test
-  void separateAudioStemsAdvancedRequiresStemNameBeforeRequest() {
-    CapturingTransport transport = new CapturingTransport("{\"id\":\"unused\",\"status\":\"processing\"}");
-    SunoClient client = SunoClient.builder().apiKey("sk-test").transport(transport).build();
-
-    ValidationException error = assertThrows(
-        ValidationException.class,
-        () -> client.separateAudioStems().create(
-            SeparateAudioStemsParams.builder()
-                .taskId("task_source")
-                .audioId("audio_source")
-                .type("split_stem_advanced")
-                .build()));
-
-    assertEquals("stem_name is required when type is split_stem_advanced", error.getMessage());
-    assertNull(transport.request);
   }
 
   @Test
@@ -853,12 +822,6 @@ class SunoClientTest {
     }
 
     @Test
-    void generateLyricsRequiresPrompt() {
-      assertThrows(NullPointerException.class, () -> GenerateLyricsParams.builder().build());
-      assertThrows(IllegalArgumentException.class, () -> GenerateLyricsParams.builder().prompt(" "));
-    }
-
-    @Test
     void coversGeneratemidiResourceMethods() {
       CapturingTransport createTransport = new CapturingTransport("{\"id\":\"task_generate_midi\",\"status\":\"processing\"}");
       SunoClient createClient = SunoClient.builder().apiKey("sk-test").transport(createTransport).build();
@@ -1105,81 +1068,6 @@ class SunoClientTest {
       JsonNode uploadBody = bodyJson(uploadCreateTransport.request);
       assertEquals("https://cdn.runapi.ai/public/samples/music.mp3", uploadBody.get("upload_url").asText());
       assertEquals("suno-v5.5", uploadBody.get("model").asText());
-
-      assertThrows(IllegalArgumentException.class, () ->
-          ReplaceSectionParams.builder()
-              .taskId("sample")
-              .audioId("sample")
-              .uploadUrl("https://cdn.runapi.ai/public/samples/music.mp3")
-              .model(ReplaceSectionModel.SUNO_V5_5)
-              .lyrics("sample")
-              .fullLyrics("sample")
-              .tags("sample")
-              .title("sample")
-              .infillStartTime(10)
-              .infillEndTime(20)
-              .build());
-
-      assertThrows(IllegalArgumentException.class, () ->
-          ReplaceSectionParams.builder()
-              .taskId("sample")
-              .audioId("sample")
-              .lyrics("sample")
-              .fullLyrics("sample")
-              .tags("sample")
-              .title("sample")
-              .infillStartTime(10)
-              .infillEndTime(5)
-              .build());
-
-      assertThrows(IllegalArgumentException.class, () ->
-          ReplaceSectionParams.builder()
-              .taskId("sample")
-              .audioId("sample")
-              .lyrics("sample")
-              .fullLyrics("sample")
-              .tags("sample")
-              .title("sample")
-              .infillStartTime(10)
-              .infillEndTime(19.999)
-              .build());
-
-      assertDoesNotThrow(() ->
-          assertNotNull(ReplaceSectionParams.builder()
-              .taskId("sample")
-              .audioId("sample")
-              .lyrics("sample")
-              .fullLyrics("sample")
-              .tags("sample")
-              .title("sample")
-              .infillStartTime(10)
-              .infillEndTime(71)
-              .build()));
-
-      assertDoesNotThrow(() ->
-          assertNotNull(ReplaceSectionParams.builder()
-              .taskId("sample")
-              .audioId("sample")
-              .lyrics("sample")
-              .fullLyrics("sample")
-              .tags("sample")
-              .title("sample")
-              .infillStartTime(6.016)
-              .infillEndTime(16.016)
-              .build()));
-
-      IllegalArgumentException nonFiniteError = assertThrows(IllegalArgumentException.class, () ->
-          ReplaceSectionParams.builder()
-              .taskId("sample")
-              .audioId("sample")
-              .lyrics("sample")
-              .fullLyrics("sample")
-              .tags("sample")
-              .title("sample")
-              .infillStartTime(0)
-              .infillEndTime(Double.POSITIVE_INFINITY)
-              .build());
-      assertEquals("infill_end_time must be a finite number", nonFiniteError.getMessage());
 
       CapturingTransport getTransport = new CapturingTransport("{\"id\":\"task_replace_section\",\"status\":\"completed\",\"track\":{\"url\":\"https://file.runapi.ai/generated\"}}");
       SunoClient getClient = SunoClient.builder().apiKey("sk-test").transport(getTransport).build();
@@ -1677,15 +1565,6 @@ class SunoClientTest {
     assertEquals("https://file.runapi.ai/sample.wav", body.get("audio_url").asText());
     assertEquals(2.5, body.get("start_seconds").asDouble());
     assertEquals(8.5, body.get("end_seconds").asDouble());
-
-    assertThrows(
-        ValidationException.class,
-        () -> MusicFromSampleParams.builder()
-            .model(MusicFromSampleModel.SUNO_V5)
-            .audioUrl("https://file.runapi.ai/sample.wav")
-            .startSeconds(8.5)
-            .endSeconds(8.5)
-            .build());
 
     CapturingTransport getTransport = new CapturingTransport(
         "{\"id\":\"tsk_sample\",\"status\":\"completed\",\"audios\":[{\"url\":\"https://file.runapi.ai/result.mp3\"}],\"billing\":{\"reservation\":null,\"settlement\":null,\"refund\":null}}");

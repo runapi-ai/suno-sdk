@@ -17,12 +17,6 @@ RSpec.describe RunApi::Suno::Resources::ConvertAudio do
       expect(result).to be_a(RunApi::Suno::Types::ConvertAudioResponse)
       expect(result.id).to eq("task-1")
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:task_id)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
   end
 
   describe "#get" do

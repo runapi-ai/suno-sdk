@@ -29,7 +29,7 @@ public final class ExtendMusicParams {
 
   private ExtendMusicParams(Builder builder) {
     this.callbackUrl = builder.callbackUrl;
-    this.model = SunoParamUtils.requireNonBlankTrim(builder.model, "model");
+    this.model = builder.model;
     this.vocalGender = builder.vocalGender;
     this.styleWeight = builder.styleWeight;
     this.weirdnessConstraint = builder.weirdnessConstraint;
@@ -115,7 +115,7 @@ public final class ExtendMusicParams {
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 
@@ -127,14 +127,14 @@ public final class ExtendMusicParams {
 
     /** Sets the model slug using a string value. */
     public Builder model(String value) {
-      this.model = SunoParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
 
     /** Sets the vocal gender. */
     public Builder vocalGender(String value) {
-      this.vocalGender = SunoParamUtils.requireNonBlank(value, "vocalGender");
+      this.vocalGender = value;
       return this;
     }
 
@@ -158,31 +158,31 @@ public final class ExtendMusicParams {
 
     /** Sets the task ID. */
     public Builder taskId(String value) {
-      this.taskId = SunoParamUtils.requireNonBlank(value, "taskId");
+      this.taskId = value;
       return this;
     }
 
     /** Sets the audio ID. */
     public Builder audioId(String value) {
-      this.audioId = SunoParamUtils.requireNonBlank(value, "audioId");
+      this.audioId = value;
       return this;
     }
 
     /** Sets the audio URL. */
     public Builder audioUrl(String value) {
-      this.audioUrl = SunoParamUtils.requireNonBlank(value, "audioUrl");
+      this.audioUrl = value;
       return this;
     }
 
     /** Sets the upload URL. */
     public Builder uploadUrl(String value) {
-      this.uploadUrl = SunoParamUtils.requireNonBlank(value, "uploadUrl");
+      this.uploadUrl = value;
       return this;
     }
 
     /** Sets the parameter mode. */
     public Builder parameterMode(String value) {
-      this.parameterMode = SunoParamUtils.requireNonBlank(value, "parameterMode");
+      this.parameterMode = value;
       return this;
     }
 
@@ -194,25 +194,25 @@ public final class ExtendMusicParams {
 
     /** Sets the text prompt. */
     public Builder prompt(String value) {
-      this.prompt = SunoParamUtils.requireNonBlank(value, "prompt");
+      this.prompt = value;
       return this;
     }
 
     /** Sets the lyrics. */
     public Builder lyrics(String value) {
-      this.lyrics = SunoParamUtils.requireNonBlank(value, "lyrics");
+      this.lyrics = value;
       return this;
     }
 
     /** Sets the style. */
     public Builder style(String value) {
-      this.style = SunoParamUtils.requireNonBlank(value, "style");
+      this.style = value;
       return this;
     }
 
     /** Sets the title. */
     public Builder title(String value) {
-      this.title = SunoParamUtils.requireNonBlank(value, "title");
+      this.title = value;
       return this;
     }
 
@@ -224,19 +224,19 @@ public final class ExtendMusicParams {
 
     /** Sets the persona ID. */
     public Builder personaId(String value) {
-      this.personaId = SunoParamUtils.requireNonBlank(value, "personaId");
+      this.personaId = value;
       return this;
     }
 
     /** Sets the persona type. */
     public Builder personaType(String value) {
-      this.personaType = SunoParamUtils.requireNonBlank(value, "personaType");
+      this.personaType = value;
       return this;
     }
 
     /** Sets the negative tags. */
     public Builder negativeTags(String value) {
-      this.negativeTags = SunoParamUtils.requireNonBlank(value, "negativeTags");
+      this.negativeTags = value;
       return this;
     }
 

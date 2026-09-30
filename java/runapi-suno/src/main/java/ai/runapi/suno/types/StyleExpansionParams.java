@@ -29,7 +29,7 @@ public final class StyleExpansionParams {
 
     /** Sets the style description to expand. */
     public Builder description(String value) {
-      this.description = SunoParamUtils.requireNonBlank(value, "description");
+      this.description = value;
       return this;
     }
 

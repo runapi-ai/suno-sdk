@@ -28,27 +28,6 @@ RSpec.describe RunApi::Suno::Resources::ReplaceSection do
       expect(result.id).to eq("task-1")
     end
 
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:task_id)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
-
-    it "rejects mixed source params" do
-      params = valid_params.merge(upload_url: uploaded_params[:upload_url], model: uploaded_params[:model])
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /cannot be combined/)
-    end
-
-    it "rejects end time before start time" do
-      params = valid_params.merge(infill_start_time: 10, infill_end_time: 5)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /infill_end_time must be greater than infill_start_time/)
-    end
-
-    it "rejects replacement duration shorter than ten seconds" do
-      params = valid_params.merge(infill_start_time: 10, infill_end_time: 19.999)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /replacement duration must be at least 10 seconds/)
-    end
-
     it "accepts replacement duration longer than sixty seconds" do
       params = valid_params.merge(infill_start_time: 10, infill_end_time: 71)
       expect(http).to receive(:request).with(:post, endpoint, body: params)
@@ -63,11 +42,6 @@ RSpec.describe RunApi::Suno::Resources::ReplaceSection do
         .and_return("id" => "task-1", "status" => "processing")
 
       expect(resource.create(**params)).to be_a(RunApi::Suno::Types::ReplaceSectionResponse)
-    end
-
-    it "rejects non-finite replacement times" do
-      params = valid_params.merge(infill_end_time: Float::INFINITY)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /infill_end_time must be a finite number/)
     end
   end
 

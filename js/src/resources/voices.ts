@@ -1,6 +1,5 @@
-import type { ActionSchema, HttpClient, RequestOptions } from '@runapi.ai/core';
-import { compactParams, validateParams } from '@runapi.ai/core';
-import { contract } from '../contract_gen';
+import type { HttpClient, RequestOptions } from '@runapi.ai/core';
+import { compactParams } from '@runapi.ai/core';
 import type { VoiceCreationResponse, VoiceParams, VoiceResourceResponse } from '../types';
 
 const ENDPOINT = '/api/v1/voices';
@@ -23,7 +22,6 @@ export class Voices {
    */
   async run(params: VoiceParams, options?: RequestOptions): Promise<VoiceCreationResponse> {
     const body = compactParams(params);
-    validateParams(contract['voices'] as ActionSchema, body as Record<string, unknown>);
     return this.http.request<VoiceCreationResponse>('POST', ENDPOINT, {
       body,
       ...options,

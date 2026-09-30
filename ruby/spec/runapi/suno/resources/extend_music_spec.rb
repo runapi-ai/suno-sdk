@@ -19,12 +19,6 @@ RSpec.describe RunApi::Suno::Resources::ExtendMusic do
       expect(result.id).to eq("task-1")
     end
 
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:audio_id)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
-
     it "allows lyrics for custom uploaded audio extensions" do
       params = {
         audio_url: "https://cdn.runapi.ai/public/samples/audio.mp3",
@@ -41,12 +35,6 @@ RSpec.describe RunApi::Suno::Resources::ExtendMusic do
 
       result = resource.create(**params)
       expect(result.id).to eq("task-2")
-    end
-
-    it "rejects provider persona_type values" do
-      expect do
-        resource.create(**valid_params.merge(persona_type: "style_persona"))
-      end.to raise_error(RunApi::Core::ValidationError, /Invalid persona_type/)
     end
   end
 

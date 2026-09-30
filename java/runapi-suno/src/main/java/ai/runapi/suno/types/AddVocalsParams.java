@@ -20,13 +20,13 @@ public final class AddVocalsParams {
 
   private AddVocalsParams(Builder builder) {
     this.callbackUrl = builder.callbackUrl;
-    this.model = SunoParamUtils.requireNonBlankTrim(builder.model, "model");
+    this.model = builder.model;
     this.vocalGender = builder.vocalGender;
     this.styleWeight = builder.styleWeight;
     this.weirdnessConstraint = builder.weirdnessConstraint;
     this.audioWeight = builder.audioWeight;
-    this.uploadUrl = SunoParamUtils.requireNonBlank(builder.uploadUrl, "uploadUrl");
-    this.lyrics = SunoParamUtils.requireNonBlank(builder.lyrics, "lyrics");
+    this.uploadUrl = builder.uploadUrl;
+    this.lyrics = builder.lyrics;
     this.title = builder.title;
     this.negativeTags = builder.negativeTags;
     this.style = builder.style;
@@ -79,7 +79,7 @@ public final class AddVocalsParams {
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 
@@ -91,14 +91,14 @@ public final class AddVocalsParams {
 
     /** Sets the model slug using a string value. */
     public Builder model(String value) {
-      this.model = SunoParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
 
     /** Sets the vocal gender. */
     public Builder vocalGender(String value) {
-      this.vocalGender = SunoParamUtils.requireNonBlank(value, "vocalGender");
+      this.vocalGender = value;
       return this;
     }
 
@@ -122,31 +122,31 @@ public final class AddVocalsParams {
 
     /** Sets the upload URL. */
     public Builder uploadUrl(String value) {
-      this.uploadUrl = SunoParamUtils.requireNonBlank(value, "uploadUrl");
+      this.uploadUrl = value;
       return this;
     }
 
     /** Sets the lyrics. */
     public Builder lyrics(String value) {
-      this.lyrics = SunoParamUtils.requireNonBlank(value, "lyrics");
+      this.lyrics = value;
       return this;
     }
 
     /** Sets the title. */
     public Builder title(String value) {
-      this.title = SunoParamUtils.requireNonBlank(value, "title");
+      this.title = value;
       return this;
     }
 
     /** Sets the negative tags. */
     public Builder negativeTags(String value) {
-      this.negativeTags = SunoParamUtils.requireNonBlank(value, "negativeTags");
+      this.negativeTags = value;
       return this;
     }
 
     /** Sets the style. */
     public Builder style(String value) {
-      this.style = SunoParamUtils.requireNonBlank(value, "style");
+      this.style = value;
       return this;
     }
 

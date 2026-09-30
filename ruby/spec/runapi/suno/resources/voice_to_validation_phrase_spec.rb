@@ -24,17 +24,6 @@ RSpec.describe RunApi::Suno::Resources::VoiceToValidationPhrase do
       expect(result).to be_a(RunApi::Suno::Types::ValidationPhraseResponse)
       expect(result.id).to eq("task-1")
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:voice_url)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /voice_url is required/)
-    end
-
-    it "validates vocal segment order" do
-      params = valid_params.merge(vocal_start_seconds: 12, vocal_end_seconds: 2)
-      expect { resource.create(**params) }.to raise_error(RunApi::Core::ValidationError, /vocal_end_seconds/)
-    end
   end
 
   describe "#get" do

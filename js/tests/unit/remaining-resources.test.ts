@@ -231,43 +231,6 @@ describe('Remaining Resources', () => {
       expect(result.id).toBe('section-upload-123');
     });
 
-    it('should reject mixed section replacement sources', async () => {
-      const replaceSection = new ReplaceSection(mockHttp);
-
-      await expect(replaceSection.create({
-        task_id: 'gen-task-123',
-        audio_id: 'audio-456',
-        upload_url: 'https://cdn.runapi.ai/public/samples/music.mp3',
-        model: 'suno-v5.5',
-        lyrics: 'Guitar solo',
-        full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
-        tags: 'Rock',
-        title: 'Epic Solo',
-        infill_start_time: 30.0,
-        infill_end_time: 45.0,
-      } as never)).rejects.toThrow('task_id/audio_id cannot be combined with upload_url/model');
-      expect(mockHttp.request).not.toHaveBeenCalled();
-    });
-
-    it.each([
-      [30.0, 25.0, 'infill_end_time must be greater than infill_start_time'],
-      [30.0, 39.999, 'replacement duration must be at least 10 seconds'],
-    ])('should reject invalid section replacement time window', async (startTime, endTime, message) => {
-      const replaceSection = new ReplaceSection(mockHttp);
-
-      await expect(replaceSection.create({
-        task_id: 'gen-task-123',
-        audio_id: 'audio-456',
-        lyrics: 'Guitar solo',
-        full_lyrics: '[Verse] Guitar solo\n[Chorus] Epic return',
-        tags: 'Rock',
-        title: 'Epic Solo',
-        infill_start_time: startTime,
-        infill_end_time: endTime,
-      })).rejects.toThrow(message);
-      expect(mockHttp.request).not.toHaveBeenCalled();
-    });
-
     it('should accept section replacement duration longer than sixty seconds', async () => {
       const replaceSection = new ReplaceSection(mockHttp);
       vi.mocked(mockHttp.request).mockResolvedValueOnce({id: 'section-123', status: 'processing'});
@@ -302,22 +265,6 @@ describe('Remaining Resources', () => {
       });
 
       expect(mockHttp.request).toHaveBeenCalledOnce();
-    });
-
-    it('should reject non-finite section replacement times', async () => {
-      const replaceSection = new ReplaceSection(mockHttp);
-
-      await expect(replaceSection.create({
-        task_id: 'gen-task-123',
-        audio_id: 'audio-456',
-        lyrics: 'Guitar solo',
-        full_lyrics: '[Verse] Guitar solo',
-        tags: 'Rock',
-        title: 'Epic Solo',
-        infill_start_time: 0,
-        infill_end_time: Number.POSITIVE_INFINITY,
-      })).rejects.toThrow('infill_end_time must be a finite number');
-      expect(mockHttp.request).not.toHaveBeenCalled();
     });
 
     it('should get section replacement status', async () => {

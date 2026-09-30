@@ -22,18 +22,11 @@ module RunApi
 
         def create(options: nil, **params)
           params = compact_params(params)
-          validate_params!(params)
           request(:post, ENDPOINT, body: params, options: options)
         end
 
         def get(id, options: nil)
           request(:get, "#{ENDPOINT}/#{id}", options: options)
-        end
-
-        private
-
-        def validate_params!(params)
-          Validators.validate_voice_to_validation_phrase!(params, self)
         end
       end
     end

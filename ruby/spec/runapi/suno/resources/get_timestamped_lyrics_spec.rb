@@ -16,11 +16,5 @@ RSpec.describe RunApi::Suno::Resources::GetTimestampedLyrics do
       result = resource.run(**valid_params)
       expect(result).to be_a(RunApi::Suno::Types::GetTimestampedLyricsResponse)
     end
-
-    it "validates required params" do
-      params = valid_params.dup
-      params.delete(:task_id)
-      expect { resource.run(**params) }.to raise_error(RunApi::Core::ValidationError)
-    end
   end
 end

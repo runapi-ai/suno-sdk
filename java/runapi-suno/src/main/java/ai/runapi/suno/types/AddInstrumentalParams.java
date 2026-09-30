@@ -19,12 +19,12 @@ public final class AddInstrumentalParams {
 
   private AddInstrumentalParams(Builder builder) {
     this.callbackUrl = builder.callbackUrl;
-    this.model = SunoParamUtils.requireNonBlankTrim(builder.model, "model");
+    this.model = builder.model;
     this.vocalGender = builder.vocalGender;
     this.styleWeight = builder.styleWeight;
     this.weirdnessConstraint = builder.weirdnessConstraint;
     this.audioWeight = builder.audioWeight;
-    this.uploadUrl = SunoParamUtils.requireNonBlank(builder.uploadUrl, "uploadUrl");
+    this.uploadUrl = builder.uploadUrl;
     this.title = builder.title;
     this.negativeTags = builder.negativeTags;
     this.tags = builder.tags;
@@ -75,7 +75,7 @@ public final class AddInstrumentalParams {
 
     /** Sets the webhook URL for task completion notifications. */
     public Builder callbackUrl(String value) {
-      this.callbackUrl = SunoParamUtils.requireNonBlank(value, "callbackUrl");
+      this.callbackUrl = value;
       return this;
     }
 
@@ -87,14 +87,14 @@ public final class AddInstrumentalParams {
 
     /** Sets the model slug using a string value. */
     public Builder model(String value) {
-      this.model = SunoParamUtils.requireNonBlankTrim(value, "model");
+      this.model = value;
       return this;
     }
 
 
     /** Sets the vocal gender. */
     public Builder vocalGender(String value) {
-      this.vocalGender = SunoParamUtils.requireNonBlank(value, "vocalGender");
+      this.vocalGender = value;
       return this;
     }
 
@@ -118,25 +118,25 @@ public final class AddInstrumentalParams {
 
     /** Sets the upload URL. */
     public Builder uploadUrl(String value) {
-      this.uploadUrl = SunoParamUtils.requireNonBlank(value, "uploadUrl");
+      this.uploadUrl = value;
       return this;
     }
 
     /** Sets the title. */
     public Builder title(String value) {
-      this.title = SunoParamUtils.requireNonBlank(value, "title");
+      this.title = value;
       return this;
     }
 
     /** Sets the negative tags. */
     public Builder negativeTags(String value) {
-      this.negativeTags = SunoParamUtils.requireNonBlank(value, "negativeTags");
+      this.negativeTags = value;
       return this;
     }
 
     /** Sets the tags. */
     public Builder tags(String value) {
-      this.tags = SunoParamUtils.requireNonBlank(value, "tags");
+      this.tags = value;
       return this;
     }
 

@@ -2,11 +2,10 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from runapi.core import Resource, RequestOptions
 
-from ..contract_gen import CONTRACT
 from ..types import GetTimestampedLyricsResponse
 
 
@@ -27,8 +26,4 @@ class TimestampedLyrics(Resource):
             The result.
         """
         compacted = self._compact_params(params)
-        self._validate_params(compacted)
         return self._request("post", self.ENDPOINT, body=compacted, options=options)
-
-    def _validate_params(self, params: Dict[str, Any]) -> None:
-        self._validate_contract(CONTRACT["timestamped-lyrics"], params)

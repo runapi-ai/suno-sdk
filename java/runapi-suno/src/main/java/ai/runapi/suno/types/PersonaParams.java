@@ -44,25 +44,25 @@ public final class PersonaParams {
 
     /** Sets the RunAPI task ID that produced the reference audio. */
     public Builder sourceTaskId(String value) {
-      this.sourceTaskId = SunoParamUtils.requireNonBlank(value, "sourceTaskId");
+      this.sourceTaskId = value;
       return this;
     }
 
     /** Sets the audio ID within the source task. */
     public Builder sourceAudioId(String value) {
-      this.sourceAudioId = SunoParamUtils.requireNonBlank(value, "sourceAudioId");
+      this.sourceAudioId = value;
       return this;
     }
 
     /** Sets the persona name. */
     public Builder name(String value) {
-      this.name = SunoParamUtils.requireNonBlank(value, "name");
+      this.name = value;
       return this;
     }
 
     /** Sets the persona description. */
     public Builder description(String value) {
-      this.description = SunoParamUtils.requireNonBlank(value, "description");
+      this.description = value;
       return this;
     }
 

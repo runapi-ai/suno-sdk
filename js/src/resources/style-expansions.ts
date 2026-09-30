@@ -1,6 +1,5 @@
-import type { ActionSchema, HttpClient, RequestOptions } from '@runapi.ai/core';
-import { compactParams, validateParams } from '@runapi.ai/core';
-import { contract } from '../contract_gen';
+import type { HttpClient, RequestOptions } from '@runapi.ai/core';
+import { compactParams } from '@runapi.ai/core';
 import type { BoostStyleResponse, StyleExpansionParams } from '../types';
 
 const ENDPOINT = '/api/v1/style_expansions';
@@ -17,7 +16,6 @@ export class StyleExpansions {
    */
   async run(params: StyleExpansionParams, options?: RequestOptions): Promise<BoostStyleResponse> {
     const body = compactParams(params);
-    validateParams(contract['style-expansions'] as ActionSchema, body as Record<string, unknown>);
     return this.http.request<BoostStyleResponse>('POST', ENDPOINT, {
       body,
       ...options,
